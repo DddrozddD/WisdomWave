@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
+<<<<<<< Updated upstream
     internal class Test
+=======
+    public class Test
+>>>>>>> Stashed changes
     {
         public int Id { get; set; }
         public string Name { get; set; }
