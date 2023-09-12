@@ -12,11 +12,43 @@ namespace DAL.Repositories.UnitsOfWork
     public class UnitOfWork : IUnitOfWork
     {
 
-        public UnitOfWork()
+        public UnitOfWork(CourseRepository courseRepository, LikeDislikeRepository likeDislikeRepository, ReviewRepository reviewRepository,
+            SubscriptionRepository subscriptionRepository, LearnerUserToCourseRepository learnerUserToCourseRepository, AnswerRepository answerRepository, ParagraphRepository paragraphRepository,
+            QuestionRepository questionRepository, SubQuestionRepository subQuestionRepository, TestRepository testRepository, UnitRepository unitRepository)
         {
-
+            CourseRepository= courseRepository;
+            LikeDislikeRepository= likeDislikeRepository;
+            ReviewRepository = reviewRepository;
+            SubscriptionRepository = subscriptionRepository;
+            LearnerUserToCourseRepository = learnerUserToCourseRepository;
+            AnswerRepository = answerRepository;
+            ParagraphRepository = paragraphRepository;
+            QuestionRepository = questionRepository;
+            SubQuestionRepository = subQuestionRepository;
+            TestRepository = testRepository;
+            UnitRepository = unitRepository;
         }
 
-        
+        public CourseRepository CourseRepository { get; }
+
+        public LikeDislikeRepository LikeDislikeRepository { get; }
+
+        public ReviewRepository ReviewRepository { get; }
+
+        public SubscriptionRepository SubscriptionRepository { get; }
+
+        public LearnerUserToCourseRepository LearnerUserToCourseRepository { get; }
+
+        public AnswerRepository AnswerRepository { get; }
+
+        public ParagraphRepository ParagraphRepository { get; }
+
+        public QuestionRepository QuestionRepository { get; }
+
+        public SubQuestionRepository SubQuestionRepository { get; }
+
+        public TestRepository TestRepository { get; }
+
+        public UnitRepository UnitRepository { get; }
     }
 }
