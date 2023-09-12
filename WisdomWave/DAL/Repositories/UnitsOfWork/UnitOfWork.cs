@@ -11,8 +11,26 @@ namespace DAL.Repositories.UnitsOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
+        public UnitRepository UnitRepository { get; }
+        public ParagraphRepository ParagraphRepository { get; }
+        public TestRepository TestRepository { get; }
+        public QuestionRepository QuestionRepository{ get; }
+        public SubQuestionRepository SubQuestionRepository{ get; }
+        public AnswerRepository AnswerRepository { get; }
 
-        public UnitOfWork()
+        public UnitOfWork(UnitRepository unitRepository, ParagraphRepository paragraphRepository, TestRepository testRepository,
+            QuestionRepository questionRepository, SubQuestionRepository subQuestionRepository, AnswerRepository answerRepository)
+        {
+            UnitRepository = unitRepository;
+            ParagraphRepository = paragraphRepository;
+            TestRepository = testRepository;
+            QuestionRepository = questionRepository;
+            SubQuestionRepository = subQuestionRepository;
+            AnswerRepository = answerRepository;
+        }
+
+
+
         {
 
         }

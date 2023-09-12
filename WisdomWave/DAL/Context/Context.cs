@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Models;
 
 namespace DAL.Context
 {
@@ -20,5 +21,11 @@ namespace DAL.Context
         {
             base.OnModelCreating(modelBuilder);
         }
+        public DbSet<Answer> Answer { get; set; }
+        public DbSet<SubQuestion> SubQuestions { get; set; }
+        public DbSet<Paragraph> Paragraph { get; set; }
+        public DbSet<Question> Question { get; set; }
+        public DbSet<Test> Test { get; set; }
+        public DbSet<Unit> Unit{ get;}
     }
 }

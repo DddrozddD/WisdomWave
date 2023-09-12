@@ -9,6 +9,11 @@ namespace DAL.Repositories.UnitsOfWork
 {
     public interface IUnitOfWork
     {
-       
+        AnswerRepository AnswerRepository { get; }
+        QuestionRepository QuestionRepository { get; }
+        ParagraphRepository ParagraphRepository { get; }
+        SubQuestionRepository SubQuestionRepository { get; }
+        UnitRepository UnitRepository { get; }
+        TestRepository TestRepository { get; }
     }
 }
