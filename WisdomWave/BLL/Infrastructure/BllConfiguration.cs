@@ -12,7 +12,17 @@ namespace BLL.Infrastructure
     {
         public static void ConfigurationService(IServiceCollection serviceCollection)
         {
-            
+            serviceCollection.AddTransient<CourseRepository>();
+            serviceCollection.AddTransient<LearnerUserToCourseRepository>();
+            serviceCollection.AddTransient<LikeDislikeRepository>();
+            serviceCollection.AddTransient<ReviewRepository>();
+            serviceCollection.AddTransient<SubscriptionRepository>();
+            serviceCollection.AddTransient<AnswerRepository>();
+            serviceCollection.AddTransient<ParagraphRepository>();
+            serviceCollection.AddTransient<QuestionRepository>();
+            serviceCollection.AddTransient<SubQuestionRepository>();
+            serviceCollection.AddTransient<TestRepository>();
+            serviceCollection.AddTransient<UnitRepository>();
         }
     }
 }

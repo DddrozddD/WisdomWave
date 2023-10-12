@@ -3,7 +3,7 @@ using DAL.Models;
 using Domain.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +32,7 @@ namespace DAL.Repositories
             model.number = unit.number;
             model.UnitName = unit.UnitName;
             model.DateOfCreate = unit.DateOfCreate;
-            model.CourseId = unit.CourseId;
+            model.courseId = unit.courseId;
             model.Course = unit.Course;
 
             this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
@@ -42,3 +42,5 @@ namespace DAL.Repositories
             return new OperationDetails() { IsError = false };
 
         }
+    }
+}

@@ -3,7 +3,7 @@ using DAL.Models;
 using Domain.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,7 +31,7 @@ namespace DAL.Repositories
             var model = this.Entities.Where(s => s.Id == Id).First();
             model.SubQuestionText = subquestion.SubQuestionText;
             model.Question = subquestion.Question;
-            model.QuestionId = subquestion.QuestionId;
+            model.questionId = subquestion.questionId;
 
             this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 

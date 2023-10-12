@@ -3,7 +3,7 @@ using DAL.Models;
 using Domain.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,8 +32,8 @@ namespace DAL.Repositories
             model.ParagraphText = paragraph.ParagraphText;
             model.PhotoLinks = paragraph.PhotoLinks;
             model.ParagraphName = paragraph.ParagraphName;
-            model.video_links = paragraph.video_links;
-            model.UnitsID = paragraph.UnitsID;
+            model.VideoLinks = paragraph.VideoLinks;
+            model.unitID = paragraph.unitID;
             model.Unit = paragraph.Unit;
 
             this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;

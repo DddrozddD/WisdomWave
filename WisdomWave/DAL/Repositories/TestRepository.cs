@@ -3,7 +3,7 @@ using DAL.Models;
 using Domain.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +32,7 @@ namespace DAL.Repositories
             model.Name = test.Name;
             model.Description = test.Description;
             model.DateOfCreate = test.DateOfCreate;
-            model.UnitId = test.UnitId;
+            model.unitId = test.unitId;
             model.Unit = test.Unit;
 
             this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
