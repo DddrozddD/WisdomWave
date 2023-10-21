@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class SubQuestionService
+    public class SubQuestionServiceDAL
     {
         private readonly IUnitOfWork unitOfWork;
 
-        public SubQuestionService(IUnitOfWork unitOfWork)
+        public SubQuestionServiceDAL(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }
