@@ -28,6 +28,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseCors("AllowSpecificOrigin");
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -43,6 +49,17 @@ app.Run();
 
 void ConfigurationService(IServiceCollection serviceCollection)
 {
+    serviceCollection.AddCors(options =>
+    {
+        options.AddPolicy("AllowSpecificOrigin", builder =>
+        {
+            builder.WithOrigins("http://localhost:3000")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+    });
+
+
     serviceCollection.AddDbContext<WwContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("connStr")));
     serviceCollection.AddIdentity<User, IdentityRole>(op => op.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WwContext>().AddDefaultTokenProviders().
        AddTokenProvider<EmailConfirmationTokenProvider<User>>("emailConfirmationProvider");
