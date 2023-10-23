@@ -38,5 +38,15 @@ namespace BLL.Services
 
             return courses;
         }
+        public async Task<IReadOnlyCollection<Course>> SearchCoursesByDescriptionAsync(string description)
+        {
+            return await unitOfWork.CourseRepository.FindByConditionAsync(c => c.Description.Contains(description));
+        }
+
+        public async Task<IReadOnlyCollection<Course>> FilterCoursesByRatingAsync(int minRating)
+        {
+            return await unitOfWork.CourseRepository.FindByConditionAsync(c => c.RatingCourse >= minRating);
+        }
+
     }
 }
