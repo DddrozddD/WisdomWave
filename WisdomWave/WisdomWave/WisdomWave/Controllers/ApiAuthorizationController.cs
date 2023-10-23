@@ -11,12 +11,14 @@ namespace ASP_Resume.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    public class ApiAuthorizationController : ControllerBase
     public class AuthorizationController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
+        public ApiAuthorizationController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailSender emailSender, RoleManager<IdentityRole> roleManager)
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _env;
 
@@ -27,12 +29,20 @@ namespace ASP_Resume.Controllers
             _signInManager = signInManager;
             _emailSender = emailSender;
             _roleManager = roleManager;
+
+        }
+
+
+
+     
+
             _configuration = configuration;
             _env = env;
         }
 
 
        
+
         [HttpPost("RegUser")]
         public async Task<IList<IdentityError>> RegUser([FromBody] RegisterViewModel registerViewModel)
         {
@@ -41,7 +51,11 @@ namespace ASP_Resume.Controllers
             var user = new User
             {
                 Email = registerViewModel.Email, 
-                
+
+                Surname= registerViewModel.Surname,
+                Telephone= registerViewModel.Telephone,
+                UserName = registerViewModel.Name
+
             };
 
             var res = await _userManager.CreateAsync(user, registerViewModel.Password);
@@ -62,7 +76,8 @@ namespace ASP_Resume.Controllers
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var confirmationLink = Url.Action("", "confirmation", new { guid = token, userEmail = user.Email }, Request.Scheme, Request.Host.Value);
                 await _emailSender.SendEmailAsync(user.Email, "Confirmation Link", $"Link=> {confirmationLink}");
-                    return null ;
+                    return null;
+
             }
                 else
                 {

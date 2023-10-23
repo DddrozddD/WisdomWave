@@ -28,7 +28,6 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-
 app.UseCors("AllowSpecificOrigin");
 
 app.UseEndpoints(endpoints =>
@@ -59,6 +58,7 @@ void ConfigurationService(IServiceCollection serviceCollection)
                    .AllowAnyMethod();
         });
     });
+
 
     serviceCollection.AddDbContext<WwContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("connStr")));
     serviceCollection.AddIdentity<User, IdentityRole>(op => op.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WwContext>().AddDefaultTokenProviders().
