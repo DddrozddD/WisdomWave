@@ -45,11 +45,11 @@ namespace WisdomWave.Controllers
             }
 
             var result = await subscriptionService.CreateAsync(subscription);
-            if (result.Succeeded)
+            if (result.IsError == false)
             {
                 return Created($"api/subscriptions/{subscription.Id}", subscription); // Возвращаем статус 201 Created
             }
-            return BadRequest(result.Errors);
+            return BadRequest(result.Message);
         }
 
         [HttpPut("{id}")] // Обработчик HTTP PUT-запроса для обновления существующей подписки

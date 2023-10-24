@@ -45,13 +45,13 @@ namespace WisdomWave.Controllers
             }
 
             var result = await likeDislikeService.CreateAsync(likeDislike);
-            if (result.Succeeded)
+            if (result.IsError == false)
             {
                 return Created($"api/likedislikes/{likeDislike.userId}/{likeDislike.reviewId}", likeDislike);
             }
-            return BadRequest(result.Errors);
+            return BadRequest(result.Message);
         }
-
+            
         [HttpPut("{userId}/{reviewId}")]
         public async Task<IActionResult> Put(string userId, int reviewId, [FromBody] LikeDislike likeDislike)
         {

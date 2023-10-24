@@ -27,6 +27,8 @@ namespace DAL.Repositories
 
         public async Task<OperationDetails> Update(LearnerUserToCourse lUserToCourse, string userId, int courseId)
         {
+            try
+            {
             var model = this.Entities.Where(m => (m.userId == userId) && (m.courseId == courseId)).First();
             model.User = lUserToCourse.User;
             model.userId = lUserToCourse.userId;
@@ -37,7 +39,13 @@ namespace DAL.Repositories
 
             await _context.SaveChangesAsync();
 
-            return new OperationDetails() { IsError = false };
+            //return new OperationDetails() { IsError = false };
+                return new OperationDetails { Message = "Created" };
+            }
+            catch (Exception ex)
+            {
+                return new OperationDetails { Message = "Create Fatal Error", exception = ex, IsError = true };
+            }
         }
     }
 }

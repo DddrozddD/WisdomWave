@@ -24,6 +24,6 @@ namespace BLL.Services
         public async Task<Answer> FindByConditionItemAsync(Expression<Func<Answer, bool>> predicat) => await this.unitOfWork.AnswerRepository.FindByConditionItemAsync(predicat);
         public async Task<OperationDetails> CreateAsync(Answer answer) => await unitOfWork.AnswerRepository.CreateAsync(answer);
         public async Task DeleteAsync(int id) => await unitOfWork.AnswerRepository.Delete(id);
-        public async Task EditAsync(int id, Answer answer) => await unitOfWork.AnswerRepository.Update(answer, id);
+        public async Task<OperationDetails> EditAsync(int id, Answer answer) => await unitOfWork.AnswerRepository.Update(answer, id);
     }
 }

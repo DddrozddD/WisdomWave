@@ -28,6 +28,7 @@ namespace DAL.Repositories
         }
         public async Task<OperationDetails> Update(Paragraph paragraph, int Id)
         {
+            try { 
             var model = this.Entities.Where(s => s.Id == Id).First();
             model.ParagraphText = paragraph.ParagraphText;
             model.PhotoLinks = paragraph.PhotoLinks;
@@ -40,7 +41,12 @@ namespace DAL.Repositories
 
             await _context.SaveChangesAsync();
 
-            return new OperationDetails() { IsError = false };
+            return new OperationDetails { Message = "Created" };
+        }
+            catch (Exception ex)
+            {
+                return new OperationDetails { Message = "Create Fatal Error", exception = ex, IsError = true };
+}
         }
     }
 }

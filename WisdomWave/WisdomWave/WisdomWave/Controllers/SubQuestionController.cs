@@ -45,11 +45,11 @@ namespace WisdomWave.Controllers
             }
 
             var result = await subQuestionService.CreateAsync(subQuestion);
-            if (result.Succeeded)
+            if (result.IsError == false)
             {
                 return Created($"api/subquestions/{subQuestion.Id}", subQuestion); // Возвращаем статус 201 Created
             }
-            return BadRequest(result.Errors);
+            return BadRequest(result.Message);
         }
 
         [HttpPut("{id}")] // Обработчик HTTP PUT-запроса для обновления существующего подвопроса

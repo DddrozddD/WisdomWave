@@ -72,4 +72,33 @@ public class CoursesController : ControllerBase
         var courses = await _courseService.FindAllLearningCoursesForUser(userId);
         return Ok(courses);
     }
+    [HttpGet("search")]
+    public async Task<IActionResult> SearchCourses([FromQuery] string searchTerm)
+    {
+        var courses = await _courseService.SearchCoursesAsync(searchTerm);
+        return Ok(courses);
+    }
+
+    [HttpGet("filter")]
+    public async Task<IActionResult> FilterCourses([FromQuery] int minRating)
+    {
+        var courses = await _courseService.FilterCoursesByRatingAsync(minRating);
+        return Ok(courses);
+    }
+
+    // Sample search method by Description
+    [HttpGet("search-by-description")]
+    public async Task<IActionResult> SearchCoursesByDescription([FromQuery] string description)
+    {
+        var courses = await _courseService.SearchCoursesByDescriptionAsync(description);
+        return Ok(courses);
+    }
+
+    // Sample filter method by RatingCourse
+    [HttpGet("filter-by-rating")]
+    public async Task<IActionResult> FilterCoursesByRating([FromQuery] int minRating)
+    {
+        var courses = await _courseService.FilterCoursesByRatingAsync(minRating);
+        return Ok(courses);
+    }
 }

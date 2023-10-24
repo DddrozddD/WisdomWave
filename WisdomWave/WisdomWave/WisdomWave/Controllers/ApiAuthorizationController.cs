@@ -11,14 +11,12 @@ namespace ASP_Resume.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ApiAuthorizationController : ControllerBase
     public class AuthorizationController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public ApiAuthorizationController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailSender emailSender, RoleManager<IdentityRole> roleManager)
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _env;
 
@@ -29,16 +27,13 @@ namespace ASP_Resume.Controllers
             _signInManager = signInManager;
             _emailSender = emailSender;
             _roleManager = roleManager;
-
-        }
-
-
-
-     
-
             _configuration = configuration;
             _env = env;
+
         }
+
+            
+        
 
 
        
@@ -52,9 +47,7 @@ namespace ASP_Resume.Controllers
             {
                 Email = registerViewModel.Email, 
 
-                Surname= registerViewModel.Surname,
-                Telephone= registerViewModel.Telephone,
-                UserName = registerViewModel.Name
+              
 
             };
 

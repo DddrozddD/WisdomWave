@@ -27,7 +27,9 @@ namespace DAL.Repositories
 
         public async Task<OperationDetails> Update(LikeDislike likeDislike, string userId, int reviewId)
         {
-            var model = this.Entities.Where(m => (m.userId == userId)&&(m.reviewId == reviewId)).First();
+            try
+            {
+                var model = this.Entities.Where(m => (m.userId == userId)&&(m.reviewId == reviewId)).First();
             model.Review = likeDislike.Review;
             model.reviewId = likeDislike.reviewId;
             model.userId = likeDislike.userId;
@@ -37,7 +39,12 @@ namespace DAL.Repositories
 
             await _context.SaveChangesAsync();
 
-            return new OperationDetails() { IsError = false };
+                return new OperationDetails { Message = "Created" };
+            }
+            catch (Exception ex)
+            {
+                return new OperationDetails { Message = "Create Fatal Error", exception = ex, IsError = true };
+            }
         }
     }
 }
