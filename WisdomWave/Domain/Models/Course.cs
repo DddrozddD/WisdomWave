@@ -19,5 +19,7 @@ namespace Domain.Models
         public User CreatorUser { get; set; }
         public IReadOnlyCollection<Review> Reviews { get; set; }
         public IReadOnlyCollection<Unit> Units { get; set; }
+        public int categoryId { get; set; }
+        public Category Category { get; set; }
     }
 }
