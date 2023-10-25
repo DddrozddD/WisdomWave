@@ -3,7 +3,7 @@ using DAL.Models;
 using Domain.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,18 +28,24 @@ namespace DAL.Repositories
         }
         public async Task<OperationDetails> Update(Test test, int Id)
         {
+            try { 
             var model = this.Entities.Where(s => s.Id == Id).First();
             model.Name = test.Name;
             model.Description = test.Description;
             model.DateOfCreate = test.DateOfCreate;
-            model.UnitId = test.UnitId;
+            model.unitId = test.unitId;
             model.Unit = test.Unit;
 
             this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 
             await _context.SaveChangesAsync();
 
-            return new OperationDetails() { IsError = false };
+            return new OperationDetails { Message = "Created" };
+        }
+            catch (Exception ex)
+            {
+                return new OperationDetails { Message = "Create Fatal Error", exception = ex, IsError = true };
+}
         }
     }
 }

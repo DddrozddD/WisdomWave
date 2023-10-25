@@ -11,30 +11,44 @@ namespace DAL.Repositories.UnitsOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public UnitRepository UnitRepository { get; }
-        public ParagraphRepository ParagraphRepository { get; }
-        public TestRepository TestRepository { get; }
-        public QuestionRepository QuestionRepository{ get; }
-        public SubQuestionRepository SubQuestionRepository{ get; }
-        public AnswerRepository AnswerRepository { get; }
 
-        public UnitOfWork(UnitRepository unitRepository, ParagraphRepository paragraphRepository, TestRepository testRepository,
-            QuestionRepository questionRepository, SubQuestionRepository subQuestionRepository, AnswerRepository answerRepository)
+        public UnitOfWork(CourseRepository courseRepository, LikeDislikeRepository likeDislikeRepository, ReviewRepository reviewRepository,
+            SubscriptionRepository subscriptionRepository, LearnerUserToCourseRepository learnerUserToCourseRepository, AnswerRepository answerRepository, ParagraphRepository paragraphRepository,
+            QuestionRepository questionRepository, SubQuestionRepository subQuestionRepository, TestRepository testRepository, UnitRepository unitRepository)
         {
-            UnitRepository = unitRepository;
+            CourseRepository= courseRepository;
+            LikeDislikeRepository= likeDislikeRepository;
+            ReviewRepository = reviewRepository;
+            SubscriptionRepository = subscriptionRepository;
+            LearnerUserToCourseRepository = learnerUserToCourseRepository;
+            AnswerRepository = answerRepository;
             ParagraphRepository = paragraphRepository;
-            TestRepository = testRepository;
             QuestionRepository = questionRepository;
             SubQuestionRepository = subQuestionRepository;
-            AnswerRepository = answerRepository;
+            TestRepository = testRepository;
+            UnitRepository = unitRepository;
         }
 
+        public CourseRepository CourseRepository { get; }
 
+        public LikeDislikeRepository LikeDislikeRepository { get; }
 
-        {
+        public ReviewRepository ReviewRepository { get; }
 
-        }
+        public SubscriptionRepository SubscriptionRepository { get; }
 
-        
+        public LearnerUserToCourseRepository LearnerUserToCourseRepository { get; }
+
+        public AnswerRepository AnswerRepository { get; }
+
+        public ParagraphRepository ParagraphRepository { get; }
+
+        public QuestionRepository QuestionRepository { get; }
+
+        public SubQuestionRepository SubQuestionRepository { get; }
+
+        public TestRepository TestRepository { get; }
+
+        public UnitRepository UnitRepository { get; }
     }
 }

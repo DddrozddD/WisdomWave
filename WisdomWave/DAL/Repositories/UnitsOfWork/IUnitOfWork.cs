@@ -9,11 +9,16 @@ namespace DAL.Repositories.UnitsOfWork
 {
     public interface IUnitOfWork
     {
+        CourseRepository CourseRepository { get; }
+        LikeDislikeRepository LikeDislikeRepository { get; }
+        ReviewRepository ReviewRepository { get; }
+        SubscriptionRepository SubscriptionRepository { get; }
+        LearnerUserToCourseRepository LearnerUserToCourseRepository { get; }
         AnswerRepository AnswerRepository { get; }
-        QuestionRepository QuestionRepository { get; }
         ParagraphRepository ParagraphRepository { get; }
+        QuestionRepository QuestionRepository { get; }
         SubQuestionRepository SubQuestionRepository { get; }
-        UnitRepository UnitRepository { get; }
         TestRepository TestRepository { get; }
+        UnitRepository UnitRepository { get; }
     }
 }

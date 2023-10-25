@@ -9,8 +9,8 @@ namespace Domain.Models
     public class Subscription
     {
         public int Id { get; set; }
-        public int Agree_for_sub { get; set; }
-        public string Favourite_theme { get; set; }
+        public int AgreeForSub { get; set; }
+        public string FavouriteTheme { get; set; }
         public string Value { get; set; }
         public string userId { get; set; }
         public User User { get; set; }

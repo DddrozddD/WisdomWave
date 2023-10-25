@@ -6,18 +6,14 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-<<<<<<< Updated upstream
-    internal class Paragraph
-=======
     public class Paragraph
->>>>>>> Stashed changes
     {
         public int Id { get; set; }
         public string ParagraphName { get; set; }
         public string ParagraphText { get; set; }
         public string PhotoLinks { get; set; }
-        public string video_links { get; set; }
-        public int UnitsID { get; set; }
+        public string VideoLinks { get; set; }
+        public int? unitID { get; set; }
         public Unit Unit {get; set; }
     }
 }

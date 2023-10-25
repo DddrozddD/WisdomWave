@@ -1,11 +1,13 @@
-﻿using System;
+﻿using DAL.Models;
+using DAL.Repositories.UnitsOfWork;
+using Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.Repositories.UnitsOfWork;
-using Domain.Models;
 
 namespace BLL.Services
 {
@@ -21,7 +23,7 @@ namespace BLL.Services
         public async Task<IReadOnlyCollection<Course>> GetAsyncs() => await unitOfWork.CourseRepository.GetAllAsync();
         public async Task<IReadOnlyCollection<Course>> FindByConditionAsync(Expression<Func<Course, bool>> predicat) => await this.unitOfWork.CourseRepository.FindByConditionAsync(predicat);
         public async Task<Course> FindByConditionItemAsync(Expression<Func<Course, bool>> predicat) => await this.unitOfWork.CourseRepository.FindByConditionItemAsync(predicat);
-        public async Task CreateAsync(Course course) => await unitOfWork.CourseRepository.CreateAsync(course);
+        public async Task<OperationDetails> CreateAsync(Course course) => await unitOfWork.CourseRepository.CreateAsync(course);
         public async Task DeleteAsync(int id) => await unitOfWork.CourseRepository.Delete(id);
         public async Task EditAsync(int id, Course course) => await unitOfWork.CourseRepository.Update(course, id);
         public async Task<IReadOnlyCollection<Course>> FindAllLearningCoursesForUser(string userId)
@@ -38,6 +40,13 @@ namespace BLL.Services
 
             return courses;
         }
+
+        public async Task<IReadOnlyCollection<Course>> SearchCoursesAsync(string searchTerm)
+        {
+            // Implement the search logic here, for example, searching courses by Description
+            return await unitOfWork.CourseRepository.FindByConditionAsync(c => c.Description.Contains(searchTerm));
+        }
+
         public async Task<IReadOnlyCollection<Course>> SearchCoursesByDescriptionAsync(string description)
         {
             return await unitOfWork.CourseRepository.FindByConditionAsync(c => c.Description.Contains(description));

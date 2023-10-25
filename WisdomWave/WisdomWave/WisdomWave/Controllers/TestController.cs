@@ -45,11 +45,11 @@ namespace WisdomWave.Controllers
             }
 
             var result = await testService.CreateAsync(test);
-            if (result.Succeeded)
+            if (result.IsError == false)
             {
                 return Created($"api/tests/{test.Id}", test); // Возвращаем статус 201 Created
             }
-            return BadRequest(result.Errors);
+            return BadRequest(result.Message);
         }
 
         [HttpPut("{id}")] // Обработчик HTTP PUT-запроса для обновления существующего теста

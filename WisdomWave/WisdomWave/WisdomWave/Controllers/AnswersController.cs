@@ -1,74 +1,73 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
 using BLL.Services;
 
-namespace WisdomWave.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class AnswersController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AnswerController : ControllerBase
+    private readonly AnswerService _answerService;
+
+    public AnswersController(AnswerService answerService)
     {
-        private readonly CourseService courseService;
+        _answerService = answerService;
+    }
 
-        public AnswerController(CourseService courseService)
+    [HttpGet]
+    public async Task<IActionResult> GetAnswers()
+    {
+        var answers = await _answerService.GetAsyncs();
+        return Ok(answers);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetAnswer(int id)
+    {
+        var answer = await _answerService.FindByConditionItemAsync(a => a.Id == id);
+
+        if (answer == null)
         {
-            this.courseService = courseService;
+            return NotFound();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        return Ok(answer);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateAnswer([FromBody] Answer answer)
+    {
+        var result = await _answerService.CreateAsync(answer);
+
+        if (result.IsError == false)
         {
-            var courses = await courseService.GetAsyncs();
-            return Ok(courses);
+            return CreatedAtAction("GetAnswer", new { id = answer.Id }, answer);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        return BadRequest(result.Message);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateAnswer(int id, [FromBody] Answer answer)
+    {
+        if (id != answer.Id)
         {
-            var course = await courseService.FindByConditionItemAsync(c => c.Id == id);
-            if (course == null)
-            {
-                return NotFound();
-            }
-            return Ok(course);
+            return BadRequest();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Course course)
+        var result = await _answerService.EditAsync(id, answer);
+
+        if (result.IsError == false)
         {
-            if (course == null)
-            {
-                return BadRequest();
-            }
-
-            var result = await courseService.CreateAsync(course);
-            if (result.Succeeded)
-            {
-                return Created($"api/courses/{course.Id}", course);
-            }
-            return BadRequest(result.Errors);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] Course course)
-        {
-            if (course == null)
-            {
-                return BadRequest();
-            }
-
-            await courseService.EditAsync(id, course);
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await courseService.DeleteAsync(id);
-            return NoContent();
-        }
+        return BadRequest(result.Message);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteAnswer(int id)
+    {
+        await _answerService.DeleteAsync(id);
+        return NoContent();
     }
 }

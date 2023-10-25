@@ -21,6 +21,7 @@ namespace BLL.Services
 
         public async Task<IReadOnlyCollection<Unit>> GetAsyncs() => await unitOfWork.UnitRepository.GetAllAsync();
         public async Task<IReadOnlyCollection<Unit>> FindByConditionAsync(Expression<Func<Unit, bool>> predicat) => await this.unitOfWork.UnitRepository.FindByConditionAsync(predicat);
+        public async Task<Unit> FindByConditionItemAsync(Expression<Func<Unit, bool>> predicat) => await this.unitOfWork.UnitRepository.FindByConditionItemAsync(predicat);
         public async Task<OperationDetails> CreateAsync(Unit unit) => await unitOfWork.UnitRepository.CreateAsync(unit);
         public async Task DeleteAsync(int id) => await unitOfWork.UnitRepository.Delete(id);
         public async Task EditAsync(int id, Unit unit) => await unitOfWork.UnitRepository.Update(unit, id);
