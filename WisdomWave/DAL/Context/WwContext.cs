@@ -75,5 +75,6 @@ namespace DAL.Context
         public DbSet<Question> Question { get; set; }
         public DbSet<Test> Test { get; set; }
         public DbSet<Unit> Unit { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 }

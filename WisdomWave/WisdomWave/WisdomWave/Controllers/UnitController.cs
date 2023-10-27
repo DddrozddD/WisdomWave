@@ -70,5 +70,18 @@ namespace WisdomWave.Controllers
             await unitService.DeleteAsync(id);
             return NoContent(); // Возвращаем статус 204 No Content
         }
+        [HttpGet("FindByIdInList/{categoryId}")]
+        public async Task<IActionResult> FindCategoryByIdInList(int categoryId)
+        {
+            var category = await _categoryService.FindCategoryByIdAsync(categoryId, categoryList);
+
+            if (category != null)
+            {
+                return Ok(category);
+            }
+
+            return NotFound();
+        }
+
     }
 }

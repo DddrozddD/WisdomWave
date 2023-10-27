@@ -1,81 +1,61 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Domain.Models;
 using DAL.Repositories;
-using DAL.Models;
+using Domain.Models;
 
-public class CategoryService
+namespace BLL.Services
 {
-    private readonly ICategoryRepository _categoryRepository;
-
-    public CategoryService(ICategoryRepository categoryRepository)
+    public class CategoryService
     {
-        _categoryRepository = categoryRepository;
-    }
+        private readonly CategoryRepository _categoryRepository;
 
-    public async Task<IReadOnlyCollection<Category>> GetCategoriesWithoutParentsAsync()
-    {
-        return (await _categoryRepository.GetAllAsync()).Where(c => c.ParentCategoryId == null).ToList();
-    }
-
-    public async Task<IReadOnlyCollection<Category>> GetChildCategoriesAsync(int parentId)
-    {
-        return (await _categoryRepository.GetAllAsync()).Where(c => c.ParentCategoryId == parentId).ToList();
-    }
-
-    public async Task<IReadOnlyCollection<Category>> GetParentCategoriesAsync(int categoryId)
-    {
-        var parentCategories = new List<Category>();
-        var category = await _categoryRepository.GetByIdAsync(categoryId);
-
-        while (category != null)
+        public CategoryService(CategoryRepository categoryRepository)
         {
-            parentCategories.Add(category);
-            category = await _categoryRepository.GetByIdAsync((int)category.ParentCategoryId);
+            _categoryRepository = categoryRepository;
         }
 
-        parentCategories.Reverse();
-        return parentCategories;
-    }
-
-    public async Task<Category> GetCategoryAsync(int id)
-    {
-        return await _categoryRepository.GetByIdAsync(id);
-    }
-
-    public async Task<OperationDetails> CreateCategoryAsync(Category category)
-    {
-        await _categoryRepository.CreateAsync(category);
-        return new OperationDetails { Message = "Category created successfully" };
-    }
-
-    public async Task<OperationDetails> UpdateCategoryAsync(Category category)
-    {
-        var existingCategory = await _categoryRepository.GetByIdAsync(category.Id);
-
-        if (existingCategory == null)
+        public async Task<IReadOnlyCollection<Category>> GetAsyncs() => await _categoryRepository.GetAllAsync();
+        public async Task<Category> GetByIdAsync(int id) => await _categoryRepository.GetByIdAsync(id);
+        public async Task<IReadOnlyCollection<Category>> FindByConditionAsync(Expression<Func<Category, bool>> predicat) => await _categoryRepository.FindByConditionAsync(predicat);
+        public async Task<Category> FindByConditionItemAsync(Expression<Func<Category, bool>> predicat) => await _categoryRepository.FindByConditionItemAsync(predicat);
+        public async Task CreateAsync(Category category) => await _categoryRepository.CreateAsync(category);
+        public async Task UpdateAsync(int id, Category category) => await _categoryRepository.UpdateAsync(category);
+        public async Task DeleteAsync(int id) => await _categoryRepository.DeleteAsync(id);
+        public async Task<IReadOnlyCollection<Category>> GetCategoriesWithoutParentAsync()
         {
-            return new OperationDetails { Message = "Create Fatal Error", IsError = true };
+            return await _categoryRepository.FindByConditionAsync(c => c.ParentCategories.Count == 0);
         }
 
-        existingCategory.CategoryName = category.CategoryName;
-        existingCategory.ParentCategoryId = category.ParentCategoryId;
-
-        await _categoryRepository.UpdateAsync(existingCategory);
-        return new  OperationDetails{ Message = "Category updated successfully" };
-    }
-
-    public async Task<OperationDetails> DeleteCategoryAsync(int id)
-    {
-        var category = await _categoryRepository.GetByIdAsync(id);
-
-        if (category == null)
+        public async Task<IReadOnlyCollection<Category>> GetCategoriesByParentIdAsync(int parentId)
         {
-            return new OperationDetails{ Message = "Category not found", IsError = true };
+            return await _categoryRepository.FindByConditionAsync(c => c.ParentCategories.Any(pc => pc.Id == parentId));
         }
 
-        await _categoryRepository.DeleteAsync(id);
-        return new OperationDetails{ Message = "Category deleted successfully" };
+        public async Task<IReadOnlyCollection<Category>> GetParentCategoriesByIdAsync(int categoryId)
+        {
+            var parentCategories = new List<Category>();
+            var category = await _categoryRepository.FindByConditionItemAsync(c => c.Id == categoryId);
+
+            while (category != null)
+            {
+                parentCategories.Add(category);
+                if (category.ParentCategories.Count == 0)
+                {
+                    break;
+                }
+                category = await _categoryRepository.FindByConditionItemAsync(c => c.Id == category.ParentCategories.First().Id);
+            }
+
+            return parentCategories;
+        }
+        public async Task<Category> FindCategoryByIdAsync(int categoryId, List<Category> categoryList)
+        {
+            return categoryList.FirstOrDefault(c => c.Id == categoryId);
+        }
+
+
     }
 }
