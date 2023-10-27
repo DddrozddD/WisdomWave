@@ -81,4 +81,18 @@ public class CategoriesController : ControllerBase
         return Ok(parentCategories);
     }
 
+    [HttpGet("FindByIdInList/{categoryId}")]
+    public async Task<IActionResult> FindCategoryByIdInList(int categoryId, [FromQuery] List<Category> categoryList)
+    {
+        var category = await _categoryService.FindCategoryByIdAsync(categoryId, categoryList);
+
+        if (category != null)
+        {
+            return Ok(category);
+        }
+
+        return NotFound();
+    }
+
+
 }

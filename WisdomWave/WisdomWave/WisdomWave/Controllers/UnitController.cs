@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
 using BLL.Services;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace WisdomWave.Controllers
 {
@@ -12,11 +13,13 @@ namespace WisdomWave.Controllers
     public class UnitController : ControllerBase
     {
         private readonly UnitService unitService;
+        private readonly CourseService courseService;
 
         public UnitController(UnitService unitService)
         {
             this.unitService = unitService;
         }
+
 
         [HttpGet] // Обработчик HTTP GET-запроса для получения всех юнитов
         public async Task<IActionResult> Get()
@@ -44,6 +47,16 @@ namespace WisdomWave.Controllers
                 return BadRequest();
             }
 
+            // Получаем курс по CourseId с использованием CourseService
+            var course = await courseService.FindByConditionItemAsync(c => c.Id == unit.courseId);
+
+            if (course == null)
+            {
+                return NotFound("Курс не найден");
+            }
+
+            unit.Course = course; // Устанавливаем свойство Course
+
             var result = await unitService.CreateAsync(unit);
             if (result.IsError == false)
             {
@@ -51,6 +64,8 @@ namespace WisdomWave.Controllers
             }
             return BadRequest(result.Message);
         }
+
+
 
         [HttpPut("{id}")] // Обработчик HTTP PUT-запроса для обновления существующего юнита
         public async Task<IActionResult> Put(int id, [FromBody] Unit unit)
@@ -70,18 +85,7 @@ namespace WisdomWave.Controllers
             await unitService.DeleteAsync(id);
             return NoContent(); // Возвращаем статус 204 No Content
         }
-        [HttpGet("FindByIdInList/{categoryId}")]
-        public async Task<IActionResult> FindCategoryByIdInList(int categoryId)
-        {
-            var category = await _categoryService.FindCategoryByIdAsync(categoryId, categoryList);
-
-            if (category != null)
-            {
-                return Ok(category);
-            }
-
-            return NotFound();
-        }
+        
 
     }
 }
