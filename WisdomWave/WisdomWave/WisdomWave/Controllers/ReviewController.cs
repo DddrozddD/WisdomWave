@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
 using BLL.Services;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace WisdomWave.Controllers
 {
@@ -12,6 +13,7 @@ namespace WisdomWave.Controllers
     public class ReviewController : ControllerBase
     {
         private readonly ReviewService reviewService;
+        private readonly CourseService courseService;
 
         public ReviewController(ReviewService reviewService)
         {
@@ -44,7 +46,16 @@ namespace WisdomWave.Controllers
                 return BadRequest();
             }
 
-            var result = await reviewService.CreateAsync(review);
+            var course = await courseService.FindByConditionItemAsync(c => c.Id == review.courseId);
+
+            if (course == null)
+            {
+                return NotFound("Course not found");
+            }
+
+            review.Course = course;
+
+            var result = await reviewService.CreateAsync(review, course.Id);
             if (result.IsError == false)
             {
                 return Created($"api/reviews/{review.Id}", review); // Возвращаем статус 201 Created

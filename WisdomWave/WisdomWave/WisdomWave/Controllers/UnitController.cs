@@ -19,7 +19,7 @@ namespace WisdomWave.Controllers
         {
             this.unitService = unitService;
         }
-
+    
 
         [HttpGet] // Обработчик HTTP GET-запроса для получения всех юнитов
         public async Task<IActionResult> Get()
@@ -52,12 +52,12 @@ namespace WisdomWave.Controllers
 
             if (course == null)
             {
-                return NotFound("Курс не найден");
+                return NotFound("Course not found");
             }
 
             unit.Course = course; // Устанавливаем свойство Course
 
-            var result = await unitService.CreateAsync(unit);
+            var result = await unitService.CreateAsync(unit, course.Id);
             if (result.IsError == false)
             {
                 return Created($"api/units/{unit.Id}", unit); // Возвращаем статус 201 Created

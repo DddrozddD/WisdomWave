@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
 using BLL.Services;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace WisdomWave.Controllers
 {
@@ -12,6 +13,7 @@ namespace WisdomWave.Controllers
     public class TestController : ControllerBase
     {
         private readonly TestService testService;
+        private readonly UnitService unitService ;
 
         public TestController(TestService testService)
         {
@@ -44,7 +46,16 @@ namespace WisdomWave.Controllers
                 return BadRequest();
             }
 
-            var result = await testService.CreateAsync(test);
+            var unit = await unitService.FindByConditionItemAsync(u => u.Id == test.unitId);
+
+            if (unit == null)
+            {
+                return NotFound("Unit not found");
+            }
+
+            test.Unit = unit; 
+
+            var result = await testService.CreateAsync(test, unit.Id);
             if (result.IsError == false)
             {
                 return Created($"api/tests/{test.Id}", test); // Возвращаем статус 201 Created

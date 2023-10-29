@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
 using BLL.Services;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace WisdomWave.Controllers
 {
@@ -11,9 +12,10 @@ namespace WisdomWave.Controllers
     [ApiController]
     public class SubQuestionController : ControllerBase
     {
-        private readonly SubQuestionServiceDAL subQuestionService;
+        private readonly SubQuestionService subQuestionService;
+        private readonly QuestionService questionService;
 
-        public SubQuestionController(SubQuestionServiceDAL subQuestionService)
+        public SubQuestionController(SubQuestionService subQuestionService)
         {
             this.subQuestionService = subQuestionService;
         }
@@ -44,7 +46,16 @@ namespace WisdomWave.Controllers
                 return BadRequest();
             }
 
-            var result = await subQuestionService.CreateAsync(subQuestion);
+
+            var qusetion = await questionService.FindByConditionItemAsync(sq => sq.Id == subQuestion.questionId);
+
+            if (qusetion == null)
+            {
+                return NotFound("Quest not found");
+            }
+            subQuestion.Question = qusetion;
+
+            var result = await subQuestionService.CreateAsync(subQuestion, qusetion.Id);
             if (result.IsError == false)
             {
                 return Created($"api/subquestions/{subQuestion.Id}", subQuestion); // Возвращаем статус 201 Created

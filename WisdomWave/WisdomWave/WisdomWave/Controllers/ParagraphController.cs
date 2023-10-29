@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
 using BLL.Services;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WisdomWave.Controllers
 {
@@ -12,6 +13,7 @@ namespace WisdomWave.Controllers
     public class ParagraphController : ControllerBase
     {
         private readonly ParagraphService paragraphService;
+        private readonly UnitService unitService;
 
         public ParagraphController(ParagraphService paragraphService)
         {
@@ -44,7 +46,16 @@ namespace WisdomWave.Controllers
                 return BadRequest();
             }
 
-            var result = await paragraphService.CreateAsync(paragraph);
+            var unit = await unitService.FindByConditionItemAsync(u => u.Id == paragraph.unitID);
+
+            if (unit == null)
+            {
+                return NotFound("Unit not found");
+            }
+
+            paragraph.Unit = unit; 
+
+            var result = await paragraphService.CreateAsync(paragraph,unit.Id);
             if (result.IsError == false)
             {
                 return Created($"api/paragraphs/{paragraph.Id}", paragraph); // Возвращаем статус 201 Created
