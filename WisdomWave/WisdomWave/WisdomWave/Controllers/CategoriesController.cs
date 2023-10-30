@@ -1,18 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using BLL.Services;
 using Domain.Models;
+using BLL.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CategoriesController : ControllerBase
+public class CategoryController : ControllerBase
 {
-    private readonly CategoryService _categoryService;
+/*    private readonly CategoryService _categoryService;
 
-    public CategoriesController(CategoryService categoryService)
+    public CategoryController(CategoryService categoryService)
+
     {
         _categoryService = categoryService;
     }
@@ -21,6 +22,24 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> GetAllCategories()
     {
         var categories = await _categoryService.GetAsyncs();
+    [HttpGet("without-parents")]
+    public async Task<IActionResult> GetCategoriesWithoutParents()
+    {
+        var categories = await _categoryService.GetCategoriesWithoutParentsAsync();
+        return Ok(categories);
+    }
+
+    [HttpGet("child-categories/{parentId}")]
+    public async Task<IActionResult> GetChildCategories(int parentId)
+    {
+        var categories = await _categoryService.GetChildCategoriesAsync(parentId);
+        return Ok(categories);
+    }
+
+    [HttpGet("parent-categories/{categoryId}")]
+    public async Task<IActionResult> GetParentCategories(int categoryId)
+    {
+        var categories = await _categoryService.GetParentCategoriesAsync(categoryId);
         return Ok(categories);
     }
 
@@ -29,26 +48,48 @@ public class CategoriesController : ControllerBase
     {
         var category = await _categoryService.GetByIdAsync(id);
 
+
         if (category == null)
         {
             return NotFound();
         }
-
         return Ok(category);
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateCategory([FromBody] Category category)
     {
-        await _categoryService.CreateAsync(category);
-        return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, category);
+
+        var result = await _categoryService.CreateCategoryAsync(category);
+
+        if (result.IsError == false)
+        {
+            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+        }
+
+        return BadRequest(result.Message);
+
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateCategory(int id, [FromBody] Category category)
     {
-        await _categoryService.UpdateAsync(id, category);
-        return NoContent();
+
+
+        if (id != category.Id)
+        {
+            return BadRequest();
+        }
+
+        var result = await _categoryService.UpdateCategoryAsync(category);
+
+        if (result.IsError == false)
+        {
+            return NoContent();
+        }
+
+        return BadRequest(result.Message);
+
     }
 
     [HttpDelete("{id}")]
@@ -94,5 +135,8 @@ public class CategoriesController : ControllerBase
         return NotFound();
     }
 
+        await _categoryService.DeleteCategoryAsync(id);
+        return NoContent();
+    }*/
 
 }

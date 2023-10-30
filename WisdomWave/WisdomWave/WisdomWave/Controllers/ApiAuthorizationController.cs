@@ -1,5 +1,6 @@
 ﻿using ASP_Resume.Models;
 using Domain.Models;
+using Domain.Models.Helper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -32,27 +33,40 @@ namespace ASP_Resume.Controllers
 
         }
 
-            
+
+
         
+        [HttpGet("GetUser")]
+        public async Task<IActionResult> GetUser()
+        {
+            try
+            {
+                User user = _userManager.FindByIdAsync(UserIdentity.UserIdentityId).Result;
+                return new JsonResult(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
 
-
-       
 
         [HttpPost("RegUser")]
-        public async Task<IList<IdentityError>> RegUser([FromBody] RegisterViewModel registerViewModel)
+        public async Task<IActionResult> RegUser([FromBody] RegisterViewModel registerViewModel)
         {
            
             if (registerViewModel.ConfirmPass == registerViewModel.Password) { 
             var user = new User
             {
-                Email = registerViewModel.Email, 
-
-              
-
+                Email = registerViewModel.Email,
+                UserName = "User"
             };
 
             var res = await _userManager.CreateAsync(user, registerViewModel.Password);
-            if (res.Succeeded)
+               /* user = _userManager.FindByEmailAsync(registerViewModel.Email).Result;
+                user.UserName = "User" + user.Id;
+                _userManager.UpdateAsync(user);*/
+                if (res.Succeeded)
             {
                 if (await _roleManager.FindByNameAsync("user") == null)
                 {
@@ -69,33 +83,38 @@ namespace ASP_Resume.Controllers
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var confirmationLink = Url.Action("", "confirmation", new { guid = token, userEmail = user.Email }, Request.Scheme, Request.Host.Value);
                 await _emailSender.SendEmailAsync(user.Email, "Confirmation Link", $"Link=> {confirmationLink}");
-                    return null;
+
+                    return Created($"profile/userProfile", user);
 
             }
                 else
                 {
-                    return res.Errors.ToList();
+                    return BadRequest("Fail passwords");
                 }
             }
-            var error = new List<IdentityError>();
-            error.Add(new IdentityError() { Code="Fail passwords", Description= "Fail passwords" });
-            return error;
+            /*var error = new List<IdentityError>();
+            error.Add(new IdentityError() { Code="Fail passwords", Description= "Fail passwords" });*/
+            return BadRequest("Fail passwords");
         }
 
        [HttpPost("LoginUser")]
-        public async Task<string> Login([FromBody] LoginViewModel loginViewModel)
+        public async Task<IActionResult> Login([FromBody] LoginViewModel loginViewModel)
         {
+            
             var tmpClient = await _userManager.FindByEmailAsync(loginViewModel.Email);
             if (tmpClient != null)
             {
                 var res = await _signInManager.PasswordSignInAsync(tmpClient.UserName, loginViewModel.Password, true, false);
                 if (res.Succeeded)
                 {
-                    return null;
+                    User user = _userManager.FindByEmailAsync(loginViewModel.Email).Result;
+                    UserIdentity.UserIdentityId = user.Id;
+                    return NoContent();
                 }
-                return "User is not found";
+                
+                return BadRequest("User is not found");
             }
-            return "User is not found";
+            return BadRequest("User is not found");
         }
 
 
