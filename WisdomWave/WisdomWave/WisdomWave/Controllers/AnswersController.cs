@@ -36,11 +36,11 @@ public class AnswersController : ControllerBase
         return Ok(answer);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateAnswerInQuestion([FromBody] Answer answer)
+    [HttpPost("questionId")]
+    public async Task<IActionResult> CreateAnswerInQuestion([FromBody] Answer answer, int questionId)
     {
    
-        var question = await _questionService.FindByConditionItemAsync(a => a.Id == answer.questionId);
+        var question = await _questionService.FindByConditionItemAsync(a => a.Id == questionId);
 
         if (question == null)
         {
@@ -59,11 +59,11 @@ public class AnswersController : ControllerBase
         return BadRequest(result.Message);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateAnswerInSubQuestion([FromBody] Answer answer)
+    [HttpPost("subQuestionId")]
+    public async Task<IActionResult> CreateAnswerInSubQuestion([FromBody] Answer answer, int subQuestionId)
     {
 
-        var subquestion = await _subQuestionService.FindByConditionItemAsync(a => a.Id == answer.subQuestionId);
+        var subquestion = await _subQuestionService.FindByConditionItemAsync(a => a.Id == subQuestionId);
 
         if (subquestion != null)
         {
