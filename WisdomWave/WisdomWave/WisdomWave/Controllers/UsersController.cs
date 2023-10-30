@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -77,4 +78,18 @@ public class UsersController : ControllerBase
 
         return BadRequest(result.Errors);
     }
+
+    [HttpGet("search")]
+    public async Task<IActionResult> SearchUsersByName([FromQuery] string userName)
+    {
+        var users = await _userManager.Users.Where(u => u.UserName.Contains(userName)).ToListAsync();
+
+        if (users == null || users.Count == 0)
+        {
+            return NotFound();
+        }
+
+        return Ok(users);
+    }
+
 }

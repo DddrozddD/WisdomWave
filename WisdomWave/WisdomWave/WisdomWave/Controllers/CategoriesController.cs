@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 using Domain.Models;
 using BLL.Services;
 using System.Collections.Generic;
@@ -11,10 +13,15 @@ public class CategoryController : ControllerBase
 /*    private readonly CategoryService _categoryService;
 
     public CategoryController(CategoryService categoryService)
+
     {
         _categoryService = categoryService;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAllCategories()
+    {
+        var categories = await _categoryService.GetAsyncs();
     [HttpGet("without-parents")]
     public async Task<IActionResult> GetCategoriesWithoutParents()
     {
@@ -39,7 +46,9 @@ public class CategoryController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCategory(int id)
     {
-        var category = await _categoryService.GetCategoryAsync(id);
+        var category = await _categoryService.GetByIdAsync(id);
+
+
         if (category == null)
         {
             return NotFound();
@@ -50,6 +59,7 @@ public class CategoryController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateCategory([FromBody] Category category)
     {
+
         var result = await _categoryService.CreateCategoryAsync(category);
 
         if (result.IsError == false)
@@ -58,11 +68,14 @@ public class CategoryController : ControllerBase
         }
 
         return BadRequest(result.Message);
+
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateCategory(int id, [FromBody] Category category)
     {
+
+
         if (id != category.Id)
         {
             return BadRequest();
@@ -76,12 +89,54 @@ public class CategoryController : ControllerBase
         }
 
         return BadRequest(result.Message);
+
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCategory(int id)
     {
+        await _categoryService.DeleteAsync(id);
+        return NoContent();
+    }
+    // Отображение категорий без родительских категорий
+    [HttpGet("WithoutParent")]
+    public async Task<IActionResult> GetCategoriesWithoutParent()
+    {
+        var categories = await _categoryService.GetCategoriesWithoutParentAsync();
+        return Ok(categories);
+    }
+
+    // Отображение категорий, которые имеют переданный ID родительской категории
+    [HttpGet("ByParentId/{parentId}")]
+    public async Task<IActionResult> GetCategoriesByParentId(int parentId)
+    {
+        var categories = await _categoryService.GetCategoriesByParentIdAsync(parentId);
+        return Ok(categories);
+    }
+
+    // Отображение всех родительских категорий для переданной категории по ID
+    [HttpGet("ParentCategories/{categoryId}")]
+    public async Task<IActionResult> GetParentCategoriesById(int categoryId)
+    {
+        var parentCategories = await _categoryService.GetParentCategoriesByIdAsync(categoryId);
+        return Ok(parentCategories);
+    }
+
+    [HttpGet("FindByIdInList/{categoryId}")]
+    public async Task<IActionResult> FindCategoryByIdInList(int categoryId, [FromQuery] List<Category> categoryList)
+    {
+        var category = await _categoryService.FindCategoryByIdAsync(categoryId, categoryList);
+
+        if (category != null)
+        {
+            return Ok(category);
+        }
+
+        return NotFound();
+    }
+
         await _categoryService.DeleteCategoryAsync(id);
         return NoContent();
     }*/
+
 }

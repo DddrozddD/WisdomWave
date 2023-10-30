@@ -33,7 +33,7 @@ namespace DAL.Context
             modelBuilder.Entity<LearnerUserToCourse>().HasOne(l => l.User).WithMany(u => u.LearningCourses).HasForeignKey(l=>l.userId).OnDelete(DeleteBehavior.ClientSetNull);
             modelBuilder.Entity<LearnerUserToCourse>().HasOne(l => l.Course).WithMany(c => c.LearnerUsers).HasForeignKey(l => l.courseId).OnDelete(DeleteBehavior.ClientSetNull);
             modelBuilder.Entity<Category>().HasMany(c => c.ParentCategories).WithMany(c => c.ChildCategories);
-            
+
 
             modelBuilder.Entity<Unit>().HasOne(u => u.Course).WithMany(c => c.Units).HasForeignKey(u => u.courseId);
             modelBuilder.Entity<Paragraph>().HasOne(p => p.Unit).WithMany(u => u.Paragraphs).HasForeignKey(p=>p.unitID);

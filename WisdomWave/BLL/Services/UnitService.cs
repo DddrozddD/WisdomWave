@@ -1,6 +1,8 @@
 ﻿using DAL.Models;
+using DAL.Repositories;
 using DAL.Repositories.UnitsOfWork;
 using Domain.Models;
+using Microsoft.AspNetCore.Hosting.Server;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,6 +26,7 @@ namespace BLL.Services
         public async Task<IReadOnlyCollection<Unit>> GetAsyncs() => await unitOfWork.UnitRepository.GetAllAsync();
         public async Task<IReadOnlyCollection<Unit>> FindByConditionAsync(Expression<Func<Unit, bool>> predicat) => await this.unitOfWork.UnitRepository.FindByConditionAsync(predicat);
         public async Task<Unit> FindByConditionItemAsync(Expression<Func<Unit, bool>> predicat) => await this.unitOfWork.UnitRepository.FindByConditionItemAsync(predicat);
+
         public async Task<OperationDetails> CreateAsync(Unit unit) {
           /*  Course course = await unitOfWork.CourseRepository.FindByConditionItemAsync(c=>c.Id==courseId);
 
@@ -36,12 +39,15 @@ namespace BLL.Services
             {
                 Unit newUnit = await unitOfWork.UnitRepository.FindByConditionItemAsync(u => (u.UnitName == unit.UnitName)&&( u.DateOfCreate == unit.DateOfCreate) && (u.number == unit.number) && (u.courseId == unit.courseId));
 
+
                 course.Units.ToList().Add(newUnit);
 
                 IReadOnlyCollection<Unit> newUnits = new ReadOnlyCollection<Unit>(course.Units.ToList());
                 course.Units = newUnits;
+
                 await unitOfWork.CourseRepository.Update(course, courseId); 
             }*/
+
 
             return result;
         }
