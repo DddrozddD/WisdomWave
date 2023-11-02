@@ -23,7 +23,7 @@ namespace WisdomWave.Controllers
         public async Task<IActionResult> Get()
         {
             var paragraphs = await paragraphService.GetAsyncs();
-            return Ok(paragraphs);
+            return new JsonResult(paragraphs);
         }
 
         [HttpGet("{id}")] // HTTP GET request handler for retrieving a paragraph by its identifier
@@ -34,7 +34,7 @@ namespace WisdomWave.Controllers
             {
                 return NotFound();
             }
-            return Ok(paragraph);
+            return new JsonResult(paragraph);
         }
 
         [HttpPost("unitID")] // HTTP POST request handler for creating a new paragraph

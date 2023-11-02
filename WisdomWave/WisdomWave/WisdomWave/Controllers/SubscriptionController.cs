@@ -22,7 +22,7 @@ namespace WisdomWave.Controllers
         public async Task<IActionResult> Get()
         {
             var subscriptions = await subscriptionService.GetAsyncs();
-            return Ok(subscriptions);
+            return new JsonResult(subscriptions);
         }
 
         [HttpGet("{id}")] // Обработчик HTTP GET-запроса для получения подписки по её идентификатору
@@ -33,7 +33,7 @@ namespace WisdomWave.Controllers
             {
                 return NotFound();
             }
-            return Ok(subscription);
+            return new JsonResult(subscription);
         }
 
         [HttpPost] // Обработчик HTTP POST-запроса для создания новой подписки

@@ -24,7 +24,7 @@ namespace WisdomWave.Controllers
         public async Task<IActionResult> Get()
         {
             var tests = await testService.GetAsyncs();
-            return Ok(tests);
+            return new JsonResult(tests);
         }
 
         [HttpGet("{id}")] // HTTP GET request handler for retrieving a test by its identifier
@@ -35,7 +35,7 @@ namespace WisdomWave.Controllers
             {
                 return NotFound();
             }
-            return Ok(test);
+            return new JsonResult(test);
         }
 
         [HttpPost("unitId")] // HTTP POST request handler for creating a new test

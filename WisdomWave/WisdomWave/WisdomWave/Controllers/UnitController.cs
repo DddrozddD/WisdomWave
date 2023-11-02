@@ -25,7 +25,7 @@ namespace WisdomWave.Controllers
         public async Task<IActionResult> Get()
         {
             var units = await unitService.GetAsyncs();
-            return Ok(units);
+            return new JsonResult(units);
         }
 
         [HttpGet("{id}")] // HTTP GET request handler for retrieving a unit by its identifier
@@ -36,7 +36,7 @@ namespace WisdomWave.Controllers
             {
                 return NotFound();
             }
-            return Ok(unit);
+            return new JsonResult(unit);
         }
 
         [HttpPost("courseId")] // HTTP POST request handler for creating a new unit
@@ -57,7 +57,7 @@ namespace WisdomWave.Controllers
 
             unit.Course = course; // Set the Course property
 
-            var result = await unitService.CreateAsync(unit, course.Id);
+            var result = await unitService.CreateAsync(unit, courseId);
             if (result.IsError == false)
             {
                 return Created($"api/units/{unit.Id}", unit); // Return a status of 201 Created
