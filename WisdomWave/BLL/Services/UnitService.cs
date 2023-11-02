@@ -1,6 +1,8 @@
 ﻿using DAL.Models;
+using DAL.Repositories;
 using DAL.Repositories.UnitsOfWork;
 using Domain.Models;
+using Microsoft.AspNetCore.Hosting.Server;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,12 +39,15 @@ namespace BLL.Services
             {
                 Unit newUnit = await unitOfWork.UnitRepository.FindByConditionItemAsync(u => (u.UnitName == unit.UnitName)&&( u.DateOfCreate == unit.DateOfCreate) && (u.Number == unit.Number) && (u.courseId == unit.courseId));
 
+
                 course.Units.ToList().Add(newUnit);
 
                 IReadOnlyCollection<Unit> newUnits = new ReadOnlyCollection<Unit>(course.Units.ToList());
                 course.Units = newUnits;
+
                 await unitOfWork.CourseRepository.Update(course, courseId); 
             }
+
 
             return result;
         }

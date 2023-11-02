@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
 using BLL.Services;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace WisdomWave.Controllers
 {
@@ -12,6 +13,7 @@ namespace WisdomWave.Controllers
     public class LikeDislikeController : ControllerBase
     {
         private readonly LikeDislikeService likeDislikeService;
+        private readonly ReviewService reviewService;
 
         public LikeDislikeController(LikeDislikeService likeDislikeService)
         {
@@ -36,15 +38,24 @@ namespace WisdomWave.Controllers
             return Ok(likeDislike);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] LikeDislike likeDislike)
+        [HttpPost("reviewId")]
+        public async Task<IActionResult> Post([FromBody] LikeDislike likeDislike, int reviewId)
         {
             if (likeDislike == null)
             {
                 return BadRequest();
             }
 
-            var result = await likeDislikeService.CreateAsync(likeDislike);
+            var review = await reviewService.FindByConditionItemAsync(r => r.Id == reviewId);
+
+            if (review == null)
+            {
+                return NotFound("Review not found");
+            }
+
+            likeDislike.Review = review;
+
+            var result = await likeDislikeService.CreateAsync(likeDislike, review.Id);
             if (result.IsError == false)
             {
                 return Created($"api/likedislikes/{likeDislike.userId}/{likeDislike.reviewId}", likeDislike);

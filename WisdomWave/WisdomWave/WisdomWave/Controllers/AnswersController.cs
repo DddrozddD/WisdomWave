@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
 using BLL.Services;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 [Route("api/[controller]")]
 [ApiController]
 public class AnswersController : ControllerBase
 {
     private readonly AnswerService _answerService;
+    private readonly QuestionService _questionService;
+    private readonly SubQuestionService _subQuestionService;
 
     public AnswersController(AnswerService answerService)
     {
@@ -33,10 +36,42 @@ public class AnswersController : ControllerBase
         return Ok(answer);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateAnswer([FromBody] Answer answer)
+    [HttpPost("questionId")]
+    public async Task<IActionResult> CreateAnswerInQuestion([FromBody] Answer answer, int questionId)
     {
-        var result = await _answerService.CreateAsync(answer);
+   
+        var question = await _questionService.FindByConditionItemAsync(a => a.Id == questionId);
+
+        if (question == null)
+        {
+            return NotFound("Question not found");
+        }
+
+        answer.Question = question;
+
+        var result = await _answerService.CreateAsync(answer,question.Id);
+
+        if (result.IsError == false)
+        {
+            return CreatedAtAction("GetAnswer", new { id = answer.Id }, answer);
+        }
+
+        return BadRequest(result.Message);
+    }
+
+    [HttpPost("subQuestionId")]
+    public async Task<IActionResult> CreateAnswerInSubQuestion([FromBody] Answer answer, int subQuestionId)
+    {
+
+        var subquestion = await _subQuestionService.FindByConditionItemAsync(a => a.Id == subQuestionId);
+
+        if (subquestion != null)
+        {
+            return NotFound("SubQuestion not found");
+        }
+        answer.SubQuestion = subquestion;
+
+        var result = await _answerService.CreateAsync(answer, subquestion.Id);
 
         if (result.IsError == false)
         {

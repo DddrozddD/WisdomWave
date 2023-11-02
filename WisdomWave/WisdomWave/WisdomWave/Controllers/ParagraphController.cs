@@ -7,25 +7,26 @@ using BLL.Services;
 
 namespace WisdomWave.Controllers
 {
-    [Route("api/[controller]")] // Определяем базовый маршрут для контроллера
-    [ApiController] // Указываем, что это контроллер API
+    [Route("api/[controller]")] // Define the base route for the controller
+    [ApiController] // Indicate that this is an API controller
     public class ParagraphController : ControllerBase
     {
         private readonly ParagraphService paragraphService;
+        private readonly UnitService unitService;
 
         public ParagraphController(ParagraphService paragraphService)
         {
             this.paragraphService = paragraphService;
         }
 
-        [HttpGet] // Обработчик HTTP GET-запроса для получения всех параграфов
+        [HttpGet] // HTTP GET request handler for retrieving all paragraphs
         public async Task<IActionResult> Get()
         {
             var paragraphs = await paragraphService.GetAsyncs();
             return Ok(paragraphs);
         }
 
-        [HttpGet("{id}")] // Обработчик HTTP GET-запроса для получения параграфа по его идентификатору
+        [HttpGet("{id}")] // HTTP GET request handler for retrieving a paragraph by its identifier
         public async Task<IActionResult> Get(int id)
         {
             var paragraph = await paragraphService.FindByConditionItemAsync(p => p.Id == id);
@@ -36,23 +37,32 @@ namespace WisdomWave.Controllers
             return Ok(paragraph);
         }
 
-        [HttpPost] // Обработчик HTTP POST-запроса для создания нового параграфа
-        public async Task<IActionResult> Post([FromBody] Paragraph paragraph)
+        [HttpPost("unitID")] // HTTP POST request handler for creating a new paragraph
+        public async Task<IActionResult> Post([FromBody] Paragraph paragraph, int unitID)
         {
             if (paragraph == null)
             {
                 return BadRequest();
             }
 
-            var result = await paragraphService.CreateAsync(paragraph);
-            if (result.IsError == false)
+            var unit = await unitService.FindByConditionItemAsync(u => u.Id == unitID);
+
+            if (unit == null)
             {
-                return Created($"api/paragraphs/{paragraph.Id}", paragraph); // Возвращаем статус 201 Created
+                return NotFound("Unit not found");
+            }
+
+            paragraph.Unit = unit;
+
+            var result = await paragraphService.CreateAsync(paragraph, unit.Id);
+            if (!result.IsError)
+            {
+                return Created($"api/paragraphs/{paragraph.Id}", paragraph); // Return a status of 201 Created
             }
             return BadRequest(result.Message);
         }
 
-        [HttpPut("{id}")] // Обработчик HTTP PUT-запроса для обновления существующего параграфа
+        [HttpPut("{id}")] // HTTP PUT request handler for updating an existing paragraph
         public async Task<IActionResult> Put(int id, [FromBody] Paragraph paragraph)
         {
             if (paragraph == null)
@@ -61,14 +71,14 @@ namespace WisdomWave.Controllers
             }
 
             await paragraphService.EditAsync(id, paragraph);
-            return NoContent(); // Возвращаем статус 204 No Content
+            return NoContent(); // Return a status of 204 No Content
         }
 
-        [HttpDelete("{id}")] // Обработчик HTTP DELETE-запроса для удаления параграфа по его идентификатору
+        [HttpDelete("{id}")] // HTTP DELETE request handler for deleting a paragraph by its identifier
         public async Task<IActionResult> Delete(int id)
         {
             await paragraphService.DeleteAsync(id);
-            return NoContent(); // Возвращаем статус 204 No Content
+            return NoContent(); // Return a status of 204 No Content
         }
     }
 }

@@ -72,6 +72,7 @@ public class CoursesController : ControllerBase
         var courses = await _courseService.FindAllLearningCoursesForUser(userId);
         return Ok(courses);
     }
+
     [HttpGet("search")]
     public async Task<IActionResult> SearchCourses([FromQuery] string searchTerm)
     {
@@ -86,7 +87,6 @@ public class CoursesController : ControllerBase
         return Ok(courses);
     }
 
-    // Sample search method by Description
     [HttpGet("search-by-description")]
     public async Task<IActionResult> SearchCoursesByDescription([FromQuery] string description)
     {
@@ -94,7 +94,13 @@ public class CoursesController : ControllerBase
         return Ok(courses);
     }
 
-    // Sample filter method by RatingCourse
+    [HttpGet("search-by-creator")]
+    public async Task<IActionResult> SearchCoursesByCreator([FromQuery] string creatorUserId)
+    {
+        var courses = await _courseService.SearchCoursesByCreatorAsync(creatorUserId);
+        return Ok(courses);
+    }
+
     [HttpGet("filter-by-rating")]
     public async Task<IActionResult> FilterCoursesByRating([FromQuery] int minRating)
     {

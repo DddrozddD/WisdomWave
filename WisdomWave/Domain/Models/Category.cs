@@ -11,6 +11,7 @@ namespace Domain.Models
         public int Id { get; set; }
         public string CategoryName { get; set; }
 
+
         public IReadOnlyCollection<Category> ParentCategories { get; set;}
         public IReadOnlyCollection<Category> ChildCategories { get;set;}
         public IReadOnlyCollection<Course> Courses { get; set;}

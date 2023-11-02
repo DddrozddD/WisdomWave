@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
 using BLL.Services;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace WisdomWave.Controllers
 {
@@ -11,21 +12,22 @@ namespace WisdomWave.Controllers
     [ApiController]
     public class SubQuestionController : ControllerBase
     {
-        private readonly SubQuestionServiceDAL subQuestionService;
+        private readonly SubQuestionService subQuestionService;
+        private readonly QuestionService questionService;
 
-        public SubQuestionController(SubQuestionServiceDAL subQuestionService)
+        public SubQuestionController(SubQuestionService subQuestionService)
         {
             this.subQuestionService = subQuestionService;
         }
 
-        [HttpGet] // Обработчик HTTP GET-запроса для получения всех подвопросов
+        [HttpGet] // HTTP GET request handler for retrieving all sub-questions
         public async Task<IActionResult> Get()
         {
             var subQuestions = await subQuestionService.GetAsyncs();
             return Ok(subQuestions);
         }
 
-        [HttpGet("{id}")] // Обработчик HTTP GET-запроса для получения подвопроса по его идентификатору
+        [HttpGet("{id}")] // HTTP GET request handler for retrieving a sub-question by its identifier
         public async Task<IActionResult> Get(int id)
         {
             var subQuestion = await subQuestionService.FindByConditionItemAsync(s => s.Id == id);
@@ -36,23 +38,31 @@ namespace WisdomWave.Controllers
             return Ok(subQuestion);
         }
 
-        [HttpPost] // Обработчик HTTP POST-запроса для создания нового подвопроса
-        public async Task<IActionResult> Post([FromBody] SubQuestion subQuestion)
+        [HttpPost("questionId")] // HTTP POST request handler for creating a new sub-question
+        public async Task<IActionResult> Post([FromBody] SubQuestion subQuestion, int questionId)
         {
             if (subQuestion == null)
             {
                 return BadRequest();
             }
 
-            var result = await subQuestionService.CreateAsync(subQuestion);
+            var question = await questionService.FindByConditionItemAsync(sq => sq.Id == questionId);
+
+            if (question == null)
+            {
+                return NotFound("Question not found");
+            }
+            subQuestion.Question = question;
+
+            var result = await subQuestionService.CreateAsync(subQuestion, question.Id);
             if (result.IsError == false)
             {
-                return Created($"api/subquestions/{subQuestion.Id}", subQuestion); // Возвращаем статус 201 Created
+                return Created($"api/subquestions/{subQuestion.Id}", subQuestion); // Return a status of 201 Created
             }
             return BadRequest(result.Message);
         }
 
-        [HttpPut("{id}")] // Обработчик HTTP PUT-запроса для обновления существующего подвопроса
+        [HttpPut("{id}")] // HTTP PUT request handler for updating an existing sub-question
         public async Task<IActionResult> Put(int id, [FromBody] SubQuestion subQuestion)
         {
             if (subQuestion == null)
@@ -61,14 +71,14 @@ namespace WisdomWave.Controllers
             }
 
             await subQuestionService.EditAsync(id, subQuestion);
-            return NoContent(); // Возвращаем статус 204 No Content
+            return NoContent(); // Return a status of 204 No Content
         }
 
-        [HttpDelete("{id}")] // Обработчик HTTP DELETE-запроса для удаления подвопроса по его идентификатору
+        [HttpDelete("{id}")] // HTTP DELETE request handler for deleting a sub-question by its identifier
         public async Task<IActionResult> Delete(int id)
         {
             await subQuestionService.DeleteAsync(id);
-            return NoContent(); // Возвращаем статус 204 No Content
+            return NoContent(); // Return a status of 204 No Content
         }
     }
 }

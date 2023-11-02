@@ -40,20 +40,28 @@ namespace BLL.Services
 
             return courses;
         }
+
         public async Task<IReadOnlyCollection<Course>> SearchCoursesAsync(string searchTerm)
         {
-            // Implement the search logic here, for example, searching courses by Description
-            return await unitOfWork.CourseRepository.FindByConditionAsync(c => c.Description.Contains(searchTerm));
+            return await unitOfWork.CourseRepository.FindByConditionAsync(c =>
+                c.CourseName.Contains(searchTerm) || c.Description.Contains(searchTerm));
         }
+
         public async Task<IReadOnlyCollection<Course>> SearchCoursesByDescriptionAsync(string description)
         {
             return await unitOfWork.CourseRepository.FindByConditionAsync(c => c.Description.Contains(description));
+        }
+
+        public async Task<IReadOnlyCollection<Course>> SearchCoursesByCreatorAsync(string creatorUser)
+        {
+            return await unitOfWork.CourseRepository.FindByConditionAsync(c => c.CreatorUser.UserName == creatorUser);
         }
 
         public async Task<IReadOnlyCollection<Course>> FilterCoursesByRatingAsync(int minRating)
         {
             return await unitOfWork.CourseRepository.FindByConditionAsync(c => c.RatingCourse >= minRating);
         }
+
 
     }
 }
