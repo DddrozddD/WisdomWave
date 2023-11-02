@@ -15,5 +15,6 @@ namespace Domain.Models
         public string VideoLinks { get; set; }
         public int? unitID { get; set; }
         public Unit Unit {get; set; }
+        public IReadOnlyCollection<User> PassedParagraphUsers { get; set; }
     }
 }
