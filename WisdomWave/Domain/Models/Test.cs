@@ -16,5 +16,6 @@ namespace Domain.Models
         public int? unitId { get; set; }
         public Unit Unit { get; set; }
         public IReadOnlyCollection<Question> Questions { get; set; }
+        public IReadOnlyCollection<User> PassedTestUsers { get; set; }
     }
 }
