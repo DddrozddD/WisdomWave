@@ -38,15 +38,15 @@ namespace WisdomWave.Controllers
             return Ok(likeDislike);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] LikeDislike likeDislike)
+        [HttpPost("reviewId")]
+        public async Task<IActionResult> Post([FromBody] LikeDislike likeDislike, int reviewId)
         {
             if (likeDislike == null)
             {
                 return BadRequest();
             }
 
-            var review = await reviewService.FindByConditionItemAsync(r => r.Id == likeDislike.reviewId);
+            var review = await reviewService.FindByConditionItemAsync(r => r.Id == reviewId);
 
             if (review == null)
             {

@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace WisdomWave.Controllers
 {
-    [Route("api/[controller]")] // Определяем базовый маршрут для контроллера
-    [ApiController] // Указываем, что это контроллер API
+    [Route("api/[controller]")] // Define the base route for the controller
+    [ApiController] // Specify that this is an API controller
     public class ReviewController : ControllerBase
     {
         private readonly ReviewService reviewService;
@@ -20,14 +20,14 @@ namespace WisdomWave.Controllers
             this.reviewService = reviewService;
         }
 
-        [HttpGet] // Обработчик HTTP GET-запроса для получения всех отзывов
+        [HttpGet] // HTTP GET request handler for retrieving all reviews
         public async Task<IActionResult> Get()
         {
             var reviews = await reviewService.GetAsyncs();
             return Ok(reviews);
         }
 
-        [HttpGet("{id}")] // Обработчик HTTP GET-запроса для получения отзыва по его идентификатору
+        [HttpGet("{id}")] // HTTP GET request handler for retrieving a review by its identifier
         public async Task<IActionResult> Get(int id)
         {
             var review = await reviewService.FindByConditionItemAsync(r => r.Id == id);
@@ -38,15 +38,15 @@ namespace WisdomWave.Controllers
             return Ok(review);
         }
 
-        [HttpPost] // Обработчик HTTP POST-запроса для создания нового отзыва
-        public async Task<IActionResult> Post([FromBody] Review review)
+        [HttpPost("courseId")] // HTTP POST request handler for creating a new review
+        public async Task<IActionResult> Post([FromBody] Review review, int courseId)
         {
             if (review == null)
             {
                 return BadRequest();
             }
 
-            var course = await courseService.FindByConditionItemAsync(c => c.Id == review.courseId);
+            var course = await courseService.FindByConditionItemAsync(c => c.Id == courseId);
 
             if (course == null)
             {
@@ -58,12 +58,12 @@ namespace WisdomWave.Controllers
             var result = await reviewService.CreateAsync(review, course.Id);
             if (result.IsError == false)
             {
-                return Created($"api/reviews/{review.Id}", review); // Возвращаем статус 201 Created
+                return Created($"api/reviews/{review.Id}", review); // Return a status of 201 Created
             }
             return BadRequest(result.Message);
         }
 
-        [HttpPut("{id}")] // Обработчик HTTP PUT-запроса для обновления существующего отзыва
+        [HttpPut("{id}")] // HTTP PUT request handler for updating an existing review
         public async Task<IActionResult> Put(int id, [FromBody] Review review)
         {
             if (review == null)
@@ -72,14 +72,14 @@ namespace WisdomWave.Controllers
             }
 
             await reviewService.EditAsync(id, review);
-            return NoContent(); // Возвращаем статус 204 No Content
+            return NoContent(); // Return a status of 204 No Content
         }
 
-        [HttpDelete("{id}")] // Обработчик HTTP DELETE-запроса для удаления отзыва по его идентификатору
+        [HttpDelete("{id}")] // HTTP DELETE request handler for deleting a review by its identifier
         public async Task<IActionResult> Delete(int id)
         {
             await reviewService.DeleteAsync(id);
-            return NoContent(); // Возвращаем статус 204 No Content
+            return NoContent(); // Return a status of 204 No Content
         }
     }
 }
