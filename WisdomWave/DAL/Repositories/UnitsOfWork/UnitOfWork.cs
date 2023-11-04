@@ -14,7 +14,7 @@ namespace DAL.Repositories.UnitsOfWork
 
         public UnitOfWork(CourseRepository courseRepository, LikeDislikeRepository likeDislikeRepository, ReviewRepository reviewRepository,
             SubscriptionRepository subscriptionRepository, LearnerUserToCourseRepository learnerUserToCourseRepository, AnswerRepository answerRepository, ParagraphRepository paragraphRepository,
-            QuestionRepository questionRepository, SubQuestionRepository subQuestionRepository, TestRepository testRepository, UnitRepository unitRepository)
+            QuestionRepository questionRepository, SubQuestionRepository subQuestionRepository, TestRepository testRepository, UnitRepository unitRepository, CategoryRepository categoryRepository)
         {
             CourseRepository= courseRepository;
             LikeDislikeRepository= likeDislikeRepository;
@@ -27,6 +27,7 @@ namespace DAL.Repositories.UnitsOfWork
             SubQuestionRepository = subQuestionRepository;
             TestRepository = testRepository;
             UnitRepository = unitRepository;
+            CategoryRepository = categoryRepository;
         }
 
         public CourseRepository CourseRepository { get; }
@@ -50,5 +51,6 @@ namespace DAL.Repositories.UnitsOfWork
         public TestRepository TestRepository { get; }
 
         public UnitRepository UnitRepository { get; }
+        public CategoryRepository CategoryRepository { get; }
     }
 }
