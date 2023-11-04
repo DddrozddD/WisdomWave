@@ -23,6 +23,7 @@ namespace BLL.Infrastructure
             serviceCollection.AddTransient<SubQuestionRepository>();
             serviceCollection.AddTransient<TestRepository>();
             serviceCollection.AddTransient<UnitRepository>();
+            serviceCollection.AddTransient<CategoryRepository>();
         }
     }
 }
