@@ -44,6 +44,34 @@ namespace BLL.Services
 
             return result;
         }
+        public async Task<OperationDetails> CheckUser(Paragraph paragraph, User user)
+        {
+
+            List<User> new_users_list = new List<User>();
+
+            if (paragraph.PassedParagraphUsers == null)
+            {
+                new_users_list.Add(user);
+                paragraph.PassedParagraphUsers = new_users_list;
+                await unitOfWork.ParagraphRepository.Update(paragraph, paragraph.Id);
+                return new OperationDetails { IsError = false };
+            }
+            else
+            {
+                if (paragraph.PassedParagraphUsers.ToList().Any(u => u.Id == user.Id))
+                {
+                    return new OperationDetails { IsError = true };
+                }
+                else
+                {
+                    new_users_list = paragraph.PassedParagraphUsers.ToList();
+                    new_users_list.Add(user);
+                    paragraph.PassedParagraphUsers = new_users_list;
+                    await unitOfWork.ParagraphRepository.Update(paragraph, paragraph.Id);
+                    return new OperationDetails { IsError = false };
+                }
+            }
+        }
         public async Task DeleteAsync(int id) => await unitOfWork.ParagraphRepository.Delete(id);
         public async Task EditAsync(int id, Paragraph paragraph) => await unitOfWork.ParagraphRepository.Update(paragraph, id);
     }

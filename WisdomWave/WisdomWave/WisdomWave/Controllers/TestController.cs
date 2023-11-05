@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
 using BLL.Services;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 
 namespace WisdomWave.Controllers
 {
@@ -14,6 +15,7 @@ namespace WisdomWave.Controllers
     {
         private readonly TestService testService;
         private readonly UnitService unitService;
+        private readonly UserManager<User> _userManager;
 
         public TestController(TestService testService)
         {
@@ -38,7 +40,32 @@ namespace WisdomWave.Controllers
             return new JsonResult(test);
         }
 
-        [HttpPost("unitId")] // HTTP POST request handler for creating a new test
+        
+        [HttpGet("{userid}/{testId}")] // HTTP GET request handler for retrieving a test by its identifier
+        public async Task<IActionResult> Check(int testId, string userId)
+        {
+
+            var test = await testService.FindByConditionItemAsync(t => t.Id == testId);
+            if (test == null)
+            {
+                return NotFound();
+            }
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var result = await testService.CheckUser(test, user);
+            if (result.IsError == false)
+            {
+                return Created($"api/tests/{test.Id}", test); // Return a status of 201 Created
+            }
+            return new JsonResult(result.Message);
+        }
+        
+        [HttpPost("{unitId}")] // HTTP POST request handler for creating a new test
         public async Task<IActionResult> Post([FromBody] Test test, int unitId)
         {
             if (test == null)

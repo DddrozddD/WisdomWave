@@ -14,6 +14,7 @@ namespace BLL.Services
     public class TestService
     {
         private readonly IUnitOfWork unitOfWork;
+        
 
         public TestService(IUnitOfWork unitOfWork)
         {
@@ -44,6 +45,36 @@ namespace BLL.Services
             }
 
             return result;
+        }
+       public async Task<OperationDetails> CheckUser(Test test, User user)
+        {
+
+            List<User> new_users_list = new List<User>(); 
+
+            if(test.PassedTestUsers == null)
+            {
+                new_users_list.Add(user);
+                test.PassedTestUsers = new_users_list;
+                await unitOfWork.TestRepository.Update(test, test.Id);
+                return new OperationDetails { IsError = false };
+            }
+            else
+            {
+                if(test.PassedTestUsers.ToList().Any(u=> u.Id == user.Id ) ) { 
+                    return new OperationDetails { IsError = true };
+                }
+                else
+                {
+                    new_users_list = test.PassedTestUsers.ToList();
+                    new_users_list.Add(user);
+                    test.PassedTestUsers= new_users_list;
+                    await unitOfWork.TestRepository.Update(test,test.Id);
+                    return new OperationDetails { IsError = false };
+                }
+            }
+            
+
+            
         }
         public async Task DeleteAsync(int id) => await unitOfWork.TestRepository.Delete(id);
         public async Task EditAsync(int id, Test test) => await unitOfWork.TestRepository.Update(test, id);

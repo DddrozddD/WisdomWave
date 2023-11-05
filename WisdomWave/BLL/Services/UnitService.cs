@@ -49,6 +49,37 @@ namespace BLL.Services
 
             return result;
         }
+
+        public async Task<OperationDetails> CheckUser(Unit unit, User user)
+        {
+
+            List<User> new_users_list = new List<User>();
+
+            if (unit.PassedUnitUsers == null)
+            {
+                new_users_list.Add(user);
+                unit.PassedUnitUsers = new_users_list;
+                await unitOfWork.UnitRepository.Update(unit, unit.Id);
+                return new OperationDetails { IsError = false };
+            }
+            else
+            {
+                if (unit.PassedUnitUsers.ToList().Any(u => u.Id == user.Id))
+                {
+                    return new OperationDetails { IsError = true };
+                }
+                else
+                {
+                    new_users_list = unit.PassedUnitUsers.ToList();
+                    new_users_list.Add(user);
+                    unit.PassedUnitUsers = new_users_list;
+                    await unitOfWork.UnitRepository.Update(unit, unit.Id);
+                    return new OperationDetails { IsError = false };
+                }
+            }
+
+        }
+
         public async Task DeleteAsync(int id) => await unitOfWork.UnitRepository.Delete(id);
         public async Task EditAsync(int id, Unit unit) => await unitOfWork.UnitRepository.Update(unit, id);
     }
