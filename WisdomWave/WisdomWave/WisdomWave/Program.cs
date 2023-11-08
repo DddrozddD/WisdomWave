@@ -80,6 +80,7 @@ void ConfigurationService(IServiceCollection serviceCollection)
     serviceCollection.AddTransient<SubQuestionService>();
     serviceCollection.AddTransient<TestService>();
     serviceCollection.AddTransient<UnitService>();
+    serviceCollection.AddTransient<CategoryService>();
 
     BllConfiguration.ConfigurationService(serviceCollection);
 }

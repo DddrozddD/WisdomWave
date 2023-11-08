@@ -33,7 +33,7 @@ namespace BLL.Services
 
             OperationDetails result = await unitOfWork.ReviewRepository.CreateAsync(review);
 
-            if (result.IsError == false)
+            /*if (result.IsError == false)
             {
                 Review newReview = await unitOfWork.ReviewRepository.FindByConditionItemAsync(r => (r.Id == review.Id) && (r.courseId == review.courseId) && (r.Course == review.Course) && (r.TextReview == review.TextReview));
 
@@ -42,7 +42,7 @@ namespace BLL.Services
                 IReadOnlyCollection<Review> newReviews = new ReadOnlyCollection<Review>(course.Reviews.ToList());
                 course.Reviews = newReviews;
                 await unitOfWork.CourseRepository.Update(course, courseId);
-            }
+            }*/
 
             return result;
         }

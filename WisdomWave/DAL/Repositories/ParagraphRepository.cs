@@ -34,9 +34,9 @@ namespace DAL.Repositories
             model.PhotoLinks = paragraph.PhotoLinks;
             model.ParagraphName = paragraph.ParagraphName;
             model.VideoLinks = paragraph.VideoLinks;
-            model.unitID = paragraph.unitID;
+            model.unitId = paragraph.unitId;
             model.Unit = paragraph.Unit;
-
+            model.PassedParagraphUsers = paragraph.PassedParagraphUsers;
             this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 
             await _context.SaveChangesAsync();

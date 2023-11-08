@@ -19,13 +19,12 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> GetUser(string id)
     {
         var user = await _userManager.FindByIdAsync(id);
-
         if (user == null)
         {
             return NotFound();
         }
 
-        return Ok(user);
+        return new JsonResult(user);
     }
 
     [HttpPost]
@@ -89,7 +88,7 @@ public class UsersController : ControllerBase
             return NotFound();
         }
 
-        return Ok(users);
+        return new JsonResult(users);
     }
 
 }

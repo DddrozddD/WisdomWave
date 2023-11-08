@@ -35,6 +35,8 @@ namespace DAL.Repositories
             model.DateOfCreate = test.DateOfCreate;
             model.unitId = test.unitId;
             model.Unit = test.Unit;
+            model.Questions = test.Questions;
+            model.PassedTestUsers = test.PassedTestUsers;
 
             this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 
