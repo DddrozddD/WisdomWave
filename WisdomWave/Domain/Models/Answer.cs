@@ -13,8 +13,8 @@ namespace Domain.Models
         public bool IsCorrect { get; set; }
         public string AnswerText { get; set; }
         public int? subQuestionId { get; set; }
-        public int? questionId { get; set; }
         public SubQuestion SubQuestion { get; set; }
+        public int? questionId { get; set; }
         public Question Question { get; set; }
     }
 }

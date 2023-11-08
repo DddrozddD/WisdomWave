@@ -48,7 +48,7 @@ public class AnswersController : ControllerBase
         }
 
         answer.Question = question;
-
+        answer.questionId = questionId;
         var result = await _answerService.CreateAsync(answer,question.Id);
 
         if (result.IsError == false)

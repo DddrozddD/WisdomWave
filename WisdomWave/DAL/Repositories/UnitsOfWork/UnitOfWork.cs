@@ -16,8 +16,8 @@ namespace DAL.Repositories.UnitsOfWork
             SubscriptionRepository subscriptionRepository, LearnerUserToCourseRepository learnerUserToCourseRepository, AnswerRepository answerRepository, ParagraphRepository paragraphRepository,
             QuestionRepository questionRepository, SubQuestionRepository subQuestionRepository, TestRepository testRepository, UnitRepository unitRepository, CategoryRepository categoryRepository)
         {
-            CourseRepository= courseRepository;
-            LikeDislikeRepository= likeDislikeRepository;
+            CourseRepository = courseRepository;
+            LikeDislikeRepository = likeDislikeRepository;
             ReviewRepository = reviewRepository;
             SubscriptionRepository = subscriptionRepository;
             LearnerUserToCourseRepository = learnerUserToCourseRepository;

@@ -30,10 +30,7 @@ namespace DAL.Repositories
             try
             {
             var model = this.Entities.Where(m => (m.userId == userId) && (m.courseId == courseId)).First();
-            model.User = lUserToCourse.User;
-            model.userId = lUserToCourse.userId;
-            model.courseId = lUserToCourse.courseId;
-            model.Course = lUserToCourse.Course;
+            model.isCompleted = lUserToCourse.isCompleted;
 
             this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 

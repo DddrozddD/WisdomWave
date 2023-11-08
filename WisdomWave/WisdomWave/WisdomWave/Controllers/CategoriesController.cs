@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 [ApiController]
 public class CategoryController : ControllerBase
 {
-/*    private readonly CategoryService _categoryService;
+    private readonly CategoryService _categoryService;
 
     public CategoryController(CategoryService categoryService)
 
@@ -22,45 +22,47 @@ public class CategoryController : ControllerBase
     public async Task<IActionResult> GetAllCategories()
     {
         var categories = await _categoryService.GetAsyncs();
+        return new JsonResult(categories);
+    }
     [HttpGet("without-parents")]
     public async Task<IActionResult> GetCategoriesWithoutParents()
     {
-        var categories = await _categoryService.GetCategoriesWithoutParentsAsync();
-        return Ok(categories);
+        var categories = await _categoryService.GetCategoriesWithoutParentAsync();
+        return new JsonResult(categories);
     }
 
     [HttpGet("child-categories/{parentId}")]
     public async Task<IActionResult> GetChildCategories(int parentId)
     {
-        var categories = await _categoryService.GetChildCategoriesAsync(parentId);
-        return Ok(categories);
+        var categories = await _categoryService.GetChildCategoriesByIdAsync(parentId);
+        return new JsonResult(categories);
     }
 
     [HttpGet("parent-categories/{categoryId}")]
     public async Task<IActionResult> GetParentCategories(int categoryId)
     {
-        var categories = await _categoryService.GetParentCategoriesAsync(categoryId);
-        return Ok(categories);
+        var categories = await _categoryService.GetParentCategoriesByIdAsync(categoryId);
+        return new JsonResult(categories);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCategory(int id)
     {
-        var category = await _categoryService.GetByIdAsync(id);
+        var category = await _categoryService.FindByConditionItemAsync(c=>c.Id==id);
 
 
         if (category == null)
         {
             return NotFound();
         }
-        return Ok(category);
+        return new JsonResult(category);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateCategory([FromBody] Category category)
+    [HttpPost("{courseId}")]
+    public async Task<IActionResult> CreateCategory([FromBody] Category category, int courseId)
     {
 
-        var result = await _categoryService.CreateCategoryAsync(category);
+        var result = await _categoryService.CreateAsync(category, courseId);
 
         if (result.IsError == false)
         {
@@ -81,7 +83,7 @@ public class CategoryController : ControllerBase
             return BadRequest();
         }
 
-        var result = await _categoryService.UpdateCategoryAsync(category);
+        var result = await _categoryService.EditAsync(id, category);
 
         if (result.IsError == false)
         {
@@ -98,45 +100,5 @@ public class CategoryController : ControllerBase
         await _categoryService.DeleteAsync(id);
         return NoContent();
     }
-    // Отображение категорий без родительских категорий
-    [HttpGet("WithoutParent")]
-    public async Task<IActionResult> GetCategoriesWithoutParent()
-    {
-        var categories = await _categoryService.GetCategoriesWithoutParentAsync();
-        return Ok(categories);
-    }
-
-    // Отображение категорий, которые имеют переданный ID родительской категории
-    [HttpGet("ByParentId/{parentId}")]
-    public async Task<IActionResult> GetCategoriesByParentId(int parentId)
-    {
-        var categories = await _categoryService.GetCategoriesByParentIdAsync(parentId);
-        return Ok(categories);
-    }
-
-    // Отображение всех родительских категорий для переданной категории по ID
-    [HttpGet("ParentCategories/{categoryId}")]
-    public async Task<IActionResult> GetParentCategoriesById(int categoryId)
-    {
-        var parentCategories = await _categoryService.GetParentCategoriesByIdAsync(categoryId);
-        return Ok(parentCategories);
-    }
-
-    [HttpGet("FindByIdInList/{categoryId}")]
-    public async Task<IActionResult> FindCategoryByIdInList(int categoryId, [FromQuery] List<Category> categoryList)
-    {
-        var category = await _categoryService.FindCategoryByIdAsync(categoryId, categoryList);
-
-        if (category != null)
-        {
-            return Ok(category);
-        }
-
-        return NotFound();
-    }
-
-        await _categoryService.DeleteCategoryAsync(id);
-        return NoContent();
-    }*/
-
+    
 }

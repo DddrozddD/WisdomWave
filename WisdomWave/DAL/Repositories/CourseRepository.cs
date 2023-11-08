@@ -32,13 +32,17 @@ namespace DAL.Repositories
                 var model = this.Entities.Where(m => m.Id == Id).First();
                 model.CourseName = course.CourseName;
                 model.creatorUserId = course.creatorUserId;
-                // model.LearnerUsers = course.LearnerUsers;
+                model.LearnerUsers = course.LearnerUsers;
                 model.CourseName = course.CourseName;
                 model.ImageLinkCourse = course.ImageLinkCourse;
                 model.RatingCourse = course.RatingCourse;
                 model.DateOfCreate = course.DateOfCreate;
                 model.Description = course.Description;
                 model.Reviews = course.Reviews;
+                model.CreatorUser = course.CreatorUser;
+                model.Units= course.Units;
+                model.categoryId = course.categoryId;
+                model.Category = course.Category;
 
                 this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 

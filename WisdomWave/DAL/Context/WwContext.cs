@@ -37,29 +37,27 @@ namespace DAL.Context
             modelBuilder.Entity<User>().HasMany(u => u.CompletedTests).WithMany(t => t.PassedTestUsers);
             modelBuilder.Entity<User>().HasMany(u => u.CompletedUnits).WithMany(u => u.PassedUnitUsers);
 
+            modelBuilder.Entity<LearnerUserToCourse>().Property(uc=>uc.isCompleted).HasDefaultValue(false);
+
             modelBuilder.Entity<Unit>().HasOne(u => u.Course).WithMany(c => c.Units).HasForeignKey(u => u.courseId);
-            modelBuilder.Entity<Paragraph>().HasOne(p => p.Unit).WithMany(u => u.Paragraphs).HasForeignKey(p=>p.unitID);
+            modelBuilder.Entity<Paragraph>().HasOne(p => p.Unit).WithMany(u => u.Paragraphs).HasForeignKey(p=>p.unitId);
             modelBuilder.Entity<Test>().HasOne(t => t.Unit).WithMany(u => u.Tests).HasForeignKey(t => t.unitId);
             modelBuilder.Entity<Question>().HasOne(q => q.Test).WithMany(t => t.Questions).HasForeignKey(q => q.testId);
             modelBuilder.Entity<Answer>().HasOne(a => a.Question).WithMany(q => q.Answers).HasForeignKey(a => a.questionId);
             modelBuilder.Entity<Answer>().HasOne(a => a.SubQuestion).WithMany(sq => sq.Answers).HasForeignKey(a => a.subQuestionId);
             modelBuilder.Entity<SubQuestion>().HasOne(sq => sq.Question).WithMany(q => q.SubQuestions).HasForeignKey(sq => sq.questionId);
+            modelBuilder.Entity<LearnerUserToCourse>().HasKey(l => new { l.userId, l.courseId });
+            modelBuilder.Entity<LikeDislike>().HasKey(l => new { l.userId, l.reviewId });
 
             modelBuilder.Entity<Review>().Property(r => r.courseId).IsRequired(false);
-            modelBuilder.Entity<LikeDislike>().Property(l => l.reviewId).IsRequired(false);
             modelBuilder.Entity<User>().Property(u=>u.subscriptionId).IsRequired(false);
             modelBuilder.Entity<Answer>().Property(a => a.questionId).IsRequired(false);
             modelBuilder.Entity<Answer>().Property(a => a.subQuestionId).IsRequired(false);
-            modelBuilder.Entity<Paragraph>().Property(p => p.unitID).IsRequired(false);
+            modelBuilder.Entity<Paragraph>().Property(p => p.unitId).IsRequired(false);
             modelBuilder.Entity<Test>().Property(t => t.unitId).IsRequired(false);
             modelBuilder.Entity<Unit>().Property(u => u.courseId).IsRequired(false);
             modelBuilder.Entity<Question>().Property(q => q.testId).IsRequired(false);
             modelBuilder.Entity<SubQuestion>().Property(sq => sq.questionId).IsRequired(false);
-
-
-            modelBuilder.Entity<LearnerUserToCourse>().HasKey(l => new {l.userId, l.courseId});
-            modelBuilder.Entity<LikeDislike>().HasKey(l => new { l.userId, l.reviewId });
-
             modelBuilder.Entity<User>().Property(u => u.Age).IsRequired(false);
             modelBuilder.Entity<User>().Property(u => u.Country).IsRequired(false);
             modelBuilder.Entity<User>().Property(u => u.ImagePhotoUserLink).IsRequired(false);

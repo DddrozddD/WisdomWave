@@ -13,7 +13,7 @@ namespace Domain.Models
         public string ParagraphText { get; set; }
         public string PhotoLinks { get; set; }
         public string VideoLinks { get; set; }
-        public int? unitID { get; set; }
+        public int? unitId { get; set; }
         public Unit Unit {get; set; }
         public IReadOnlyCollection<User> PassedParagraphUsers { get; set; }
     }
