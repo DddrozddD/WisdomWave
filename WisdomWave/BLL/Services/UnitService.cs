@@ -33,7 +33,7 @@ namespace BLL.Services
           
             OperationDetails result = await unitOfWork.UnitRepository.CreateAsync(unit);
 
-            if(result.IsError==false)
+            /*if(result.IsError==false)
             {
                 Unit newUnit = await unitOfWork.UnitRepository.FindByConditionItemAsync(u => (u.UnitName == unit.UnitName)&&( u.DateOfCreate == unit.DateOfCreate) && (u.Number == unit.Number) && (u.courseId == unit.courseId));
 
@@ -44,7 +44,7 @@ namespace BLL.Services
                 course.Units = newUnits;
 
                 await unitOfWork.CourseRepository.Update(course, courseId); 
-            }
+            }*/
 
 
             return result;
