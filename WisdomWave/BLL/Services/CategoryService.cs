@@ -147,8 +147,6 @@ namespace BLL.Services
 
         public async Task<IReadOnlyCollection<Category>> GetChildCategoriesByIdAsync(int categoryId)
         {
-            return categoryList.FirstOrDefault(c => c.Id == categoryId);
-        }
 
             var category = await unitOfWork.CategoryRepository.FindByConditionItemAsync(c => c.Id == categoryId);
 
