@@ -20,7 +20,7 @@ public class AnswersController : ControllerBase
     public async Task<IActionResult> GetAnswers()
     {
         var answers = await _answerService.GetAsyncs();
-        return Ok(answers);
+        return new JsonResult(answers);
     }
 
     [HttpGet("{id}")]
@@ -33,7 +33,7 @@ public class AnswersController : ControllerBase
             return NotFound();
         }
 
-        return Ok(answer);
+        return new JsonResult(answer);
     }
 
     [HttpPost("questionId")]

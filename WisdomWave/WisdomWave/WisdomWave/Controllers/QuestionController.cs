@@ -24,7 +24,7 @@ namespace WisdomWave.Controllers
         public async Task<IActionResult> Get()
         {
             var questions = await questionService.GetAsyncs();
-            return Ok(questions);
+            return new JsonResult(questions);
         }
 
         [HttpGet("{id}")] // HTTP GET request handler for retrieving a question by its identifier
@@ -35,7 +35,7 @@ namespace WisdomWave.Controllers
             {
                 return NotFound();
             }
-            return Ok(question);
+            return new JsonResult(question);
         }
 
         [HttpPost("testId")] // HTTP POST request handler for creating a new question

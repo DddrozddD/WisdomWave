@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
 using BLL.Services;
+using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Identity;
 
 [Route("api/[controller]")]
@@ -20,7 +21,7 @@ public class CoursesController : ControllerBase
     public async Task<IActionResult> GetCourses()
     {
         var courses = await _courseService.GetAsyncs();
-        return Ok(courses);
+        return new JsonResult(courses);
     }
 
     [HttpGet("{id}")]
@@ -34,7 +35,7 @@ public class CoursesController : ControllerBase
             return NotFound();
         }
 
-        return Ok(course);
+        return new JsonResult(course);
     }
 
     [HttpPost]
@@ -67,48 +68,48 @@ public class CoursesController : ControllerBase
     public async Task<IActionResult> GetAllCourses()
     {
         var courses = await _courseService.GetAsyncs();
-        return Ok(courses);
+        return new JsonResult(courses);
     }
 
     [HttpGet("user-courses/{userId}")]
     public async Task<IActionResult> GetUserCourses(string userId)
     {
         var courses = await _courseService.FindAllLearningCoursesForUser(userId);
-        return Ok(courses);
+        return new JsonResult(courses);
     }
 
     [HttpGet("search")]
     public async Task<IActionResult> SearchCourses([FromQuery] string searchTerm)
     {
         var courses = await _courseService.SearchCoursesAsync(searchTerm);
-        return Ok(courses);
+        return new JsonResult(courses);
     }
 
     [HttpGet("filter")]
     public async Task<IActionResult> FilterCourses([FromQuery] int minRating)
     {
         var courses = await _courseService.FilterCoursesByRatingAsync(minRating);
-        return Ok(courses);
+        return new JsonResult(courses);
     }
 
     [HttpGet("search-by-description")]
     public async Task<IActionResult> SearchCoursesByDescription([FromQuery] string description)
     {
         var courses = await _courseService.SearchCoursesByDescriptionAsync(description);
-        return Ok(courses);
+        return new JsonResult(courses);
     }
 
     [HttpGet("search-by-creator")]
     public async Task<IActionResult> SearchCoursesByCreator([FromQuery] string creatorUserId)
     {
         var courses = await _courseService.SearchCoursesByCreatorAsync(creatorUserId);
-        return Ok(courses);
+        return new JsonResult(courses);
     }
 
     [HttpGet("filter-by-rating")]
     public async Task<IActionResult> FilterCoursesByRating([FromQuery] int minRating)
     {
         var courses = await _courseService.FilterCoursesByRatingAsync(minRating);
-        return Ok(courses);
+        return new JsonResult(courses);
     }
 }
