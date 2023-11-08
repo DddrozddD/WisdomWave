@@ -70,6 +70,7 @@ void ConfigurationService(IServiceCollection serviceCollection)
     serviceCollection.AddTransient<IUnitOfWork, UnitOfWork>();
     serviceCollection.AddTransient<IEmailSender, EmailSenderService>();
     serviceCollection.AddTransient<CourseService>();
+    serviceCollection.AddTransient<CategoryService>();
     serviceCollection.AddTransient<LikeDislikeService>();
     serviceCollection.AddTransient<ReviewService>();
     serviceCollection.AddTransient<SubscriptionService>();
@@ -79,6 +80,7 @@ void ConfigurationService(IServiceCollection serviceCollection)
     serviceCollection.AddTransient<SubQuestionService>();
     serviceCollection.AddTransient<TestService>();
     serviceCollection.AddTransient<UnitService>();
+    serviceCollection.AddTransient<CategoryService>();
 
     BllConfiguration.ConfigurationService(serviceCollection);
 }

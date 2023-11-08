@@ -30,9 +30,6 @@ namespace DAL.Repositories
             try
             {
                 var model = this.Entities.Where(m => (m.userId == userId)&&(m.reviewId == reviewId)).First();
-            model.Review = likeDislike.Review;
-            model.reviewId = likeDislike.reviewId;
-            model.userId = likeDislike.userId;
             model.IsLike = likeDislike.IsLike;
 
             this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;

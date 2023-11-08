@@ -4,72 +4,79 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using DAL.Context;
+using DAL.Models;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories
 {
-    public class CategoryRepository
+    public class CategoryRepository : BaseRepository<Category>
     {
-        private readonly WwContext _context;
+<<<<<<< Updated upstream
 
-        public CategoryRepository(WwContext context)
-        {
-            _context = context;
-        }
+        public CategoryRepository(WwContext context) : base(context) { }
 
-        public async Task<IReadOnlyCollection<Category>> GetAllAsync()
+        public async Task Delete(int id)
         {
-            return await _context.Categories.Include(c => c.ChildCategories).ToListAsync();
-        }
-
-        public async Task<Category> GetByIdAsync(int id)
-        {
-            return await _context.Categories
-                .Include(c => c.ChildCategories)
-                .FirstOrDefaultAsync(c => c.Id == id);
-        }
-
-        public async Task<IReadOnlyCollection<Category>> FindByConditionAsync(Expression<Func<Category, bool>> predicat)
-        {
-            return await _context.Categories
-                .Include(c => c.ChildCategories)
-                .Where(predicat)
-                .ToListAsync();
-        }
-
-        public async Task<Category> FindByConditionItemAsync(Expression<Func<Category, bool>> predicat)
-        {
-            return await _context.Categories
-                .Include(c => c.ChildCategories)
-                .FirstOrDefaultAsync(predicat);
-        }
-
-        public async Task CreateAsync(Category category)
-        {
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(Category category)
-        {
-            _context.Entry(category).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var category = await GetByIdAsync(id);
+            var category = await this.Entities.FirstOrDefaultAsync(m => m.Id == id).ConfigureAwait(false);
             if (category != null)
             {
-                _context.Categories.Remove(category);
-                await _context.SaveChangesAsync();
-            }
-        }
-        public async Task<Category> FindCategoryByIdAsync(int categoryId, List<Category> categoryList)
+                this.Entities.Remove(category);
+=======
+        public CategoryRepository(WwContext context) : base(context)
         {
-            return categoryList.FirstOrDefault(c => c.Id == categoryId);
         }
 
+        public async Task Delete(int id)
+        {
+            var answer = await this.Entities.FirstOrDefaultAsync(s => s.Id == id).ConfigureAwait(false);
+            if (answer != null)
+            {
+                this.Entities.Remove(answer);
+>>>>>>> Stashed changes
+            }
+            await _context.SaveChangesAsync();
+
+        }
+<<<<<<< Updated upstream
+
+=======
+>>>>>>> Stashed changes
+        public async Task<OperationDetails> Update(Category category, int Id)
+        {
+            try
+            {
+<<<<<<< Updated upstream
+                var model = this.Entities.Where(m => m.Id == Id).First();
+=======
+
+
+                var model = this.Entities.Where(s => s.Id == Id).First();
+>>>>>>> Stashed changes
+                model.CategoryName = category.CategoryName;
+                model.ParentCategories = category.ParentCategories;
+                model.ChildCategories = category.ChildCategories;
+                model.Courses = category.Courses;
+<<<<<<< Updated upstream
+                
+=======
+
+>>>>>>> Stashed changes
+                this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
+                await _context.SaveChangesAsync();
+
+                return new OperationDetails { Message = "Created" };
+            }
+            catch (Exception ex)
+            {
+                return new OperationDetails { Message = "Create Fatal Error", exception = ex, IsError = true };
+            }
+        }
+<<<<<<< Updated upstream
+
+
+=======
+>>>>>>> Stashed changes
     }
 }

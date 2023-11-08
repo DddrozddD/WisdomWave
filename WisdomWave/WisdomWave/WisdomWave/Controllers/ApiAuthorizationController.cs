@@ -30,7 +30,6 @@ namespace ASP_Resume.Controllers
             _roleManager = roleManager;
             _configuration = configuration;
             _env = env;
-
         }
 
 
@@ -41,7 +40,7 @@ namespace ASP_Resume.Controllers
         {
             try
             {
-                User user = _userManager.FindByIdAsync(UserIdentity.UserIdentityId).Result;
+                User user = await _userManager.FindByIdAsync(UserIdentity.UserIdentityId);
                 return new JsonResult(user);
             }
             catch (Exception ex)
@@ -54,18 +53,20 @@ namespace ASP_Resume.Controllers
         [HttpPost("RegUser")]
         public async Task<IActionResult> RegUser([FromBody] RegisterViewModel registerViewModel)
         {
-           
+            
             if (registerViewModel.ConfirmPass == registerViewModel.Password) { 
             var user = new User
             {
                 Email = registerViewModel.Email,
-                UserName = "User"
+                UserName = registerViewModel.Email,
+                Name= registerViewModel.Name,
+                Surname = registerViewModel.Surname
             };
 
             var res = await _userManager.CreateAsync(user, registerViewModel.Password);
-               /* user = _userManager.FindByEmailAsync(registerViewModel.Email).Result;
+               /* user = await _userManager.FindByEmailAsync(registerViewModel.Email);
                 user.UserName = "User" + user.Id;
-                _userManager.UpdateAsync(user);*/
+                await _userManager.UpdateAsync(user);*/
                 if (res.Succeeded)
             {
                 if (await _roleManager.FindByNameAsync("user") == null)

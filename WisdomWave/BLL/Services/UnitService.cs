@@ -27,6 +27,7 @@ namespace BLL.Services
         public async Task<IReadOnlyCollection<Unit>> FindByConditionAsync(Expression<Func<Unit, bool>> predicat) => await this.unitOfWork.UnitRepository.FindByConditionAsync(predicat);
         public async Task<Unit> FindByConditionItemAsync(Expression<Func<Unit, bool>> predicat) => await this.unitOfWork.UnitRepository.FindByConditionItemAsync(predicat);
 
+
         public async Task<OperationDetails> CreateAsync(Unit unit, int courseId)
         {
             Course course = await unitOfWork.CourseRepository.FindByConditionItemAsync(c => c.Id == courseId);
@@ -38,7 +39,9 @@ namespace BLL.Services
 
             if (result.IsError == false)
             {
+
                 Unit newUnit = await unitOfWork.UnitRepository.FindByConditionItemAsync(u => (u.UnitName == unit.UnitName) && (u.DateOfCreate == unit.DateOfCreate) && (u.number == unit.number) && (u.courseId == unit.courseId));
+
 
                 course.Units.ToList().Add(newUnit);
 

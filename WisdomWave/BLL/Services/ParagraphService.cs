@@ -29,10 +29,10 @@ namespace BLL.Services
             Unit unit = await unitOfWork.UnitRepository.FindByConditionItemAsync(c => c.Id == unitId);
 
             paragraph.Unit = unit;
-            paragraph.unitID = unitId;
+            paragraph.unitId = unitId;
 
             OperationDetails result = await unitOfWork.ParagraphRepository.CreateAsync(paragraph);
-            if (result.IsError == false)
+            /*if (result.IsError == false)
             {
                 Paragraph newParagraph = await unitOfWork.ParagraphRepository.FindByConditionItemAsync(p => (p.Id == paragraph.Id) && (p.ParagraphName == paragraph.ParagraphName) && (p.unitID == paragraph.unitID) && (p.Unit == paragraph.Unit));
                 unit.Paragraphs.ToList().Add(newParagraph);
@@ -40,7 +40,7 @@ namespace BLL.Services
                 IReadOnlyCollection<Paragraph> newParagraphs = new ReadOnlyCollection<Paragraph>(unit.Paragraphs.ToList());
                 unit.Paragraphs = newParagraphs;
                 await unitOfWork.UnitRepository.Update(unit, unitId);
-            }
+            }*/
 
             return result;
         }

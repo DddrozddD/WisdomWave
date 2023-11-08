@@ -32,7 +32,7 @@ namespace BLL.Services
 
             OperationDetails result = await unitOfWork.QuestionRepository.CreateAsync(question);
 
-            if (result.IsError == false)
+            /*if (result.IsError == false)
             {
                 Question newQuestion = await unitOfWork.QuestionRepository.FindByConditionItemAsync(q => (q.Id == question.Id) && (q.Test == question.Test) && (q.QuestionType == question.QuestionType));
 
@@ -41,7 +41,7 @@ namespace BLL.Services
                 IReadOnlyCollection<Question> newQuestions = new ReadOnlyCollection<Question>(test.Questions.ToList());
                 test.Questions = newQuestions;
                 await unitOfWork.TestRepository.Update(test, testId);
-            }
+            }*/
 
             return result;
         }

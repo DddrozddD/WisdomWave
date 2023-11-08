@@ -9,7 +9,7 @@ namespace Domain.Models
 {
     public class User : IdentityUser
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public string? Surname { get; set; }
         public string? Telephone { get; set; }
         public string? About { get; set; }
@@ -25,5 +25,8 @@ namespace Domain.Models
         public IReadOnlyCollection<Course> CreatedCourses { get; set; }
         public IReadOnlyCollection<Review> Reviews { get; set; }
         public IReadOnlyCollection<LikeDislike> LikesDislikes { get; set;}
+        public IReadOnlyCollection<Test> CompletedTests { get; set; }
+        public IReadOnlyCollection<Unit> CompletedUnits { get; set; }
+        public IReadOnlyCollection<Paragraph> CompletedParagraphs { get; set; }
     }
 }

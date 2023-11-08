@@ -30,11 +30,14 @@ namespace DAL.Repositories
         {
             try { 
             var model = this.Entities.Where(s => s.Id == Id).First();
-            model.number = unit.number;
+            model.Number = unit.Number;
             model.UnitName = unit.UnitName;
             model.DateOfCreate = unit.DateOfCreate;
             model.courseId = unit.courseId;
             model.Course = unit.Course;
+            model.PassedUnitUsers = unit.PassedUnitUsers;
+            model.Paragraphs = unit.Paragraphs;
+            model.Tests = unit.Tests;
 
             this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 

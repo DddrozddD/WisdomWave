@@ -35,6 +35,8 @@ namespace DAL.Repositories
             model.QuestionType = question.QuestionType;
             model.testId = question.testId;
             model.Test = question.Test;
+            model.Answers= question.Answers;
+            model.SubQuestions= question.SubQuestions;
 
             _context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 

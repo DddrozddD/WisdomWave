@@ -2,16 +2,19 @@
 using Domain.Models;
 using BLL.Services;
 using System.Text.Json.Nodes;
+using Microsoft.AspNetCore.Identity;
 
 [Route("api/[controller]")]
 [ApiController]
 public class CoursesController : ControllerBase
 {
     private readonly CourseService _courseService;
+    private readonly UserManager<User> _userManager;
 
-    public CoursesController(CourseService courseService)
+    public CoursesController(CourseService courseService, UserManager<User> userManager)
     {
         _courseService = courseService;
+        _userManager = userManager;
     }
 
     [HttpGet]
@@ -24,6 +27,7 @@ public class CoursesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCourse(int id)
     {
+        User user = await _userManager.GetUserAsync(User);
         var course = await _courseService.FindByConditionItemAsync(c => c.Id == id);
 
         if (course == null)

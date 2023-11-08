@@ -32,7 +32,7 @@ namespace BLL.Services
 
             OperationDetails result = await unitOfWork.LikeDislikeRepository.CreateAsync(likeDislike);
 
-            if (result.IsError == false)
+            /*if (result.IsError == false)
             {
                 LikeDislike newlikeDislike = await unitOfWork.LikeDislikeRepository.FindByConditionItemAsync(lk => (lk.IsLike == likeDislike.IsLike) && (lk.Review == likeDislike.Review) && (lk.reviewId == likeDislike.reviewId));
 
@@ -41,7 +41,7 @@ namespace BLL.Services
                 IReadOnlyCollection<LikeDislike> newlikeDislikes = new ReadOnlyCollection<LikeDislike>(review.LikesDislikes.ToList());
                 review.LikesDislikes = newlikeDislikes;
                 await unitOfWork.ReviewRepository.Update(review, reviewId);
-            }
+            }*/
 
             return result;
         }
