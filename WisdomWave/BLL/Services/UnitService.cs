@@ -28,13 +28,6 @@ namespace BLL.Services
         public async Task<Unit> FindByConditionItemAsync(Expression<Func<Unit, bool>> predicat) => await this.unitOfWork.UnitRepository.FindByConditionItemAsync(predicat);
         public async Task<OperationDetails> CreateAsync(Unit unit,int courseId) {
             Course course = await unitOfWork.CourseRepository.FindByConditionItemAsync(c=>c.Id==courseId);
-
-<<<<<<< Updated upstream
-=======
-        public async Task<OperationDetails> CreateAsync(Unit unit, int courseId) {
-            Course course = await unitOfWork.CourseRepository.FindByConditionItemAsync(c=>c.Id==courseId);
->>>>>>> Stashed changes
-
             unit.Course = course;
             unit.courseId= courseId;
           
