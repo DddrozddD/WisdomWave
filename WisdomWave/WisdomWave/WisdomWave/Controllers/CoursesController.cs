@@ -40,6 +40,20 @@ public class CoursesController : ControllerBase
 
         return Ok(course);
     }
+    [HttpGet("GetEditCourse")]
+    public async Task<IActionResult> GetEditCourse()
+    {
+        
+        User user = await _userManager.GetUserAsync(User);
+        var course = await _courseService.FindByConditionItemAsync(c => c.Id == UserIdentity.EditCourseId);
+
+        if (course == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(course);
+    }
 
     [HttpPost]
     public async Task<IActionResult> CreateCourse([FromBody] CreateCourseForm courseForm)
@@ -66,7 +80,7 @@ public class CoursesController : ControllerBase
 
             await _courseService.CreateAsync(course);
             course = await _courseService.FindByConditionItemAsync(c => c.CourseName == course.CourseName && c.creatorUserId == course.creatorUserId && c.DateOfCreate.Minute == course.DateOfCreate.Minute);
-            UserIdentity.CreatingCourseId = course.Id;
+            UserIdentity.EditCourseId = course.Id;
             return CreatedAtAction("GetCourse", new { id = course.Id }, course);
         }
         catch (Exception ex)
