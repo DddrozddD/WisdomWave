@@ -24,7 +24,7 @@ namespace WisdomWave.Controllers
         public async Task<IActionResult> Get()
         {
             var subQuestions = await subQuestionService.GetAsyncs();
-            return Ok(subQuestions);
+            return new JsonResult(subQuestions);
         }
 
         [HttpGet("{id}")] // HTTP GET request handler for retrieving a sub-question by its identifier
@@ -35,7 +35,7 @@ namespace WisdomWave.Controllers
             {
                 return NotFound();
             }
-            return Ok(subQuestion);
+            return new JsonResult(subQuestion);
         }
 
         [HttpPost("questionId")] // HTTP POST request handler for creating a new sub-question

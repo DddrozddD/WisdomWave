@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
 using BLL.Services;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 
 namespace WisdomWave.Controllers
 {
@@ -14,6 +15,7 @@ namespace WisdomWave.Controllers
     {
         private readonly UnitService unitService;
         private readonly CourseService courseService;
+        private readonly UserManager<User> _userManager;
 
         public UnitController(UnitService unitService)
         {
@@ -25,7 +27,7 @@ namespace WisdomWave.Controllers
         public async Task<IActionResult> Get()
         {
             var units = await unitService.GetAsyncs();
-            return Ok(units);
+            return new JsonResult(units);
         }
 
         [HttpGet("{id}")] // HTTP GET request handler for retrieving a unit by its identifier
@@ -36,7 +38,32 @@ namespace WisdomWave.Controllers
             {
                 return NotFound();
             }
-            return Ok(unit);
+            return new JsonResult(unit);
+        }
+
+
+        [HttpGet("{userid}/{unitId}")] // HTTP GET request handler for retrieving a test by its identifier
+        public async Task<IActionResult> Check(int unitId, string userId)
+        {
+
+            var unit = await unitService.FindByConditionItemAsync(t => t.Id == unitId);
+            if (unit == null)
+            {
+                return NotFound();
+            }
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var result = await unitService.CheckUser(unit, user);
+            if (result.IsError == false)
+            {
+                return Created($"api/tests/{unit.Id}", unit); // Return a status of 201 Created
+            }
+            return new JsonResult(result.Message);
         }
 
         [HttpPost("courseId")] // HTTP POST request handler for creating a new unit
@@ -57,7 +84,7 @@ namespace WisdomWave.Controllers
 
             unit.Course = course; // Set the Course property
 
-            var result = await unitService.CreateAsync(unit, course.Id);
+            var result = await unitService.CreateAsync(unit, courseId);
             if (result.IsError == false)
             {
                 return Created($"api/units/{unit.Id}", unit); // Return a status of 201 Created

@@ -24,7 +24,7 @@ namespace WisdomWave.Controllers
         public async Task<IActionResult> Get()
         {
             var likeDislikes = await likeDislikeService.GetAsyncs();
-            return Ok(likeDislikes);
+            return new JsonResult(likeDislikes);
         }
 
         [HttpGet("{userId}/{reviewId}")]
@@ -35,7 +35,7 @@ namespace WisdomWave.Controllers
             {
                 return NotFound();
             }
-            return Ok(likeDislike);
+            return new JsonResult(likeDislike);
         }
 
         [HttpPost("reviewId")]

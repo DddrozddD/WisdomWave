@@ -24,7 +24,7 @@ namespace WisdomWave.Controllers
         public async Task<IActionResult> Get()
         {
             var reviews = await reviewService.GetAsyncs();
-            return Ok(reviews);
+            return new JsonResult(reviews);
         }
 
         [HttpGet("{id}")] // HTTP GET request handler for retrieving a review by its identifier
@@ -35,7 +35,7 @@ namespace WisdomWave.Controllers
             {
                 return NotFound();
             }
-            return Ok(review);
+            return new JsonResult(review);
         }
 
         [HttpPost("courseId")] // HTTP POST request handler for creating a new review
