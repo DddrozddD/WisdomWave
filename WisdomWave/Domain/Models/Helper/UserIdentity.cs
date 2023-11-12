@@ -9,5 +9,6 @@ namespace Domain.Models.Helper
     public static class UserIdentity
     {
         public static string UserIdentityId { get; set; }
+        public static int CreatingCourseId { get; set; }
     }
 }

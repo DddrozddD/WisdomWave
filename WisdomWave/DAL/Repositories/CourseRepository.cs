@@ -41,8 +41,8 @@ namespace DAL.Repositories
                 model.Reviews = course.Reviews;
                 model.CreatorUser = course.CreatorUser;
                 model.Units= course.Units;
-                model.categoryId = course.categoryId;
-                model.Category = course.Category;
+                model.Categories = course.Categories;
+                model.Language = course.Language;
 
                 this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 

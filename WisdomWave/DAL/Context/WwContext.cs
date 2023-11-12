@@ -25,7 +25,7 @@ namespace DAL.Context
 
             modelBuilder.Entity<Subscription>().HasOne(s => s.User).WithOne(u => u.Subscription).HasPrincipalKey<Subscription>(s => s.userId);
             modelBuilder.Entity<Course>().HasOne(c => c.CreatorUser).WithMany(u => u.CreatedCourses).HasForeignKey(c => c.creatorUserId);
-            modelBuilder.Entity<Course>().HasOne(c => c.Category).WithMany(c => c.Courses).HasForeignKey(c => c.categoryId);
+            modelBuilder.Entity<Course>().HasMany(c => c.Categories).WithMany(c => c.Courses);
             modelBuilder.Entity<Review>().HasOne(r => r.User).WithMany(u => u.Reviews).HasForeignKey(r => r.userId);
             modelBuilder.Entity<Review>().HasOne(r=>r.Course).WithMany(c=>c.Reviews).HasForeignKey(r => r.courseId);
             modelBuilder.Entity<LikeDislike>().HasOne(l => l.User).WithMany(u=>u.LikesDislikes).HasForeignKey(l => l.userId).OnDelete(DeleteBehavior.ClientSetNull);
@@ -64,8 +64,10 @@ namespace DAL.Context
             modelBuilder.Entity<User>().Property(u => u.UserRating).IsRequired(false);
             modelBuilder.Entity<User>().Property(u => u.subscriptionId).IsRequired(false);
             modelBuilder.Entity<User>().Property(u => u.Town).IsRequired(false);
+            modelBuilder.Entity<Course>().Property(c => c.ImageLinkCourse).IsRequired(false);
+            modelBuilder.Entity<Course>().Property(c => c.RatingCourse).IsRequired(false);
 
-           
+
 
         }
 

@@ -2,18 +2,22 @@
 using Domain.Models;
 using BLL.Services;
 using Microsoft.AspNetCore.Identity;
+using WisdomWave.Models;
+using Domain.Models.Helper;
 
 [Route("api/[controller]")]
 [ApiController]
 public class CoursesController : ControllerBase
 {
     private readonly CourseService _courseService;
+    private readonly CategoryService _categoryService;
     private readonly UserManager<User> _userManager;
 
-    public CoursesController(CourseService courseService, UserManager<User> userManager)
+    public CoursesController(CourseService courseService, UserManager<User> userManager, CategoryService categoryService)
     {
         _courseService = courseService;
         _userManager = userManager;
+        _categoryService = categoryService;
     }
 
     [HttpGet]
@@ -38,10 +42,37 @@ public class CoursesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCourse([FromBody] Course course)
+    public async Task<IActionResult> CreateCourse([FromBody] CreateCourseForm courseForm)
     {
-        await _courseService.CreateAsync(course);
-        return CreatedAtAction("GetCourse", new { id = course.Id }, course);
+        try
+        {
+            Category knowlage = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == courseForm.Knowledge);
+            Category education = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == courseForm.Education);
+            Category theme = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == courseForm.Theme);
+            List<Category> categories = new List<Category>();
+            categories.Add(knowlage);
+            categories.Add(education);
+            categories.Add(theme);
+            Course course = new Course()
+            {
+                DateOfCreate = DateTime.Now,
+                CourseName = courseForm.CourseName,
+                Description = courseForm.Description,
+                Language = courseForm.Language,
+                Categories = categories,
+                CreatorUser = await _userManager.FindByIdAsync(UserIdentity.UserIdentityId),
+                creatorUserId = UserIdentity.UserIdentityId
+            };
+
+            await _courseService.CreateAsync(course);
+            course = await _courseService.FindByConditionItemAsync(c => c.CourseName == course.CourseName && c.creatorUserId == course.creatorUserId && c.DateOfCreate.Minute == course.DateOfCreate.Minute);
+            UserIdentity.CreatingCourseId = course.Id;
+            return CreatedAtAction("GetCourse", new { id = course.Id }, course);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest();
+        }
     }
 
     [HttpPut("{id}")]
