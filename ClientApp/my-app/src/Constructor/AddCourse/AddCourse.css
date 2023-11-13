@@ -1,0 +1,150 @@
+
+.btn{
+    text-decoration: none;
+}
+
+
+.constrView{
+    padding-left: 2%;
+    background-color: white;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 1;
+    height: 90vh;
+    margin-top: 1%;
+    padding-top: 1%;
+    transform: translateY(5%);
+}   
+.downP{
+    width: fit-content;
+    margin-left: 25%;
+    margin-top: 4%;
+    font-size: 0.8rem;
+}
+.background{
+    background-color: #F6FEF8;
+    height: 100vh;
+    width: 100%;
+}
+.inputArea section{
+    display: inline-block;
+}
+.dropDownForm{
+    margin-left: 4%;
+    display: none;
+    font-size: 0.9rem;
+}
+.textInput{
+    display: inline-block;
+    height: 22px;
+    margin-top: 5%; 
+    border: 1px solid #56D2F8;
+    width: 23rem;
+    margin-left: 1rem;
+}
+.textArea p{
+text-align: right;
+
+}
+.textArea{
+    width: 28%;
+}
+
+.textOption{
+    text-align: right;
+    width: 20rem;
+}
+
+.inputArea{
+    
+    margin-left: 2%;
+}
+
+.redStar{
+    color: red;
+}
+.inputFullName{
+    height: 18px;
+    width: 22.6rem;
+}
+.showBtn{
+    color: #190C09;
+
+font-size: 18px;
+font-style: normal;
+font-weight: 500;
+line-height: 150%;
+}
+
+.rotated {
+    transform: rotate(-90deg); 
+    
+}
+
+.arrowBtn{
+    margin-right: 7px;
+}
+.left_back_constr{
+    position: relative;
+    float: left;
+    z-index: 0;
+    width: 10%;
+    height:  100%;
+}
+
+.right_back_constr{
+    position: relative;
+    float: right;
+    z-index: 0;
+    width: 10%;
+    height: 100%;
+}
+.inputTextarea{
+    margin-left: 1rem;
+}
+.inputAnnotation{
+    
+    margin-left: 22rem;
+    width: 50%;
+    height: 22vh;
+   
+    border: 1px solid #56D2F8;
+    transform: translateY(-2rem);
+}
+
+
+
+.textAnnotation{
+    text-align: end;
+    width: 16rem;    
+}
+.resultBtns{
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+}
+.resultBtn{
+    
+    padding-left: 3%;
+    padding-right: 3%;
+    border-radius: 3rem;
+
+}
+
+.saveBtn{
+    font-size: 0.8rem;
+    background: #F87C56;
+    color: white;
+    padding: 1.5% 6%;
+    margin-right: 5%;
+}
+
+.cancelBtn{
+    font-size: 0.8rem;
+    background: #FFF;
+    border: 1px solid #56D2F8;
+    color: #56D2F8;
+    padding: 1.5% 9%;
+}

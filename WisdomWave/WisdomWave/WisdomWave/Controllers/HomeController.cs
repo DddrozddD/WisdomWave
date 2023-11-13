@@ -26,13 +26,6 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         _courseService.FindAllLearningCoursesForUser((_userManager.FindByNameAsync(User.Identity.Name)).Id.ToString());
-        Subscription s = new Subscription();
-        s.Value = "some";
-        s.userId = "ssdd";
-        s.FavouriteTheme = "newTheme";
-        s.AgreeForSub = 1;
-        await _subscriptionService.CreateAsync(s);
-
         _categoryService.CreateAsync(new Category { CategoryName = "Розробка" });
         Category parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Розробка");
         await _categoryService.CreateAsync(new Category { CategoryName = "Веб розробка" }, parentCategory.Id);
@@ -493,6 +486,7 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Звукова терапія" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "Джембе" }, parentCategory.Id);
 
+
         return View();
     }
   
@@ -504,10 +498,6 @@ public class HomeController : Controller
     public async Task<IActionResult> ShowViewReg()
     {
         
-        Category newCategory2 = new Category();
-        newCategory2.CategoryName = "Some2";
-        Category newCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Some");
-        await _categoryService.CreateAsync(newCategory2, newCategory.Id);
 
         return View("Registration");
     }

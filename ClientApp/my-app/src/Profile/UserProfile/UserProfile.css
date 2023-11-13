@@ -1,0 +1,116 @@
+.profile_body{
+    
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.user_profile{
+    
+    margin-left: 30%;
+}
+
+.add_photo_btn{
+
+    color: white;
+    font-size: 16px;
+    background-color: #f87c56;
+    border-color: #f87c56;
+    border-radius: 10px;
+    height: 4%; 
+    border-style: solid;
+    width:fit-content;
+}
+
+.text_for_add_photo_btn{
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 24px;
+    width: fit-content;
+}
+
+.profile_settings{
+    margin-left: 5%;
+}
+
+
+.add_photo_btn_section{
+    margin-left: 2%;
+    transform: translateY(-60%);
+}
+
+
+.add_photo_subsection{
+    display: inline-block;
+}
+
+.setting_sections{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.setting_section{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+.setting_section input{
+    background-color: #ffffff;
+    border: 2px solid;
+    border-color: #d9d9d9;
+    border-radius: 10px;
+    height: 20px;
+    width: 60%;
+    transform: translateY(40%);
+}
+
+.setting_section p{
+    font-size: 15px;
+    width: 15%;
+
+}
+
+.setting_section textarea{
+    height: 100px;
+    background-color: #ffffff;
+    border: 2px solid;
+    border-color: #d9d9d9;
+    border-radius: 10px;
+    width: 60%;
+    
+}
+
+.save_btn{
+    float: right;
+    background-color: #f87c56;
+    color: white;
+    border-radius: 20px;
+    border-color: #f87c56;
+    height: 30px;
+    width: 170px;
+    border-style: solid;
+    margin-right: 25%;
+}
+
+.profile_body{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.user_settings{
+    margin-left: 30%;
+}
+
+.setting_section section{
+    transform: translateY(30%);
+    font-size: 15px;
+}
+
+.setting_section section a{
+    color: #7C56F8;
+}

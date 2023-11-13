@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates&family=Poppins&display=swap');
+
+
+
+
+.register{
+    width: 30%;
+    position:fixed;
+    background-size: cover;
+    transform: translateY(24%);
+    right: 1%;
+    height: 100vh;
+    color: white;
+    font-family: 'Montserrat Alternates', sans-serif;
+}
+
+.register_form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.register__container {
+    padding-right: 15%;
+    
+}
+.register__welcomeText {
+    width: fit-content;
+    font-size: 35px;
+    font-weight: 700;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.register__form__button {
+    margin-top: 4%;
+    font-family: 'Montserrat Alternates', sans-serif;
+    width: 400px;
+    height: 15%;
+    border-radius: 20px;
+    background: #56D2F8;
+    font-size: 32px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+.register__formInput {
+    margin-bottom: 3%;
+    width: 100%;
+    border: none;   
+    border-bottom: 1px solid white;
+    background: none;
+    outline: none;
+    color: white;
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-size: 16px;
+}
+
+
+
+.register__form__Text {
+    margin-right: auto;
+}
+
+
+
+.passInput {
+    color: green;
+}
+
+
+
+.register__formTableText {
+    display: flex;
+    gap: 20px;
+}
+
+
+
+
+@media screen and (max-width: 1440px) {
+    .register__container {
+        padding-right: initial;
+
+    }
+}
+

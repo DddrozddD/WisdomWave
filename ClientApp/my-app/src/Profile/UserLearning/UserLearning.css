@@ -1,0 +1,10 @@
+.profile_body{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.user_learning_courses_list{
+    margin-left: 30%;
+    transform: translateY(-60%);
+}
