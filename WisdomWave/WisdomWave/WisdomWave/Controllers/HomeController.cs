@@ -27,7 +27,11 @@ public class HomeController : Controller
     {
         _courseService.FindAllLearningCoursesForUser((_userManager.FindByNameAsync(User.Identity.Name)).Id.ToString());
         _categoryService.CreateAsync(new Category { CategoryName = "Розробка" });
+<<<<<<< Updated upstream
         Category parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Розробка");
+=======
+       /*Category parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Розробка");
+>>>>>>> Stashed changes
         await _categoryService.CreateAsync(new Category { CategoryName = "Веб розробка" }, parentCategory.Id);
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Веб розробка");
@@ -485,6 +489,7 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Музичний маркетинг" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "Звукова терапія" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "Джембе" }, parentCategory.Id);
+       */
 
 
         return View();
