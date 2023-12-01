@@ -37,6 +37,7 @@ namespace DAL.Repositories
             model.Test = question.Test;
             model.Answers= question.Answers;
             model.SubQuestions= question.SubQuestions;
+                model.CountOfPoints= question.CountOfPoints;
 
             _context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 

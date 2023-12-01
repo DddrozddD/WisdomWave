@@ -12,7 +12,8 @@ namespace Domain.Models
         public int Id { get; set; }
         public string QuestionName { get; set; }
         public string QuestionText { get; set; }
-        public string QuestionType { get; set; }
+        public string? QuestionType { get; set; }
+        public int CountOfPoints { get; set; }
         public int? testId { get; set; }
         public Test Test { get; set; }
         public IReadOnlyCollection<Answer> Answers { get; set; }

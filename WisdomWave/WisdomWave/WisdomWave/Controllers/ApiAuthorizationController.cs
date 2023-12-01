@@ -1,10 +1,14 @@
 ﻿using ASP_Resume.Models;
 using Domain.Models;
-using Domain.Models.Helper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Web.Http.Cors;
+using WisdomWave.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,14 +18,14 @@ namespace ASP_Resume.Controllers
     [ApiController]
     public class AuthorizationController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<WwUser> _userManager;
+        private readonly SignInManager<WwUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _env;
 
-        public AuthorizationController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailSender emailSender, RoleManager<IdentityRole> roleManager
+        public AuthorizationController(UserManager<WwUser> userManager, SignInManager<WwUser> signInManager, IEmailSender emailSender, RoleManager<IdentityRole> roleManager
             , IConfiguration configuration, IWebHostEnvironment env)
         {
             _userManager = userManager;
@@ -35,19 +39,24 @@ namespace ASP_Resume.Controllers
 
 
         
-        [HttpGet("GetUser")]
-        public async Task<IActionResult> GetUser()
+        [HttpGet("GetUser/{token}")]
+        public async Task<IActionResult> GetUser(string token)
         {
-            try
+            var tmp = User.Identities;
+            var claims = JwtHandler.DecodeJwtToken(token);
+
+            WwUser userIdClaim = await _userManager.FindByIdAsync(claims.FirstOrDefault(c=>c.Type==ClaimTypes.NameIdentifier).Value);
+
+
+            if (userIdClaim != null)
             {
-                User user = await _userManager.FindByIdAsync(UserIdentity.UserIdentityId);
-                return new JsonResult(user);
+
+                return new JsonResult(userIdClaim);
             }
-            catch (Exception ex)
-            {
-                return BadRequest();
-            }
+
+            return BadRequest();
         }
+    
 
 
         [HttpPost("RegUser")]
@@ -55,7 +64,7 @@ namespace ASP_Resume.Controllers
         {
             
             if (registerViewModel.ConfirmPass == registerViewModel.Password) { 
-            var user = new User
+            var user = new WwUser
             {
                 Email = registerViewModel.Email,
                 UserName = registerViewModel.Email,
@@ -85,7 +94,7 @@ namespace ASP_Resume.Controllers
                 var confirmationLink = Url.Action("", "confirmation", new { guid = token, userEmail = user.Email }, Request.Scheme, Request.Host.Value);
                 await _emailSender.SendEmailAsync(user.Email, "Confirmation Link", $"Link=> {confirmationLink}");
 
-                    return Created($"profile/userProfile", user);
+                    return Created($"profile/userProfile/", user);
 
             }
                 else
@@ -108,9 +117,10 @@ namespace ASP_Resume.Controllers
                 var res = await _signInManager.PasswordSignInAsync(tmpClient.UserName, loginViewModel.Password, true, false);
                 if (res.Succeeded)
                 {
-                    User user = _userManager.FindByEmailAsync(loginViewModel.Email).Result;
-                    UserIdentity.UserIdentityId = user.Id;
-                    return NoContent();
+                    var token = JwtHandler.GenerateJwtToken(tmpClient);
+                    /*User user = _userManager.FindByEmailAsync(loginViewModel.Email).Result;
+                    UserIdentity.UserIdentityId = user.Id;*/
+                    return Ok(token);
                 }
                 
                 return BadRequest("User is not found");
@@ -125,5 +135,7 @@ namespace ASP_Resume.Controllers
         {
             await _signInManager.SignOutAsync();
         }
+
+        
     }
 }

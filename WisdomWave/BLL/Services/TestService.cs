@@ -46,10 +46,10 @@ namespace BLL.Services
 
             return result;
         }
-       public async Task<OperationDetails> CheckUser(Test test, User user)
+       public async Task<OperationDetails> CheckUser(Test test, WwUser user)
         {
 
-            List<User> new_users_list = new List<User>(); 
+            List<WwUser> new_users_list = new List<WwUser>(); 
 
             if(test.PassedTestUsers == null)
             {

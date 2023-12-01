@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 [ApiController]
 public class UsersController : ControllerBase
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<WwUser> _userManager;
 
-    public UsersController(UserManager<User> userManager)
+    public UsersController(UserManager<WwUser> userManager)
     {
         _userManager = userManager;
     }
@@ -28,7 +28,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateUser([FromBody] User user)
+    public async Task<IActionResult> CreateUser([FromBody] WwUser user)
     {
         var result = await _userManager.CreateAsync(user);
 
@@ -41,7 +41,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateUser(string id, [FromBody] User user)
+    public async Task<IActionResult> UpdateUser(string id, [FromBody] WwUser user)
     {
         if (id != user.Id)
         {

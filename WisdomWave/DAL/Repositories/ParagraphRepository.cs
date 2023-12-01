@@ -31,17 +31,16 @@ namespace DAL.Repositories
             try { 
             var model = this.Entities.Where(s => s.Id == Id).First();
             model.ParagraphText = paragraph.ParagraphText;
-            model.PhotoLinks = paragraph.PhotoLinks;
-            model.ParagraphName = paragraph.ParagraphName;
-            model.VideoLinks = paragraph.VideoLinks;
-            model.unitId = paragraph.unitId;
-            model.Unit = paragraph.Unit;
-            model.PassedParagraphUsers = paragraph.PassedParagraphUsers;
-            this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                model.ParagraphName = paragraph.ParagraphName;
+                model.Page = paragraph.Page;
+            model.pageId= paragraph.pageId;
+
+
+                this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 
             await _context.SaveChangesAsync();
 
-            return new OperationDetails { Message = "Created" };
+            return new OperationDetails { Message = "Updated" };
         }
             catch (Exception ex)
             {

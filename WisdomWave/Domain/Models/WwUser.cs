@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public class User : IdentityUser
+    public class WwUser : IdentityUser
     {
         public string? Name { get; set; }
         public string? Surname { get; set; }
@@ -27,6 +27,6 @@ namespace Domain.Models
         public IReadOnlyCollection<LikeDislike> LikesDislikes { get; set;}
         public IReadOnlyCollection<Test> CompletedTests { get; set; }
         public IReadOnlyCollection<Unit> CompletedUnits { get; set; }
-        public IReadOnlyCollection<Paragraph> CompletedParagraphs { get; set; }
+        public IReadOnlyCollection<Page> CompletedPages { get; set; }
     }
 }

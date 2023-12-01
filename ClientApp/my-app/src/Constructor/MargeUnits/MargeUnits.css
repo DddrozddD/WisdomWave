@@ -1,0 +1,54 @@
+.courseView{
+    
+    background-color: #F6FEF8;
+}
+.unitView{
+    margin-top: 2.5rem;
+    height:fit-content;
+    background-color: white;
+    border: 0px;
+}
+.unitName{
+    height: 1rem;
+    margin-top: 1rem;
+}
+
+.unitNameBlock{
+    transform: translate(3rem, 1rem);
+}
+
+.ph_pencil{
+    transform: translateY(0.5rem)
+}
+
+.editUnitName{
+    display: inline-block;
+    
+}
+
+.ph_pencil{
+    display: inline-block;
+}
+
+.ic_for_add{
+    width: fit-content;
+    float: right;
+}
+.addButton{
+    cursor: pointer;
+    height: 1rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 5rem;
+    width: 13rem;
+    border-radius: 1rem;
+border: 1px solid #56D2F8;
+background: #FFF;
+text-align: left;
+height: 1.7rem;
+}
+
+.addButtons{
+    width: fit-content;
+    float: right;
+}

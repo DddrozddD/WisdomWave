@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,8 @@ namespace DAL.Repositories.UnitsOfWork
 
         public UnitOfWork(CourseRepository courseRepository, LikeDislikeRepository likeDislikeRepository, ReviewRepository reviewRepository,
             SubscriptionRepository subscriptionRepository, LearnerUserToCourseRepository learnerUserToCourseRepository, AnswerRepository answerRepository, ParagraphRepository paragraphRepository,
-            QuestionRepository questionRepository, SubQuestionRepository subQuestionRepository, TestRepository testRepository, UnitRepository unitRepository, CategoryRepository categoryRepository)
+            QuestionRepository questionRepository, SubQuestionRepository subQuestionRepository, TestRepository testRepository, UnitRepository unitRepository, CategoryRepository categoryRepository,
+            PageRepository pageRepository)
         {
             CourseRepository = courseRepository;
             LikeDislikeRepository = likeDislikeRepository;
@@ -28,6 +30,7 @@ namespace DAL.Repositories.UnitsOfWork
             TestRepository = testRepository;
             UnitRepository = unitRepository;
             CategoryRepository = categoryRepository;
+            PageRepository = pageRepository;
         }
 
         public CourseRepository CourseRepository { get; }
@@ -52,5 +55,7 @@ namespace DAL.Repositories.UnitsOfWork
 
         public UnitRepository UnitRepository { get; }
         public CategoryRepository CategoryRepository { get; }
+        public PageRepository PageRepository { get; }
+
     }
 }

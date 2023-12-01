@@ -17,7 +17,7 @@ namespace Domain.Models
         public string Language { get; set; }
         public IReadOnlyCollection<LearnerUserToCourse> LearnerUsers { get; set; }
         public string creatorUserId { get; set; }
-        public User CreatorUser { get; set; }
+        public WwUser CreatorUser { get; set; }
         public IReadOnlyCollection<Review> Reviews { get; set; }
         public IReadOnlyCollection<Unit> Units { get; set; }
         public IReadOnlyCollection<Category> Categories { get; set; }

@@ -30,8 +30,8 @@ namespace DAL.Repositories
         {
             try { 
             var model = this.Entities.Where(s => s.Id == Id).First();
-            model.Name = test.Name;
-            model.Description = test.Description;
+            model.TestName = test.TestName;
+            model.TestDescription = test.TestDescription;
             model.DateOfCreate = test.DateOfCreate;
             model.unitId = test.unitId;
             model.Unit = test.Unit;

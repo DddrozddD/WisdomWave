@@ -1,0 +1,46 @@
+input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid gray;
+    position: relative;
+    margin-left: 1rem;
+    border-color: #f87c56;
+    transform: translateY(0.15rem);
+  }
+  
+  input[type="radio"]:checked {
+    border-color: #f87c56;
+  }
+  
+  input[type="radio"]::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 2.4px;
+    left: 2.4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: transparent;
+  }
+  
+  input[type="radio"]:checked::before {
+    background-color: #f87c56;
+  }
+
+
+  .questionView{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    transform: translateY(2rem);
+  }
+
+  .TypeAnswer{
+    display: none;
+  }

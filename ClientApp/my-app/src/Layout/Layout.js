@@ -5,6 +5,9 @@ import { BrowserRouter, Route, Routes, NavLink } from 'react-router-dom';
 import IdentityUser from './../Variables.js';
 import {variables} from './../Variables.js';
 
+import { setCookie, deleteCookie, getCookie } from './../CookieHandler.js';
+
+
 export class Layout extends React.Component {
   constructor(props){
     super(props);
@@ -17,11 +20,16 @@ export class Layout extends React.Component {
   
   componentDidMount=async()=>{
     try{
-await fetch(variables.API_URL+'authorization/GetUser/')
+
+      await fetch(variables.API_URL+'authorization/GetUser/'+getCookie("YourSecretKeyHere"))
     .then(response=>response.json())
     .then(data=>{
-      console.log(data);
-     this.setState({UserName:data.name, UserSurname:data.surname});
+      if(data.title!="Bad Request"){
+        console.log(data);
+        this.setState({UserName:data.name, UserSurname:data.surname});
+      }
+      
+
     });
   }
   catch(error){
@@ -32,42 +40,49 @@ await fetch(variables.API_URL+'authorization/GetUser/')
   }
   render = () => {
     let userDiv;
-    if(this.state.UserName==""){
+    if(this.state.UserName!=""){
       userDiv = (
         <>
         <div className='right_header'>
-    <NavLink to="/login"className={"login_button"}>
-        Увійти  
-    </NavLink>
-    <NavLink to="/registration" className={"reg_button"}>
-        Зареєструватися
-    </NavLink>
-    <div className='search'>
-        
-    <svg className='loupe' xmlns="http://www.w3.org/2000/svg" width="24" height="23" viewBox="0 0 24 23" fill="none">
-<path d="M9.13606 2.557e-08C10.8838 -3.55639e-05 12.5949 0.474241 14.0663 1.36656C15.5377 2.25888 16.7076 3.53178 17.4373 5.03425C18.167 6.53672 18.4258 8.20569 18.1831 9.84314C17.9403 11.4806 17.2061 13.0178 16.0677 14.2724L24 21.7769L23.0064 22.7169L15.0726 15.2111C13.9537 16.1163 12.6201 16.7523 11.1854 17.0649C9.75074 17.3775 8.25745 17.3574 6.83273 17.0063C5.40802 16.6552 4.0941 15.9836 3.00288 15.0486C1.91166 14.1136 1.07546 12.9429 0.565513 11.6363C0.055564 10.3296 -0.113031 8.92577 0.0740861 7.54422C0.261203 6.16266 0.79849 4.84436 1.64018 3.70159C2.48188 2.55882 3.60305 1.62543 4.9082 0.980929C6.21335 0.336423 7.66382 -0.000107105 9.13606 2.557e-08ZM9.13606 1.32964C7.08596 1.32964 5.11983 2.10012 3.67019 3.47158C2.22055 4.84303 1.40614 6.70313 1.40614 8.64267C1.40614 10.5822 2.22055 12.4423 3.67019 13.8138C5.11983 15.1852 7.08596 15.9557 9.13606 15.9557C11.1862 15.9557 13.1523 15.1852 14.6019 13.8138C16.0516 12.4423 16.866 10.5822 16.866 8.64267C16.866 6.70313 16.0516 4.84303 14.6019 3.47158C13.1523 2.10012 11.1862 1.32964 9.13606 1.32964Z" fill="#190C09"/>
-</svg>
-    <input placeholder="Пошук" type='text' className='search_line'/>
-    </div>
-
-</div>
-        </>
+        <NavLink to="/user-profile"className={"user_botton btn"}>
+        {this.state.UserName} {this.state.UserSurname}
+        </NavLink>
+       
+         </div>
+        </> 
       )
       
     }
     else{
       userDiv = (
-        <>
-        <NavLink to="/profile/userProfile"className={"login_button"}>
-        {this.state.UserName} {this.state.UserSurname}
-        </NavLink>
-        </>      
+
+             
+         <>
+         <div className='right_header'>
+     <NavLink to="/login"className={"login_button"}>
+         Увійти  
+     </NavLink>
+     <NavLink to="/registration" className={"reg_button"}>
+         Зареєструватися
+     </NavLink>
+     <div className='search'>
+         
+     <svg className='loupe' xmlns="http://www.w3.org/2000/svg" width="24" height="23" viewBox="0 0 24 23" fill="none">
+ <path d="M9.13606 2.557e-08C10.8838 -3.55639e-05 12.5949 0.474241 14.0663 1.36656C15.5377 2.25888 16.7076 3.53178 17.4373 5.03425C18.167 6.53672 18.4258 8.20569 18.1831 9.84314C17.9403 11.4806 17.2061 13.0178 16.0677 14.2724L24 21.7769L23.0064 22.7169L15.0726 15.2111C13.9537 16.1163 12.6201 16.7523 11.1854 17.0649C9.75074 17.3775 8.25745 17.3574 6.83273 17.0063C5.40802 16.6552 4.0941 15.9836 3.00288 15.0486C1.91166 14.1136 1.07546 12.9429 0.565513 11.6363C0.055564 10.3296 -0.113031 8.92577 0.0740861 7.54422C0.261203 6.16266 0.79849 4.84436 1.64018 3.70159C2.48188 2.55882 3.60305 1.62543 4.9082 0.980929C6.21335 0.336423 7.66382 -0.000107105 9.13606 2.557e-08ZM9.13606 1.32964C7.08596 1.32964 5.11983 2.10012 3.67019 3.47158C2.22055 4.84303 1.40614 6.70313 1.40614 8.64267C1.40614 10.5822 2.22055 12.4423 3.67019 13.8138C5.11983 15.1852 7.08596 15.9557 9.13606 15.9557C11.1862 15.9557 13.1523 15.1852 14.6019 13.8138C16.0516 12.4423 16.866 10.5822 16.866 8.64267C16.866 6.70313 16.0516 4.84303 14.6019 3.47158C13.1523 2.10012 11.1862 1.32964 9.13606 1.32964Z" fill="#190C09"/>
+ </svg>
+     <input placeholder="Пошук" type='text' className='search_line'/>
+     </div>
+ 
+ </div>
+         </>
           )
     }
     
      return (
       
-      
+
+      <>
+
         <header id='header'>
             <div className='left_header'>
                 <div className='top_left_header'>
@@ -126,9 +141,15 @@ await fetch(variables.API_URL+'authorization/GetUser/')
            
         </header>
 
+        <footer>
+
+        </footer>
+
+
 
         
-      
+        </>
+
     );
   }
 }

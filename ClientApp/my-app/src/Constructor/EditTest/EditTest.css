@@ -1,0 +1,71 @@
+
+  
+  .testView {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .testView h1 {
+    padding-top: 1rem;
+    padding-left: 1rem;
+    height: 4rem;
+    font-size: 2rem;
+    transform: translateY(2rem);
+    background-color: white;
+    font-weight: 900;
+  }
+  
+  .newQuestion h3 {
+    margin-left: 0.7rem;
+  }
+  
+  .addQuestion,
+  .cancelQuestion {
+    border-radius: 20px;
+    border: 1px solid;
+    height: 2rem;
+    font-family: Montserrat Alternates;
+    margin-top: 1rem;
+    margin-left: 2rem;
+    width: 9rem;
+    background: #fff;
+  }
+  
+  .addQuestion {
+    border-color: #f87c56;
+    color: #f87c56;
+  }
+  
+  .cancelQuestion {
+    border-color: #56d2f8;
+    color: #56d2f8;
+  }
+  
+  .Question {
+    padding-top: 0.35rem;
+    padding-bottom: 0.35rem;
+    background-color: white;
+    padding-left: 1rem;
+    transform: translateY(2rem);
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .addNewQuestion {
+    transform: translateY(1.3rem);
+  }
+  
+  .Pagination {
+    margin-top: 2.4rem;
+  }
+
+  .Question span{
+    width: fit-content;
+  }
+
+  .Question img{
+    width: fit-content;
+    margin-left: 2rem;
+  }
+  

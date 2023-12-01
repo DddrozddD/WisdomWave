@@ -4,6 +4,8 @@ import {variables} from './../Variables.js';
 import RightBack from './../images/BackAuthRight.png'
 import LeftBack from './../images/BackAuthLeft.png'
 import { NavLink } from "react-router-dom";
+import { setCookie, deleteCookie, getCookie } from './../CookieHandler.js';
+
 
 export class Login extends React.Component  {
 
@@ -21,6 +23,7 @@ handleInputChange = (e) => {
       [name]: value
   });
 }
+
 loginClick = async () => {
 
   const { email, password} = this.state;
@@ -36,14 +39,22 @@ loginClick = async () => {
               "Password": password
               
           })
-      });
 
-      if (response.ok) {
-        
-        window.location.assign('http://localhost:3000/');
-      } else {
+          
+      })
+      .then(response=>response.json())
+      .then(data=>{
+        if (data!="User is not found"){
+          setCookie("YourSecretKeyHere", data, {secure: true, 'max-age': 3*86400});
+          window.location.assign('http://localhost:3000/');
+        }
+        else{
           console.error("Увійти не вдалась");
-      }
+        }
+        
+      })
+      
+
   } catch (error) {
       console.error("Помилка:", error);
   }

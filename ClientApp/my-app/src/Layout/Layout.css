@@ -5,9 +5,22 @@ body{
     display: inline-flex;
     font-family: Montserrat Alternates;
     width: 99%;
-    
+
+    align-items: center;
   }
-  
+ 
+.user_botton{
+  color: white;
+  background-color: #56d2f8;
+  border-radius: 20px;
+    height: 35px;
+    justify-content: center;
+    padding: 7px 17px 1px 17px;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+
   .left_header{
     float: left;
     margin-left: 6%;

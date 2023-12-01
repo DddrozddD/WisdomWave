@@ -1,0 +1,11 @@
+.iconCourse{
+    width: 10rem;
+    height: 10rem;
+    transform: translateY(2rem);
+    margin-left: 2rem;
+}
+
+.MainCoursePage{
+    transform: translateY(8rem);
+    margin-left: 8rem;
+}
