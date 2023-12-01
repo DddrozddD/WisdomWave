@@ -9,12 +9,10 @@ namespace Domain.Models
     public class Paragraph
     {
         public int Id { get; set; }
-        public string ParagraphName { get; set; }
-        public string ParagraphText { get; set; }
-        public string PhotoLinks { get; set; }
-        public string VideoLinks { get; set; }
-        public int? unitId { get; set; }
-        public Unit Unit {get; set; }
-        public IReadOnlyCollection<User> PassedParagraphUsers { get; set; }
+        public string? ParagraphName { get; set; }
+        public string? ParagraphText { get; set; }
+        public int pageId { get; set; }
+        public Page Page { get; set; }
+        
     }
 }

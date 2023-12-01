@@ -10,12 +10,12 @@ namespace Domain.Models
     public class Test
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public DateTime DateOfCreate { get; set; } // DateOfCreate = DateOfUpdate
+        public string TestName { get; set; }
+        public string TestDescription { get; set; }
+        public string DateOfCreate { get; set; } // DateOfCreate = DateOfUpdate
         public int? unitId { get; set; }
         public Unit Unit { get; set; }
         public IReadOnlyCollection<Question> Questions { get; set; }
-        public IReadOnlyCollection<User> PassedTestUsers { get; set; }
+        public IReadOnlyCollection<WwUser> PassedTestUsers { get; set; }
     }
 }

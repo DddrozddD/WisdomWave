@@ -3,9 +3,11 @@ using BLL.Services;
 using DAL.Context;
 using DAL.Repositories.UnitsOfWork;
 using Domain.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Azure.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -29,6 +31,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseAuthorization();
 
 app.UseRouting();
 
@@ -63,10 +66,38 @@ void ConfigurationService(IServiceCollection serviceCollection)
         });
     });
 
+    serviceCollection.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    }).AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true, // �������� �������� ������
+            ValidateAudience = true, // �������� ��������� ������
+            ValidateLifetime = true, // �������� ����� �������� ������
+            ValidateIssuerSigningKey = true, // �������� ����� ������� ������
+            ValidIssuer = "your_issuer_here", // ����� ����������� ���������� �������� ������
+            ValidAudience = "your_audience_here", // ����� ����������� ���������� ��������� ������
+            IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("your_secret_key_here")) // ����� ����������� ��������� ���� ��� �������� ������� ������
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = async context =>
+            {
+                // ��������� �������������� ������������ �� ������
+                var userId = context.Principal.Identity.Name;
 
+                // ����� �� ������ ��������� �������������� ��������, ��������� ������������� ������������
+                // ��������, ��������� ���������� � ������������ �� ���� ������, ��������� userId
+                // ��� ������ ���������� ���������� �������
+            }
+        };
+    });
     serviceCollection.AddDbContext<WwContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("connStr")));
-    serviceCollection.AddIdentity<User, IdentityRole>(op => op.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WwContext>().AddDefaultTokenProviders().
-       AddTokenProvider<EmailConfirmationTokenProvider<User>>("emailConfirmationProvider");
+    serviceCollection.AddIdentity<WwUser, IdentityRole>(op => op.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WwContext>().AddDefaultTokenProviders().
+       AddTokenProvider<EmailConfirmationTokenProvider<WwUser>>("emailConfirmationProvider");
 
     serviceCollection.Configure<EmailConfirmationProviderOption>(op => op.TokenLifespan = TimeSpan.FromDays(5));
 
@@ -85,6 +116,7 @@ void ConfigurationService(IServiceCollection serviceCollection)
     serviceCollection.AddTransient<TestService>();
     serviceCollection.AddTransient<UnitService>();
     serviceCollection.AddTransient<CategoryService>();
+    serviceCollection.AddTransient<PageService>();
 
     BllConfiguration.ConfigurationService(serviceCollection);
 }

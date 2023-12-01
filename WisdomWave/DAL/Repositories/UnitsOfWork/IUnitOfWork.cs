@@ -21,5 +21,6 @@ namespace DAL.Repositories.UnitsOfWork
         TestRepository TestRepository { get; }
         UnitRepository UnitRepository { get; }
         CategoryRepository CategoryRepository { get; }
+        PageRepository PageRepository{ get; }
     }
 }

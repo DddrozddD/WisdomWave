@@ -6,6 +6,10 @@ using Domain.Models;
 using BLL.Services;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
+using WisdomWave.Models;
+using DAL.Models;
+using System.Globalization;
+using System.Linq;
 
 namespace WisdomWave.Controllers
 {
@@ -15,11 +19,18 @@ namespace WisdomWave.Controllers
     {
         private readonly UnitService unitService;
         private readonly CourseService courseService;
-        private readonly UserManager<User> _userManager;
+        private readonly ParagraphService paragraphService;
+        private readonly TestService testService;
+        private readonly PageService pageService;
+        private readonly UserManager<WwUser> _userManager;
 
-        public UnitController(UnitService unitService)
+        public UnitController(UnitService unitService, CourseService courseService, ParagraphService paragraphService, TestService testService, PageService pageService)
         {
+            this.courseService = courseService;
+            this.pageService= pageService;
             this.unitService = unitService;
+            this.paragraphService = paragraphService;
+            this.testService = testService;
         }
 
 
@@ -30,19 +41,34 @@ namespace WisdomWave.Controllers
             return new JsonResult(units);
         }
 
-        [HttpGet("{id}")] // HTTP GET request handler for retrieving a unit by its identifier
-        public async Task<IActionResult> Get(int id)
+        [HttpGet("GetAllTestsOfUnit/{id}")] // HTTP GET request handler for retrieving a unit by its identifier
+        public async Task<IActionResult> GetAllTestsOfUnit(int id)
+
         {
-            var unit = await unitService.FindByConditionItemAsync(u => u.Id == id);
-            if (unit == null)
+            
+            IReadOnlyCollection<Test> tests = await testService.FindByConditionAsync(t=>t.unitId==id);
+            if (tests == null)
             {
                 return NotFound();
             }
-            return new JsonResult(unit);
+            return new JsonResult(tests);
         }
 
 
-        [HttpGet("{userid}/{unitId}")] // HTTP GET request handler for retrieving a test by its identifier
+
+        [HttpGet("GetAllPagesOfUnit/{id}")] // HTTP GET request handler for retrieving a unit by its identifier
+        public async Task<IActionResult> GetAllPagesOfUnit(int id)
+        {
+
+            IReadOnlyCollection<Page> pages = await pageService.FindByConditionAsync(t => t.unitId == id);
+            if (pages == null)
+            {
+                return NotFound();
+            }
+            return new JsonResult(pages);
+        }
+
+        [HttpGet("Check/{userId}/{unitId}")] // HTTP GET request handler for retrieving a test by its identifier
         public async Task<IActionResult> Check(int unitId, string userId)
         {
 
@@ -66,7 +92,7 @@ namespace WisdomWave.Controllers
             return new JsonResult(result.Message);
         }
 
-        [HttpPost("courseId")] // HTTP POST request handler for creating a new unit
+        [HttpPost("{courseId}")] // HTTP POST request handler for creating a new unit
         public async Task<IActionResult> Post([FromBody] Unit unit, int courseId)
         {
             if (unit == null)
@@ -92,16 +118,51 @@ namespace WisdomWave.Controllers
             return BadRequest(result.Message);
         }
 
+        [HttpPost("addDefaultUnit/{courseId}")] // HTTP POST request handler for creating a new default unit
+        public async Task<IActionResult> Post(int courseId)
+        {
+            Unit unit = new Unit { Number = 1, DateOfCreate = DateTime.Now.ToString(), UnitName = "Новий блок" };
+            var result = await unitService.CreateAsync(unit, courseId);
+
+            // Get the course by CourseId using CourseService
+           
+            if (result.IsError == false)
+            {
+                return Ok(); // Return a status of 201 Created
+            }
+            return BadRequest(result.Message);
+        }
+
         [HttpPut("{id}")] // HTTP PUT request handler for updating an existing unit
-        public async Task<IActionResult> Put(int id, [FromBody] Unit unit)
+        public async Task<IActionResult> Put(int id, [FromBody] ReturnUnit unit)
         {
             if (unit == null)
             {
                 return BadRequest();
             }
 
-            await unitService.EditAsync(id, unit);
-            return NoContent(); // Return a status of 204 No Content
+            Unit thisUnit = await unitService.FindByConditionItemAsync(u => u.Id == id);
+            OperationDetails res = await unitService.EditAsync(id, new Unit
+            {
+                Id = unit.Id,
+                UnitName = unit.UnitName,
+                DateOfCreate = unit.DateOfCreate,
+                Number= unit.Number,
+                courseId = unit.courseId,
+                Course = thisUnit.Course,
+                Pages = thisUnit.Pages,
+                Tests = thisUnit.Tests,
+                PassedUnitUsers = thisUnit.PassedUnitUsers
+            });
+           
+            if (res.IsError == false)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(res.Message);
+            }
         }
 
         [HttpDelete("{id}")] // HTTP DELETE request handler for deleting a unit by its identifier

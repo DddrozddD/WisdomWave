@@ -28,7 +28,7 @@ namespace DAL.Repositories
         }
         public async Task<OperationDetails> Update(Unit unit, int Id)
         {
-            try { 
+            try {
             var model = this.Entities.Where(s => s.Id == Id).First();
             model.Number = unit.Number;
             model.UnitName = unit.UnitName;
@@ -36,7 +36,7 @@ namespace DAL.Repositories
             model.courseId = unit.courseId;
             model.Course = unit.Course;
             model.PassedUnitUsers = unit.PassedUnitUsers;
-            model.Paragraphs = unit.Paragraphs;
+            model.Pages = unit.Pages;
             model.Tests = unit.Tests;
 
             this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;

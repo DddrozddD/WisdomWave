@@ -3,6 +3,8 @@ import template from "./UserProfile.jsx";
 import Layout from "../../Layout/Layout.js";
 import MainProfile from "../MainProfile/MainProfile.js";
 import {variables} from './../../Variables.js';
+import { setCookie, deleteCookie, getCookie } from './../../CookieHandler.js';
+
 
 class UserProfile extends React.Component {
   constructor(props){
@@ -16,7 +18,9 @@ class UserProfile extends React.Component {
   }
   componentDidMount=async()=>{
     try{
-    await fetch(variables.API_URL+'authorization/GetUser/')
+
+    await fetch(variables.API_URL+'authorization/GetUser/'+getCookie("YourSecretKeyHere"))
+
         .then(response=>response.json())
         .then(data=>{
           console.log(data);
@@ -74,7 +78,7 @@ class UserProfile extends React.Component {
             <div className="settings_sections">
               <div className="setting_section">
               <p>Ім’я користувача</p>
-              <input id="userName" name="userName" type="text" placeholder="Ім’я" onChange={this.handleInputChange}/>
+              <input id="userName" name="userName" type="text" placeholder="Ім’я" onChange={this.handleInputChange} value={this.state.userName}/>
               </div>
               <div className="setting_section">
               <p>Дата народження</p>

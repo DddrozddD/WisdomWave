@@ -11,6 +11,10 @@ import { useState } from 'react';
 import MainPage from './MainPage/MainPage';
 import AddCourse from './Constructor/AddCourse/AddCourse';
 import MargeUnits from './Constructor/MargeUnits/MargeUnits';
+import EditPage from './Constructor/EditPage/EditPage';
+import EditTest from './Constructor/EditTest/EditTest';
+import EditQuestion from './Constructor/EditQuestion/EditQuestion';
+import MainCoursePage from './CourseDisplay/MainCoursePage/MainCoursePage';
 
 
 
@@ -36,6 +40,11 @@ function App() {
     <Route path='/user-studing' element={<UserLearning />} />
     <Route path='/add-course' element={<AddCourse />} />
     <Route path='/marge-units' element={<MargeUnits />} />
+
+    <Route path='/edit-page' element={<EditPage />} />
+    <Route path='/edit-test' element={<EditTest />}/>
+    <Route path='/edit-question' element={<EditQuestion />}/>
+    <Route path='/display-course' element={<MainCoursePage />}/>
     </Routes>
     </BrowserRouter>
   );

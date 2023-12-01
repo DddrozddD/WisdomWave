@@ -33,14 +33,15 @@ namespace DAL.Context
             modelBuilder.Entity<LearnerUserToCourse>().HasOne(l => l.User).WithMany(u => u.LearningCourses).HasForeignKey(l=>l.userId).OnDelete(DeleteBehavior.ClientSetNull);
             modelBuilder.Entity<LearnerUserToCourse>().HasOne(l => l.Course).WithMany(c => c.LearnerUsers).HasForeignKey(l => l.courseId).OnDelete(DeleteBehavior.ClientSetNull);
             modelBuilder.Entity<Category>().HasMany(c => c.ParentCategories).WithMany(c => c.ChildCategories);
-            modelBuilder.Entity<User>().HasMany(u => u.CompletedParagraphs).WithMany(p => p.PassedParagraphUsers);
-            modelBuilder.Entity<User>().HasMany(u => u.CompletedTests).WithMany(t => t.PassedTestUsers);
-            modelBuilder.Entity<User>().HasMany(u => u.CompletedUnits).WithMany(u => u.PassedUnitUsers);
+            modelBuilder.Entity<WwUser>().HasMany(u => u.CompletedPages).WithMany(p => p.PassedPageUsers);
+            modelBuilder.Entity<WwUser>().HasMany(u => u.CompletedTests).WithMany(t => t.PassedTestUsers);
+            modelBuilder.Entity<WwUser>().HasMany(u => u.CompletedUnits).WithMany(u => u.PassedUnitUsers);
 
             modelBuilder.Entity<LearnerUserToCourse>().Property(uc=>uc.isCompleted).HasDefaultValue(false);
 
             modelBuilder.Entity<Unit>().HasOne(u => u.Course).WithMany(c => c.Units).HasForeignKey(u => u.courseId);
-            modelBuilder.Entity<Paragraph>().HasOne(p => p.Unit).WithMany(u => u.Paragraphs).HasForeignKey(p=>p.unitId);
+            modelBuilder.Entity<Page>().HasOne(p => p.Unit).WithMany(u => u.Pages).HasForeignKey(p=>p.unitId);
+            modelBuilder.Entity<Paragraph>().HasOne(p => p.Page).WithMany(u => u.Paragraphs).HasForeignKey(p => p.pageId);
             modelBuilder.Entity<Test>().HasOne(t => t.Unit).WithMany(u => u.Tests).HasForeignKey(t => t.unitId);
             modelBuilder.Entity<Question>().HasOne(q => q.Test).WithMany(t => t.Questions).HasForeignKey(q => q.testId);
             modelBuilder.Entity<Answer>().HasOne(a => a.Question).WithMany(q => q.Answers).HasForeignKey(a => a.questionId);
@@ -50,20 +51,21 @@ namespace DAL.Context
             modelBuilder.Entity<LikeDislike>().HasKey(l => new { l.userId, l.reviewId });
 
             modelBuilder.Entity<Review>().Property(r => r.courseId).IsRequired(false);
-            modelBuilder.Entity<User>().Property(u=>u.subscriptionId).IsRequired(false);
+            modelBuilder.Entity<WwUser>().Property(u=>u.subscriptionId).IsRequired(false);
             modelBuilder.Entity<Answer>().Property(a => a.questionId).IsRequired(false);
             modelBuilder.Entity<Answer>().Property(a => a.subQuestionId).IsRequired(false);
-            modelBuilder.Entity<Paragraph>().Property(p => p.unitId).IsRequired(false);
+            modelBuilder.Entity<Page>().Property(p => p.unitId).IsRequired(false);
             modelBuilder.Entity<Test>().Property(t => t.unitId).IsRequired(false);
             modelBuilder.Entity<Unit>().Property(u => u.courseId).IsRequired(false);
             modelBuilder.Entity<Question>().Property(q => q.testId).IsRequired(false);
             modelBuilder.Entity<SubQuestion>().Property(sq => sq.questionId).IsRequired(false);
-            modelBuilder.Entity<User>().Property(u => u.Age).IsRequired(false);
-            modelBuilder.Entity<User>().Property(u => u.Country).IsRequired(false);
-            modelBuilder.Entity<User>().Property(u => u.ImagePhotoUserLink).IsRequired(false);
-            modelBuilder.Entity<User>().Property(u => u.UserRating).IsRequired(false);
-            modelBuilder.Entity<User>().Property(u => u.subscriptionId).IsRequired(false);
-            modelBuilder.Entity<User>().Property(u => u.Town).IsRequired(false);
+            modelBuilder.Entity<Question>().Property(q => q.QuestionType).IsRequired(false);
+            modelBuilder.Entity<WwUser>().Property(u => u.Age).IsRequired(false);
+            modelBuilder.Entity<WwUser>().Property(u => u.Country).IsRequired(false);
+            modelBuilder.Entity<WwUser>().Property(u => u.ImagePhotoUserLink).IsRequired(false);
+            modelBuilder.Entity<WwUser>().Property(u => u.UserRating).IsRequired(false);
+            modelBuilder.Entity<WwUser>().Property(u => u.subscriptionId).IsRequired(false);
+            modelBuilder.Entity<WwUser>().Property(u => u.Town).IsRequired(false);
             modelBuilder.Entity<Course>().Property(c => c.ImageLinkCourse).IsRequired(false);
             modelBuilder.Entity<Course>().Property(c => c.RatingCourse).IsRequired(false);
 
@@ -71,7 +73,7 @@ namespace DAL.Context
 
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<WwUser> Users { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<LearnerUserToCourse> LearnerUserToCourse { get; set;}
         public DbSet<Subscription> Subscriptions { get; set; }
@@ -84,5 +86,6 @@ namespace DAL.Context
         public DbSet<Test> Test { get; set; }
         public DbSet<Unit> Unit { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Page> Page { get; set; }
     }
 }
