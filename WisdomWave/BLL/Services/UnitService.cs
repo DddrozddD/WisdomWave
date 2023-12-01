@@ -40,7 +40,7 @@ namespace BLL.Services
             if (result.IsError == false)
             {
 
-                Unit newUnit = await unitOfWork.UnitRepository.FindByConditionItemAsync(u => (u.UnitName == unit.UnitName) && (u.DateOfCreate == unit.DateOfCreate) && (u.number == unit.number) && (u.courseId == unit.courseId));
+                Unit newUnit = await unitOfWork.UnitRepository.FindByConditionItemAsync(u => (u.UnitName == unit.UnitName) && (u.DateOfCreate == unit.DateOfCreate) && (u.Number == unit.Number) && (u.courseId == unit.courseId));
 
 
                 course.Units.ToList().Add(newUnit);

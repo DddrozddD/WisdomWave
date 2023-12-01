@@ -29,7 +29,7 @@ public class CoursesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetCourse(int id)
+    public async Task<IActionResult> GetCourse(int id)  
     {
         User user = await _userManager.GetUserAsync(User);
         var course = await _courseService.FindByConditionItemAsync(c => c.Id == id);
