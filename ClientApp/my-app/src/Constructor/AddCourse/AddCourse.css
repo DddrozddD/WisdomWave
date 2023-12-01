@@ -23,6 +23,7 @@
     font-size: 0.8rem;
 }
 .background{
+    z-index: -1;
     background-color: #F6FEF8;
     height: 100vh;
     width: 100%;
@@ -43,17 +44,14 @@
     width: 23rem;
     margin-left: 1rem;
 }
-.textArea p{
-text-align: right;
 
-}
 .textArea{
     width: 28%;
 }
 
 .textOption{
     text-align: right;
-    width: 20rem;
+    width: 10rem;
 }
 
 .inputArea{
@@ -86,7 +84,6 @@ line-height: 150%;
     margin-right: 7px;
 }
 .left_back_constr{
-    position: relative;
     float: left;
     z-index: 0;
     width: 10%;
@@ -105,8 +102,8 @@ line-height: 150%;
 }
 .inputAnnotation{
     
-    margin-left: 22rem;
-    width: 50%;
+    margin-left: 12rem;
+    width: 70%;
     height: 22vh;
    
     border: 1px solid #56D2F8;

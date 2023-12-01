@@ -6,6 +6,7 @@ using Domain.Models;
 using BLL.Services;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
+using WisdomWave.Models;
 
 namespace WisdomWave.Controllers
 {
@@ -15,11 +16,15 @@ namespace WisdomWave.Controllers
     {
         private readonly TestService testService;
         private readonly UnitService unitService;
-        private readonly UserManager<User> _userManager;
+        private readonly QuestionService questionService;
+        private readonly UserManager<WwUser> _userManager;
 
-        public TestController(TestService testService)
+        public TestController(TestService testService, UserManager<WwUser> userManager, UnitService unitService, QuestionService questionService)
         {
+            _userManager = userManager;
             this.testService = testService;
+            this.unitService = unitService;
+            this.questionService = questionService;
         }
 
         [HttpGet] // HTTP GET request handler for retrieving all tests
@@ -40,7 +45,28 @@ namespace WisdomWave.Controllers
             return new JsonResult(test);
         }
 
-        
+        [HttpGet("GetQuestions/{id}")]
+        public async Task<IActionResult> GetQuestions(int id)
+        {
+            var questions = await questionService.FindByConditionAsync(q => q.testId == id);
+            if(questions.Count() == 0)
+            {
+                var res = await questionService.CreateAsync(new Question
+                {
+                    QuestionName = "Питання тесту",
+                    QuestionType ="",
+                    QuestionText = "",
+                    CountOfPoints = 1
+                   }, id);
+
+                if(res.IsError == false)
+                {
+                    questions = await questionService.FindByConditionAsync(q => q.testId == id);
+                }
+            }
+            return new JsonResult(questions);
+        }
+
         [HttpGet("{userid}/{testId}")] // HTTP GET request handler for retrieving a test by its identifier
         public async Task<IActionResult> Check(int testId, string userId)
         {
@@ -65,27 +91,35 @@ namespace WisdomWave.Controllers
             return new JsonResult(result.Message);
         }
         
-        [HttpPost("{unitId}")] // HTTP POST request handler for creating a new test
-        public async Task<IActionResult> Post([FromBody] Test test, int unitId)
+        [HttpPost()] // HTTP POST request handler for creating a new test
+        public async Task<IActionResult> Post([FromBody] PostTest test)
         {
             if (test == null)
             {
                 return BadRequest();
             }
 
-            var unit = await unitService.FindByConditionItemAsync(u => u.Id == unitId);
+            Unit unit = await unitService.FindByConditionItemAsync(u => u.Id == test.unitId);
 
             if (unit == null)
             {
                 return NotFound("Unit not found");
             }
 
-            test.Unit = unit;
+            Test newTest = new Test
+            {
+                Unit = unit,
+                unitId = test.unitId,
+                TestName = test.TestName,
+                TestDescription = test.TestDescription,
+                DateOfCreate = DateTime.Today.ToString()
+            };
 
-            var result = await testService.CreateAsync(test, unit.Id);
+
+            var result = await testService.CreateAsync(newTest, unit.Id);
             if (result.IsError == false)
             {
-                return Created($"api/tests/{test.Id}", test); // Return a status of 201 Created
+                return Ok(); // Return a status of 201 Created
             }
             return BadRequest(result.Message);
         }

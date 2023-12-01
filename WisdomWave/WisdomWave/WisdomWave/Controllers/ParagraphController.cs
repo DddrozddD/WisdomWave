@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
 using BLL.Services;
 using Microsoft.AspNetCore.Identity;
+using WisdomWave.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WisdomWave.Controllers
 {
@@ -13,12 +15,15 @@ namespace WisdomWave.Controllers
     public class ParagraphController : ControllerBase
     {
         private readonly ParagraphService paragraphService;
+        private readonly PageService pageService;
         private readonly UnitService unitService;
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<WwUser> _userManager;
 
-        public ParagraphController(ParagraphService paragraphService)
+        public ParagraphController(ParagraphService paragraphService, UnitService unitService, PageService pageService)
         {
+            this.unitService = unitService;
             this.paragraphService = paragraphService;
+            this.pageService = pageService;
         }
 
         [HttpGet] // HTTP GET request handler for retrieving all paragraphs
@@ -39,64 +44,50 @@ namespace WisdomWave.Controllers
             return new JsonResult(paragraph);
         }
 
-        [HttpPost("{unitID}")] // HTTP POST request handler for creating a new paragraph
-        public async Task<IActionResult> Post([FromBody] Paragraph paragraph, int unitID)
+
+        [HttpPost] // HTTP POST request handler for creating a new Page
+        public async Task<IActionResult> Post([FromBody] PostParagraph paragraph)
         {
             if (paragraph == null)
             {
                 return BadRequest();
             }
 
-            var unit = await unitService.FindByConditionItemAsync(u => u.Id == unitID);
 
-            if (unit == null)
+
+            var result = await paragraphService.CreateAsync(new Paragraph
             {
-                return NotFound("Unit not found");
-            }
-
-            paragraph.Unit = unit;
-
-            var result = await paragraphService.CreateAsync(paragraph, unit.Id);
+                ParagraphName = paragraph.ParagraphName,
+                ParagraphText= paragraph.ParagraphText,
+                pageId =paragraph.pageId,
+                Page = await pageService.FindByConditionItemAsync(p=>p.Id==paragraph.pageId)
+            });
             if (!result.IsError)
             {
-                return Created($"api/paragraphs/{paragraph.Id}", paragraph); // Return a status of 201 Created
+                return Ok(); // Return a status of 201 Created
             }
             return BadRequest(result.Message);
         }
 
-        [HttpGet("{userid}/{paragraphId}")] // HTTP GET request handler for retrieving a test by its identifier
-        public async Task<IActionResult> Check(int paragraphId, string userId)
-        {
-
-            var paragraph = await paragraphService.FindByConditionItemAsync(p => p.Id == paragraphId);
-            if (paragraph == null)
-            {
-                return NotFound();
-            }
-            var user = await _userManager.FindByIdAsync(userId);
-
-            if (user == null)
-            {
-                return NotFound("User not found");
-            }
-
-            var result = await paragraphService.CheckUser(paragraph, user);
-            if (result.IsError == false)
-            {
-                return Created($"api/tests/{paragraph.Id}", paragraph); // Return a status of 201 Created
-            }
-            return new JsonResult(result.Message);
-        }
 
         [HttpPut("{id}")] // HTTP PUT request handler for updating an existing paragraph
-        public async Task<IActionResult> Put(int id, [FromBody] Paragraph paragraph)
+        public async Task<IActionResult> Put(int id, [FromBody] PostParagraph paragraph)
         {
             if (paragraph == null)
             {
                 return BadRequest();
             }
 
-            await paragraphService.EditAsync(id, paragraph);
+
+
+            await paragraphService.EditAsync(id, new Paragraph
+            {
+                Id= id,
+                ParagraphName = paragraph.ParagraphName,
+                ParagraphText = paragraph.ParagraphText,
+                pageId = paragraph.pageId,
+                Page = await pageService.FindByConditionItemAsync(p => p.Id == paragraph.pageId)
+            });
             return NoContent(); // Return a status of 204 No Content
         }
 

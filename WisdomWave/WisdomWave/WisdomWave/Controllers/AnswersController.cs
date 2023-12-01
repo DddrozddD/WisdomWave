@@ -2,6 +2,7 @@
 using Domain.Models;
 using BLL.Services;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using WisdomWave.Models;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -11,9 +12,10 @@ public class AnswersController : ControllerBase
     private readonly QuestionService _questionService;
     private readonly SubQuestionService _subQuestionService;
 
-    public AnswersController(AnswerService answerService)
+    public AnswersController(AnswerService answerService, QuestionService questionService)
     {
         _answerService = answerService;
+        _questionService = questionService;
     }
 
     [HttpGet]
@@ -36,24 +38,28 @@ public class AnswersController : ControllerBase
         return new JsonResult(answer);
     }
 
-    [HttpPost("questionId")]
-    public async Task<IActionResult> CreateAnswerInQuestion([FromBody] Answer answer, int questionId)
+    [HttpPost()]
+
+    public async Task<IActionResult> CreateAnswerInQuestion([FromBody] PushAnswer answer)
     {
    
-        var question = await _questionService.FindByConditionItemAsync(a => a.Id == questionId);
+        var question = await _questionService.FindByConditionItemAsync(a => a.Id == answer.questionId);
 
         if (question == null)
         {
             return NotFound("Question not found");
         }
-
-        answer.Question = question;
-        answer.questionId = questionId;
-        var result = await _answerService.CreateAsync(answer,question.Id);
+        var result = await _answerService.CreateAsync(new Answer
+        {
+            AnswerText= answer.AnswerText,
+            IsCorrect=answer.IsCorrect,
+            questionId=question.Id,
+            Question = question
+        });
 
         if (result.IsError == false)
         {
-            return CreatedAtAction("GetAnswer", new { id = answer.Id }, answer);
+            return Ok();
         }
 
         return BadRequest(result.Message);
@@ -71,29 +77,32 @@ public class AnswersController : ControllerBase
         }
         answer.SubQuestion = subquestion;
 
-        var result = await _answerService.CreateAsync(answer, subquestion.Id);
+        var result = await _answerService.CreateAsync(answer);
 
         if (result.IsError == false)
         {
-            return CreatedAtAction("GetAnswer", new { id = answer.Id }, answer);
+            return Ok();
         }
 
         return BadRequest(result.Message);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAnswer(int id, [FromBody] Answer answer)
+    public async Task<IActionResult> UpdateAnswer(int id, [FromBody] PushAnswer answer)
     {
-        if (id != answer.Id)
-        {
-            return BadRequest();
-        }
 
-        var result = await _answerService.EditAsync(id, answer);
+        var result = await _answerService.EditAsync(id, new Answer
+        {
+            Id = id,
+            AnswerText= answer.AnswerText,
+            IsCorrect= answer.IsCorrect,
+            questionId = answer.questionId,
+            Question = await _questionService.FindByConditionItemAsync(q=>q.Id==answer.questionId)
+        });
 
         if (result.IsError == false)
         {
-            return NoContent();
+            return Ok();
         }
 
         return BadRequest(result.Message);

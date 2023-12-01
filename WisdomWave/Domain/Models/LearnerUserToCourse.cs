@@ -10,7 +10,7 @@ namespace Domain.Models
     {
         public bool isCompleted { get; set; }
         public string userId { get; set; }
-        public User User { get; set; }
+        public WwUser User { get; set; }
         public int courseId { get; set; }
         public Course Course { get; set; }
     }

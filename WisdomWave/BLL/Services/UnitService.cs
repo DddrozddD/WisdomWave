@@ -37,26 +37,13 @@ namespace BLL.Services
 
             OperationDetails result = await unitOfWork.UnitRepository.CreateAsync(unit);
 
-            if (result.IsError == false)
-            {
-
-                Unit newUnit = await unitOfWork.UnitRepository.FindByConditionItemAsync(u => (u.UnitName == unit.UnitName) && (u.DateOfCreate == unit.DateOfCreate) && (u.number == unit.number) && (u.courseId == unit.courseId));
-
-
-                course.Units.ToList().Add(newUnit);
-
-                IReadOnlyCollection<Unit> newUnits = new ReadOnlyCollection<Unit>(course.Units.ToList());
-                course.Units = newUnits;
-                await unitOfWork.CourseRepository.Update(course, courseId);
-            }
-
             return result;
         }
 
-        public async Task<OperationDetails> CheckUser(Unit unit, User user)
+        public async Task<OperationDetails> CheckUser(Unit unit, WwUser user)
         {
 
-            List<User> new_users_list = new List<User>();
+            List<WwUser> new_users_list = new List<WwUser>();
 
             if (unit.PassedUnitUsers == null)
             {
@@ -84,6 +71,6 @@ namespace BLL.Services
         }
 
         public async Task DeleteAsync(int id) => await unitOfWork.UnitRepository.Delete(id);
-        public async Task EditAsync(int id, Unit unit) => await unitOfWork.UnitRepository.Update(unit, id);
+        public async Task<OperationDetails> EditAsync(int id, Unit unit) => await unitOfWork.UnitRepository.Update(unit, id);
     }
 }

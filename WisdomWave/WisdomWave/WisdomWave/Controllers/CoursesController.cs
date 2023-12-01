@@ -4,7 +4,10 @@ using BLL.Services;
 using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Identity;
 using WisdomWave.Models;
-using Domain.Models.Helper;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.AspNetCore.Authorization;
+using EllipticCurve.Utils;
+using System.Security.Claims;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -12,13 +15,22 @@ public class CoursesController : ControllerBase
 {
     private readonly CourseService _courseService;
     private readonly CategoryService _categoryService;
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<WwUser> _userManager;
+    private readonly UnitService _unitService;
+    private readonly TestService _testService;
+    private readonly ParagraphService _paragraphService;
+    private readonly PageService _pageService;
 
-    public CoursesController(CourseService courseService, UserManager<User> userManager, CategoryService categoryService)
+    public CoursesController(CourseService courseService, UserManager<WwUser> userManager, CategoryService categoryService, UnitService unitService, TestService testService, ParagraphService paragraphService,
+        PageService pageService)
     {
         _courseService = courseService;
         _userManager = userManager;
         _categoryService = categoryService;
+        _unitService = unitService;
+        _testService = testService;
+        _paragraphService = paragraphService;
+        _pageService = pageService;
     }
 
     [HttpGet]
@@ -31,7 +43,7 @@ public class CoursesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCourse(int id)
     {
-        User user = await _userManager.GetUserAsync(User);
+        WwUser user = await _userManager.GetUserAsync(User);
         var course = await _courseService.FindByConditionItemAsync(c => c.Id == id);
 
         if (course == null)
@@ -41,23 +53,61 @@ public class CoursesController : ControllerBase
 
         return new JsonResult(course);
     }
-    [HttpGet("GetEditCourse")]
-    public async Task<IActionResult> GetEditCourse()
+    [HttpGet("GetEditCourseUnits/{createCourseIdToken}")]   
+    public async Task<IActionResult> GetEditCourseUnits(string createCourseIdToken)
     {
-        
-        User user = await _userManager.GetUserAsync(User);
-        var course = await _courseService.FindByConditionItemAsync(c => c.Id == UserIdentity.EditCourseId);
+        var courseClaims = JwtHandler.DecodeJwtToken(createCourseIdToken);
+        WwUser user = await _userManager.GetUserAsync(User);
+        int createCourseId = Convert.ToInt32(courseClaims.FirstOrDefault(c => c.Type == "course_id").Value);
+        var course = await _courseService.FindByConditionItemAsync(c => c.Id == createCourseId);
+        IReadOnlyCollection<Unit> courseUnits = await _unitService.FindByConditionAsync(u=>u.courseId== course.Id);
 
+
+        var returnUnits = new List<ReturnUnit>();
         if (course == null)
         {
             return NotFound();
         }
+        if(courseUnits.Count == 0)
+        {
+            await _unitService.CreateAsync(new Unit { Number = 1, DateOfCreate = DateTime.Now.ToString(), UnitName = "Новий блок" }, course.Id);
+            course = await _courseService.FindByConditionItemAsync(c => c.Id == createCourseId);
+            
+            foreach (var unit in course.Units)
+            {
+                ReturnUnit returnUnit = new ReturnUnit()
+                {
+                   
+                    courseId = unit.courseId,
+                    DateOfCreate = unit.DateOfCreate.ToString(),
+                    UnitName = unit.UnitName,
+                    Id = unit.Id,
+                    Number = unit.Number      
+                };
+                returnUnits.Add(returnUnit);
+            }
+            return new JsonResult(returnUnits);
+        }
+        foreach (var unit in courseUnits)
+        {
+            ReturnUnit returnUnit = new ReturnUnit()
+            {
+            
+                courseId = unit.courseId,
+                DateOfCreate = course.DateOfCreate.ToString(),
+                UnitName = unit.UnitName,
+                Id = unit.Id,
+                Number = unit.Number
 
-        return Ok(course);
+            };
+            returnUnits.Add(returnUnit);
+        }
+
+        return new JsonResult(returnUnits);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateCourse([FromBody] CreateCourseForm courseForm)
+    [HttpPost("{userToken}")]
+    public async Task<IActionResult> CreateCourse([FromBody] CreateCourseForm courseForm, string userToken)
     {
         try
         {
@@ -68,6 +118,7 @@ public class CoursesController : ControllerBase
             categories.Add(knowlage);
             categories.Add(education);
             categories.Add(theme);
+            var myUser = await _userManager.FindByIdAsync(JwtHandler.DecodeJwtToken(userToken).FirstOrDefault(c=>c.Type==ClaimTypes.NameIdentifier).Value);
             Course course = new Course()
             {
                 DateOfCreate = DateTime.Now,
@@ -75,14 +126,18 @@ public class CoursesController : ControllerBase
                 Description = courseForm.Description,
                 Language = courseForm.Language,
                 Categories = categories,
-                CreatorUser = await _userManager.FindByIdAsync(UserIdentity.UserIdentityId),
-                creatorUserId = UserIdentity.UserIdentityId
+                CreatorUser = myUser,
+                creatorUserId = myUser.Id
             };
 
-            await _courseService.CreateAsync(course);
-            course = await _courseService.FindByConditionItemAsync(c => c.CourseName == course.CourseName && c.creatorUserId == course.creatorUserId && c.DateOfCreate.Minute == course.DateOfCreate.Minute);
-            UserIdentity.EditCourseId = course.Id;
-            return CreatedAtAction("GetCourse", new { id = course.Id }, course);
+            var result = await _courseService.CreateAsync(course);
+            
+            
+            if(result.IsError == false) {
+                course = await _courseService.FindByConditionItemAsync(c => (c.CourseName == course.CourseName) && (c.creatorUserId == course.creatorUserId));
+                return new JsonResult(JwtHandler.GenerateJwtToken(course));
+            }
+            return BadRequest();
         }
         catch (Exception ex)
         {

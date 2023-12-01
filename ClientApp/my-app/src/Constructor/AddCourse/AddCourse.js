@@ -6,6 +6,7 @@ import RightBack from "../../images/Сonstructor/constrRight.png"
 import LeftBack from "../../images/Сonstructor/constrLeft.png"
 import Arrow from "../../images/arrow.png"
 import { NavLink } from "react-router-dom";
+import { setCookie, deleteCookie, getCookie } from './../../CookieHandler.js';
 
 class AddCourse extends React.Component {
   constructor(props) {
@@ -56,7 +57,7 @@ class AddCourse extends React.Component {
   createCourse = async () => {
     const {FullName, Knowledge, Education, Theme, Annotation, Language } = this.state;
       try {
-          const response = await fetch(variables.API_URL + 'courses', {
+          const response = await fetch(variables.API_URL + 'courses/'+ getCookie("YourSecretKeyHere"), {
               method: 'POST',
               headers: {
                   'Accept': 'application/json',
@@ -72,13 +73,16 @@ class AddCourse extends React.Component {
               }), 
               
           })
-
-          if (response.ok) {
-              console.log("Курс створений");
+          .then(response=>response.json())
+          .then(data=>{
+            if (data!="Bad Request"){
+              setCookie("CreatingCourseId", data, {secure: true, 'max-age': 3600});
               window.location.assign('http://localhost:3000/marge-units');
-          } else {
-              console.error("створити не вдалось");
-          }
+            }
+            else{
+              console.error("Увійти не вдалась");
+            }
+          })
       } catch (error) {
           console.error("Помилка:", error);
       }
@@ -113,7 +117,7 @@ class AddCourse extends React.Component {
         </section>
         <section>
         <select id="Knowledge" className="textInput" name="Knowledge" onChange={this.handleInputChange}>
-          <option>Дизайн</option>
+          <option>Веб розробка</option>
         </select>
         </section>
         </div>
@@ -124,7 +128,7 @@ class AddCourse extends React.Component {
         </section>
         <section>
         <select id="Education" className="textInput" name="Education" onChange={this.handleInputChange}>
-        <option>Дизайн одягу</option>
+        <option>JavaScript</option>
         </select>
         </section>
         </div>
@@ -134,7 +138,7 @@ class AddCourse extends React.Component {
         </section>
         <section>
         <select id="Theme" className="textInput" name="Theme" onChange={this.handleInputChange}>
-        <option>Мода</option>
+        <option>ReactJS</option>
         </select>
 
         </section>    

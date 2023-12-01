@@ -6,9 +6,9 @@ namespace ASP_Resume.Controllers
 {
     public class EmailConfirmController : Controller
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<WwUser> _userManager;
 
-        public EmailConfirmController(UserManager<User> userManager)
+        public EmailConfirmController(UserManager<WwUser> userManager)
         {
             _userManager = userManager;
         }
