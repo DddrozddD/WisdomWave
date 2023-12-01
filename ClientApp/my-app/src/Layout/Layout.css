@@ -5,6 +5,7 @@ body{
     display: inline-flex;
     font-family: Montserrat Alternates;
     width: 99%;
+
     align-items: center;
   }
  
@@ -18,6 +19,7 @@ body{
     text-decoration: none;
     margin-right: 10px;
 }
+
 
   .left_header{
     float: left;

@@ -4,7 +4,9 @@ import { Registration } from '../Registration/Registration.js';
 import { BrowserRouter, Route, Routes, NavLink } from 'react-router-dom'; 
 import IdentityUser from './../Variables.js';
 import {variables} from './../Variables.js';
+
 import { setCookie, deleteCookie, getCookie } from './../CookieHandler.js';
+
 
 export class Layout extends React.Component {
   constructor(props){
@@ -18,6 +20,7 @@ export class Layout extends React.Component {
   
   componentDidMount=async()=>{
     try{
+
       await fetch(variables.API_URL+'authorization/GetUser/'+getCookie("YourSecretKeyHere"))
     .then(response=>response.json())
     .then(data=>{
@@ -26,6 +29,7 @@ export class Layout extends React.Component {
         this.setState({UserName:data.name, UserSurname:data.surname});
       }
       
+
     });
   }
   catch(error){
@@ -51,6 +55,7 @@ export class Layout extends React.Component {
     }
     else{
       userDiv = (
+
              
          <>
          <div className='right_header'>
@@ -75,7 +80,9 @@ export class Layout extends React.Component {
     
      return (
       
+
       <>
+
         <header id='header'>
             <div className='left_header'>
                 <div className='top_left_header'>
@@ -133,6 +140,7 @@ export class Layout extends React.Component {
 {userDiv}
            
         </header>
+
         <footer>
 
         </footer>
@@ -141,6 +149,7 @@ export class Layout extends React.Component {
 
         
         </>
+
     );
   }
 }

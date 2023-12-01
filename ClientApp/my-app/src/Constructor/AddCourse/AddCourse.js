@@ -8,6 +8,7 @@ import Arrow from "../../images/arrow.png"
 import { NavLink } from "react-router-dom";
 import { setCookie, deleteCookie, getCookie } from './../../CookieHandler.js';
 
+
 class AddCourse extends React.Component {
   constructor(props) {
     super(props);
@@ -58,6 +59,7 @@ class AddCourse extends React.Component {
     const {FullName, Knowledge, Education, Theme, Annotation, Language } = this.state;
       try {
           const response = await fetch(variables.API_URL + 'courses/'+ getCookie("YourSecretKeyHere"), {
+
               method: 'POST',
               headers: {
                   'Accept': 'application/json',
@@ -73,6 +75,7 @@ class AddCourse extends React.Component {
               }), 
               
           })
+
           .then(response=>response.json())
           .then(data=>{
             if (data!="Bad Request"){
@@ -83,6 +86,7 @@ class AddCourse extends React.Component {
               console.error("Увійти не вдалась");
             }
           })
+
       } catch (error) {
           console.error("Помилка:", error);
       }
@@ -117,7 +121,9 @@ class AddCourse extends React.Component {
         </section>
         <section>
         <select id="Knowledge" className="textInput" name="Knowledge" onChange={this.handleInputChange}>
+
           <option>Веб розробка</option>
+
         </select>
         </section>
         </div>
@@ -128,7 +134,9 @@ class AddCourse extends React.Component {
         </section>
         <section>
         <select id="Education" className="textInput" name="Education" onChange={this.handleInputChange}>
+
         <option>JavaScript</option>
+
         </select>
         </section>
         </div>
@@ -138,7 +146,9 @@ class AddCourse extends React.Component {
         </section>
         <section>
         <select id="Theme" className="textInput" name="Theme" onChange={this.handleInputChange}>
+
         <option>ReactJS</option>
+
         </select>
 
         </section>    

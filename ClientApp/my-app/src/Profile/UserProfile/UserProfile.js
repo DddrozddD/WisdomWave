@@ -5,6 +5,7 @@ import MainProfile from "../MainProfile/MainProfile.js";
 import {variables} from './../../Variables.js';
 import { setCookie, deleteCookie, getCookie } from './../../CookieHandler.js';
 
+
 class UserProfile extends React.Component {
   constructor(props){
     super(props);
@@ -17,7 +18,9 @@ class UserProfile extends React.Component {
   }
   componentDidMount=async()=>{
     try{
+
     await fetch(variables.API_URL+'authorization/GetUser/'+getCookie("YourSecretKeyHere"))
+
         .then(response=>response.json())
         .then(data=>{
           console.log(data);

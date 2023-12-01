@@ -40,6 +40,7 @@ function App() {
     <Route path='/user-studing' element={<UserLearning />} />
     <Route path='/add-course' element={<AddCourse />} />
     <Route path='/marge-units' element={<MargeUnits />} />
+
     <Route path='/edit-page' element={<EditPage />} />
     <Route path='/edit-test' element={<EditTest />}/>
     <Route path='/edit-question' element={<EditQuestion />}/>

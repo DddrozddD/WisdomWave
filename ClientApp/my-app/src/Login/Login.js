@@ -6,6 +6,7 @@ import LeftBack from './../images/BackAuthLeft.png'
 import { NavLink } from "react-router-dom";
 import { setCookie, deleteCookie, getCookie } from './../CookieHandler.js';
 
+
 export class Login extends React.Component  {
 
   constructor(props) {
@@ -23,7 +24,6 @@ handleInputChange = (e) => {
   });
 }
 
-
 loginClick = async () => {
 
   const { email, password} = this.state;
@@ -39,6 +39,7 @@ loginClick = async () => {
               "Password": password
               
           })
+
           
       })
       .then(response=>response.json())
@@ -53,6 +54,7 @@ loginClick = async () => {
         
       })
       
+
   } catch (error) {
       console.error("Помилка:", error);
   }
