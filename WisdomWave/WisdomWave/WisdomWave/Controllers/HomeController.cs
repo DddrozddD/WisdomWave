@@ -27,6 +27,8 @@ public class HomeController : Controller
     {
 
         _courseService.FindAllLearningCoursesForUser((_userManager.FindByNameAsync(User.Identity.Name)).Id.ToString());
+
+        /*
         _categoryService.CreateAsync(new Category { CategoryName = "Розробка" });
         Category parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Розробка");
 
@@ -543,7 +545,7 @@ public class HomeController : Controller
 
         await _categoryService.CreateAsync(new Category { CategoryName = "Джембе" }, parentCategory.Id);
 
-
+        */
         return View();
     }
   
