@@ -9,6 +9,7 @@
   import { getCookie, setCookie } from "../../CookieHandler.js";
   import { BrowserRouter, Route, Routes, NavLink } from 'react-router-dom'; 
   import {usePagination} from "../../Pagination.js"
+  import Arrow from "../../images/arrow.png"
 
   class EditTest extends React.Component {
     constructor(props) {
@@ -16,24 +17,50 @@
 
       this.state = {
         questions:[],
-        selectedOptions: {}
+        selectedOptions: {},
+        TestName:"",
         
       }
     }
 
   
     componentDidMount=async()=>{
+      document.getElementById("general").style.display = "block";
+      this.getTest();
       this.getQuestions();
     }
+
+    show = (id) =>{
+      if(document.getElementById(id).style.display == "none"){
+        document.getElementById(id).style.display = "block";
+        document.getElementById("arrowBtn_"+id).classList.remove("rotated");
+      }
+      else{
+        document.getElementById(id).style.display = "none";
+        document.getElementById("arrowBtn_"+id).classList.add("rotated");
+      }
+      
+    }
+
+
+    getTest=async()=>{
+      try {
+        const response = await fetch(variables.API_URL + 'test/'+getCookie("EditTestId"));
+        const data = await response.json();
+          this.setState({TestName: data.testName});
+
+      } catch (error) {
+        console.error("Error fetching course units:", error);
+      }
+    }
+
 
     getQuestions=async()=>{
       try {
         const response = await fetch(variables.API_URL + 'test/GetQuestions/'+getCookie("EditTestId"));
         const data = await response.json();
-       
-          this.setState({  questions: data});
-      
-        
+          this.setState({questions: data});
+
       } catch (error) {
         console.error("Error fetching course units:", error);
       }
@@ -85,7 +112,7 @@
             this.getQuestions();
           }
           else{
-            console.error("Увійти не вдалась");
+            console.error("");
           }
         })
     } catch (error) {
@@ -99,7 +126,35 @@
       window.location.href = "/edit-question";
     }
 
-   
+    saveName=async()=>{
+      try {
+        const response = await fetch(variables.API_URL + 'test/'+getCookie("EditPageId"), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json; odata=verbose'
+            },
+            body: JSON.stringify({
+              "TestName": this.state.TestName,
+              "TestDescription": "",
+              "unitId": 0
+            }), 
+            
+        })
+        .then(response=>response.json())
+        .then(data=>{
+          if (data!="Bad Request"){
+            this.getPage(getCookie("EditPageId"));
+          }
+          else{
+            console.error("");
+          }
+        })
+    } catch (error) {
+        console.error("Помилка:", error);
+    }
+    
+    }
 
     render() {
       
@@ -198,6 +253,28 @@
         <div className="background">
         <img src={LeftBack} alt="constrLeft" className="left_back_constr"/>
         <img src={RightBack} alt="constrRight" className="right_back_constr"/>
+        <div className="TestNameView constrView "> 
+        <h1>Редагування тесту</h1>
+      <NavLink id="btnGeneral" className="showBtn btn" onClick={()=>this.show("general")}>
+        <img src={Arrow} alt="arrow" id="arrowBtn_general" className="arrowBtn " />
+        Назва сторінки</NavLink>
+      <div className="general dropDownForm" id="general">
+      
+      <div className="inputArea">
+        <section>
+        <p className="textTestNameCourse textOption">Назва<span className="redStar">*</span></p>
+        </section>
+        <section>
+        <input className="inputTestName textInput " name="TestName" id="TestName" type="text" onChange={this.handleInputChange} defaultValue={this.state.TestName}></input> 
+        </section>
+        <div className="resultBtns">
+      <NavLink className="saveBtn btn resultBtn" onClick={this.saveName}>Зберегти зміни</NavLink>
+      {/*<NavLink className="cancelBtn btn resultBtn">Скасувати</NavLink>*/}
+      </div>
+      <br/>
+       </div>   
+        </div>
+        </div>
         <div className="testView">
         <h1>Банк питань тесту</h1>
       

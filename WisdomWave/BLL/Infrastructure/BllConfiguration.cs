@@ -13,7 +13,6 @@ namespace BLL.Infrastructure
         public static void ConfigurationService(IServiceCollection serviceCollection)
         {
             serviceCollection.AddTransient<CourseRepository>();
-            serviceCollection.AddTransient<LearnerUserToCourseRepository>();
             serviceCollection.AddTransient<LikeDislikeRepository>();
             serviceCollection.AddTransient<ReviewRepository>();
             serviceCollection.AddTransient<SubscriptionRepository>();

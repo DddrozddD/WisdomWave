@@ -130,14 +130,20 @@ namespace WisdomWave.Controllers
         }
 
         [HttpPut("{id}")] // HTTP PUT request handler for updating an existing Page
-        public async Task<IActionResult> Put(int id, [FromBody] Page page)
+        public async Task<IActionResult> Put(int id, [FromBody] PostPage page)
         {
             if (page == null)
             {
                 return BadRequest();
             }
+            var thisPage = await pageService.FindByConditionItemAsync(p => p.Id == id);
+            thisPage.PageName = page.PageName;
+            thisPage.PhotoLinks = page.PhotoLinks;
+            thisPage.VideoLinks = page.VideoLinks;
+            
 
-            await pageService.EditAsync(id, page);
+
+            await pageService.EditAsync(id, thisPage);
             return NoContent(); // Return a status of 204 No Content
         }
 

@@ -6,6 +6,11 @@
 }
 
 .MainCoursePage{
-    transform: translateY(8rem);
+    margin-top: 5rem;
     margin-left: 8rem;
+}
+
+.link_course{
+    font-size: 1rem;
+    font-weight: bold;
 }

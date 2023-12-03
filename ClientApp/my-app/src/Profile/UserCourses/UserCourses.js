@@ -41,7 +41,7 @@ class UserCourses extends React.Component {
 
   showCourse=(id)=>{
     setCookie("ShowingCourseId", id)
-    window.location.href="http://localhost:3000/display-course";
+    window.location.href="http://localhost:3000/course-info";
   }
   render() {
     

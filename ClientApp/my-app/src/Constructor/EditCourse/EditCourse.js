@@ -1,14 +1,17 @@
 import React    from "react";
-import template from "./AddCourse.jsx";
-import Layout from "../../Layout/Layout.js";
+import template from "./EditCourse.jsx";
 import {variables} from './../../Variables.js';
 import RightBack from "../../images/Сonstructor/constrRight.png"
 import LeftBack from "../../images/Сonstructor/constrLeft.png"
+import Layout from "../../Layout/Layout.js";
+import ph_pencil from "../../images/Сonstructor/ph_pencil.png"
+import ic_for_add from "../../images/Сonstructor/ic_for_add.png"
+import { getCookie, setCookie } from "../../CookieHandler.js";
 import Arrow from "../../images/arrow.png"
-import { NavLink } from "react-router-dom";
-import { setCookie, deleteCookie, getCookie } from './../../CookieHandler.js';
+import { BrowserRouter, Route, Routes, NavLink } from 'react-router-dom'; 
+import {usePagination} from "../../Pagination.js"
 
-class AddCourse extends React.Component {
+class EditCourse extends React.Component {
   constructor(props) {
     super(props);
 
@@ -33,6 +36,7 @@ class AddCourse extends React.Component {
     document.getElementById("arrowBtn_view").classList.remove("rotated");
 
     this.getCategories();
+    this.getCourse();
   }
 
 
@@ -369,12 +373,28 @@ catch(error){
 console.error("Помилка:", error);
 }
   }
-  createCourse = async () => {
+
+  getCourse=async()=>{
+    try {
+      const response = await fetch(variables.API_URL + 'courses/'+getCookie("EditCourseId"));
+      const data = await response.json();
+      this.setState({  FullName: data.courseName, 
+        Education: data.categories[1].categoryName, Knowledge: data.categories[0].categoryName, Theme: data.categories[2].categoryName,
+        Annotation: data.description, Language: data.language});
+    
+      
+    } catch (error) {
+      console.error("Error fetching course units:", error);
+    }
+  }
+
+
+  saveCourse = async () => {
     const {FullName, Knowledge, Education, Theme, Annotation, Language } = this.state;
       try {
-          const response = await fetch(variables.API_URL + 'courses/'+ getCookie("UserSecretKey"), {
+          const response = await fetch(variables.API_URL + 'courses/'+ getCookie("EditCourseId"), {
 
-              method: 'POST',
+              method: 'PUT',
               headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json; odata=verbose'
@@ -390,7 +410,7 @@ console.error("Помилка:", error);
               
           })
           if(response.ok){
-            window.location.href = "http://localhost:3000/user-courses"
+            window.location.href = "http://localhost:3000/marge-units"
           }
 
       } catch (error) {
@@ -419,7 +439,7 @@ console.error("Помилка:", error);
         <p className="textFullNameCourse textOption">Повна назва курсу<span className="redStar">*</span></p>
         </section>
         <section>
-        <input className="inputFullName textInput " name="FullName" type="text" onChange={this.handleInputChange}></input> 
+        <input className="inputFullName textInput " name="FullName" type="text" onChange={this.handleInputChange} defaultValue={this.state.FullName}></input> 
         </section>
        </div>
 
@@ -485,7 +505,7 @@ console.error("Помилка:", error);
         <p className="textOption inputTextarea">Анотація курсу</p>
       
       
-        <textarea className="inputAnnotation" name="Annotation" onChange={this.handleInputChange}/> <br/>
+        <textarea className="inputAnnotation" name="Annotation" onChange={this.handleInputChange} defaultValue={this.state.Annotation}/> <br/>
      
       </div>
       <br/>
@@ -499,20 +519,20 @@ console.error("Помилка:", error);
         </section>
         <section>
         <select id="Language" className="inputLanguage textInput" name="Language" onChange={this.handleInputChange}>
-          <option>Українська</option>
-          <option>Англійська</option>
-          <option>Німецька</option>
-          <option>Французька</option>
-          <option>Італійська</option>
-          <option>Іспанська</option>
+          <option selected={this.state.Language === "Українська"? true: false}>Українська</option>
+          <option selected={this.state.Language === "Англійська"? true: false}>Англійська</option>
+          <option selected={this.state.Language === "Німецька"? true: false}>Німецька</option>
+          <option selected={this.state.Language === "Французька"? true: false}>Французька</option>
+          <option selected={this.state.Language === "Італійська"? true: false}>Італійська</option>
+          <option selected={this.state.Language === "Іспанська"? true: false}>Іспанська</option>
         </select>
         </section>
       </div>
       </div>
       <br/>
       <div className="resultBtns">
-      <NavLink className="saveBtn btn resultBtn" onClick={this.createCourse}>Зберегти зміни</NavLink>
-      <NavLink className="cancelBtn btn resultBtn" to="/user-courses">Скасувати</NavLink>
+      <NavLink className="saveBtn btn resultBtn" onClick={this.saveCourse}>Зберегти зміни</NavLink>
+      <NavLink className="cancelBtn btn resultBtn" to="/course-info">Скасувати</NavLink>
       </div>
       <p className="downP">Обов’язкові поля  форми помічені символом<span className="redStar">*</span></p>
       </div>
@@ -520,6 +540,7 @@ console.error("Помилка:", error);
       </>
     );
   }
+
 }
 
-export default AddCourse;
+export default EditCourse;

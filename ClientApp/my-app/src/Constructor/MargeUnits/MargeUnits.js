@@ -29,7 +29,7 @@ componentDidMount=async()=>{
   getEditCourseUnits = async()=>{
     let Units = [];
     try {
-    const response = await fetch(variables.API_URL + 'courses/GetEditCourseUnits/'+getCookie("ShowingCourseId"));
+    const response = await fetch(variables.API_URL + 'courses/GetEditCourseUnits/'+getCookie("EditCourseId"));
     const data = await response.json();
     console.log(data);
     Units = data;
