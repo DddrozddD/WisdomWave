@@ -25,8 +25,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        _courseService.FindAllLearningCoursesForUser((_userManager.FindByNameAsync(User.Identity.Name)).Id.ToString());
-
+        
       
         _categoryService.CreateAsync(new Category { CategoryName = "Розробка" });
 
