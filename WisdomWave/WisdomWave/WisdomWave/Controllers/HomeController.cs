@@ -25,15 +25,14 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-<<<<<<< Updated upstream
-
         _courseService.FindAllLearningCoursesForUser((_userManager.FindByNameAsync(User.Identity.Name)).Id.ToString());
+
+      
         _categoryService.CreateAsync(new Category { CategoryName = "Розробка" });
-=======
-        /*
+
         
         await _categoryService.CreateAsync(new Category { CategoryName = "Розробка" });
->>>>>>> Stashed changes
+
         Category parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Розробка");
 
          await _categoryService.CreateAsync(new Category { CategoryName = "Веб розробка" }, parentCategory.Id);
@@ -47,7 +46,7 @@ public class HomeController : Controller
          await _categoryService.CreateAsync(new Category { CategoryName = "Angular" }, parentCategory.Id);
          await _categoryService.CreateAsync(new Category { CategoryName = "Python" }, parentCategory.Id);
          await _categoryService.CreateAsync(new Category { CategoryName = "TypeScript" }, parentCategory.Id);
-        */
+
 
         Category parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Розробка");
          await _categoryService.CreateAsync(new Category { CategoryName = "Обробка та аналіз даних" }, parentCategory.Id);
@@ -546,25 +545,9 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Звукова терапія" }, parentCategory.Id);
 
         await _categoryService.CreateAsync(new Category { CategoryName = "Джембе" }, parentCategory.Id);
-
-<<<<<<< Updated upstream
-
-        return View();
+return Redirect("http://localhost:3000/");
     }
   
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    public async Task<IActionResult> ShowViewReg()
-    {
-=======
->>>>>>> Stashed changes
-        
-
-
-        return Redirect("http://localhost:3000/"); ;
-    }
+ 
 
 }
