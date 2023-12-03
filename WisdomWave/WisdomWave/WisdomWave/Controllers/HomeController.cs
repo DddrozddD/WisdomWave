@@ -48,7 +48,7 @@ public class HomeController : Controller
          await _categoryService.CreateAsync(new Category { CategoryName = "TypeScript" }, parentCategory.Id);
 
 
-        Category parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Розробка");
+         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Розробка");
          await _categoryService.CreateAsync(new Category { CategoryName = "Обробка та аналіз даних" }, parentCategory.Id);
 
          parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Обробка та аналіз даних");
