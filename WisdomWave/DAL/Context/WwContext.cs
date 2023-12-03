@@ -36,6 +36,9 @@ namespace DAL.Context
             modelBuilder.Entity<WwUser>().HasMany(u => u.CompletedPages).WithMany(p => p.PassedPageUsers);
             modelBuilder.Entity<WwUser>().HasMany(u => u.CompletedTests).WithMany(t => t.PassedTestUsers);
             modelBuilder.Entity<WwUser>().HasMany(u => u.CompletedUnits).WithMany(u => u.PassedUnitUsers);
+            modelBuilder.Entity<Rating>().HasOne(r => r.Course).WithMany(u => u.Ratings).HasForeignKey(r => r.courseId).OnDelete(DeleteBehavior.ClientSetNull); ;
+            modelBuilder.Entity<Rating>().HasOne(r => r.User).WithMany(c => c.Ratings).HasForeignKey(r => r.userId).OnDelete(DeleteBehavior.ClientSetNull); ;
+
 
             modelBuilder.Entity<LearnerUserToCourse>().Property(uc=>uc.isCompleted).HasDefaultValue(false);
 
@@ -49,6 +52,7 @@ namespace DAL.Context
             modelBuilder.Entity<SubQuestion>().HasOne(sq => sq.Question).WithMany(q => q.SubQuestions).HasForeignKey(sq => sq.questionId);
             modelBuilder.Entity<LearnerUserToCourse>().HasKey(l => new { l.userId, l.courseId });
             modelBuilder.Entity<LikeDislike>().HasKey(l => new { l.userId, l.reviewId });
+            modelBuilder.Entity<Rating>().HasKey(r => new { r.userId, r.courseId });
 
             modelBuilder.Entity<Review>().Property(r => r.courseId).IsRequired(false);
             modelBuilder.Entity<WwUser>().Property(u=>u.subscriptionId).IsRequired(false);
@@ -60,7 +64,6 @@ namespace DAL.Context
             modelBuilder.Entity<Question>().Property(q => q.testId).IsRequired(false);
             modelBuilder.Entity<SubQuestion>().Property(sq => sq.questionId).IsRequired(false);
             modelBuilder.Entity<Question>().Property(q => q.QuestionType).IsRequired(false);
-            modelBuilder.Entity<WwUser>().Property(u => u.Age).IsRequired(false);
             modelBuilder.Entity<WwUser>().Property(u => u.Country).IsRequired(false);
             modelBuilder.Entity<WwUser>().Property(u => u.ImagePhotoUserLink).IsRequired(false);
             modelBuilder.Entity<WwUser>().Property(u => u.UserRating).IsRequired(false);
@@ -69,7 +72,7 @@ namespace DAL.Context
             modelBuilder.Entity<Course>().Property(c => c.ImageLinkCourse).IsRequired(false);
             modelBuilder.Entity<Course>().Property(c => c.RatingCourse).IsRequired(false);
 
-
+            modelBuilder.Entity<Category>().HasIndex(c => c.CategoryName).IsUnique();
 
         }
 

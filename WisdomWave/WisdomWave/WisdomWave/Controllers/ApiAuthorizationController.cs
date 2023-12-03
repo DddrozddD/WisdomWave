@@ -38,14 +38,13 @@ namespace ASP_Resume.Controllers
 
 
 
-        
+
         [HttpGet("GetUser/{token}")]
         public async Task<IActionResult> GetUser(string token)
         {
-            var tmp = User.Identities;
             var claims = JwtHandler.DecodeJwtToken(token);
 
-            WwUser userIdClaim = await _userManager.FindByIdAsync(claims.FirstOrDefault(c=>c.Type==ClaimTypes.NameIdentifier).Value);
+            WwUser userIdClaim = await _userManager.FindByIdAsync(claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
 
             if (userIdClaim != null)
@@ -56,47 +55,48 @@ namespace ASP_Resume.Controllers
 
             return BadRequest();
         }
-    
+
 
 
         [HttpPost("RegUser")]
         public async Task<IActionResult> RegUser([FromBody] RegisterViewModel registerViewModel)
         {
-            
-            if (registerViewModel.ConfirmPass == registerViewModel.Password) { 
-            var user = new WwUser
-            {
-                Email = registerViewModel.Email,
-                UserName = registerViewModel.Email,
-                Name= registerViewModel.Name,
-                Surname = registerViewModel.Surname
-            };
 
-            var res = await _userManager.CreateAsync(user, registerViewModel.Password);
-               /* user = await _userManager.FindByEmailAsync(registerViewModel.Email);
-                user.UserName = "User" + user.Id;
-                await _userManager.UpdateAsync(user);*/
-                if (res.Succeeded)
+            if (registerViewModel.ConfirmPass == registerViewModel.Password)
             {
-                if (await _roleManager.FindByNameAsync("user") == null)
+                var user = new WwUser
                 {
-                    var role = await _roleManager.CreateAsync(new IdentityRole("user"));
-                    if (role.Succeeded)
+                    Email = registerViewModel.Email,
+                    UserName = registerViewModel.Email,
+                    Name = registerViewModel.Name,
+                    Surname = registerViewModel.Surname
+                };
+
+                var res = await _userManager.CreateAsync(user, registerViewModel.Password);
+                /* user = await _userManager.FindByEmailAsync(registerViewModel.Email);
+                 user.UserName = "User" + user.Id;
+                 await _userManager.UpdateAsync(user);*/
+                if (res.Succeeded)
+                {
+                    if (await _roleManager.FindByNameAsync("user") == null)
+                    {
+                        var role = await _roleManager.CreateAsync(new IdentityRole("user"));
+                        if (role.Succeeded)
+                        {
+                            await _userManager.AddToRoleAsync(user, "user");
+                        }
+                    }
+                    else
                     {
                         await _userManager.AddToRoleAsync(user, "user");
                     }
-                }
-                else
-                {
-                    await _userManager.AddToRoleAsync(user, "user");
-                }
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var confirmationLink = Url.Action("", "confirmation", new { guid = token, userEmail = user.Email }, Request.Scheme, Request.Host.Value);
-                await _emailSender.SendEmailAsync(user.Email, "Confirmation Link", $"Link=> {confirmationLink}");
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmationLink = Url.Action("", "confirmation", new { guid = token, userEmail = user.Email }, Request.Scheme, Request.Host.Value);
+                    await _emailSender.SendEmailAsync(user.Email, "Confirmation Link", $"Click to confirmation your email: \n {confirmationLink}");
 
                     return Created($"profile/userProfile/", user);
 
-            }
+                }
                 else
                 {
                     return BadRequest("Fail passwords");
@@ -107,10 +107,10 @@ namespace ASP_Resume.Controllers
             return BadRequest("Fail passwords");
         }
 
-       [HttpPost("LoginUser")]
+        [HttpPost("LoginUser")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel loginViewModel)
         {
-            
+
             var tmpClient = await _userManager.FindByEmailAsync(loginViewModel.Email);
             if (tmpClient != null)
             {
@@ -122,7 +122,7 @@ namespace ASP_Resume.Controllers
                     UserIdentity.UserIdentityId = user.Id;*/
                     return Ok(token);
                 }
-                
+
                 return BadRequest("User is not found");
             }
             return BadRequest("User is not found");
@@ -136,6 +136,6 @@ namespace ASP_Resume.Controllers
             await _signInManager.SignOutAsync();
         }
 
-        
+
     }
 }

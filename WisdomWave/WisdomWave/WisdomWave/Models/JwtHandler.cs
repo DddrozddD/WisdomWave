@@ -19,7 +19,7 @@ namespace WisdomWave.Models
             };
 
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSecretKeyHere"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSecretKeyHere"+user.Id));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var expires = DateTime.UtcNow.AddDays(7); 
 
@@ -42,7 +42,7 @@ namespace WisdomWave.Models
             };
 
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("creatingCourseId"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("creatingCourseId"+course.Id));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var expires = DateTime.UtcNow.AddDays(7);
 

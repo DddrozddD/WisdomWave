@@ -1,10 +1,10 @@
+import "./ShowingCourses.css";
 import React from "react";
-import "./MainPage.css";
 
 function template() {
   return (
-    <div className="main-page">
-      <h1>MainPage</h1>
+    <div className="showing-courses">
+      <h1>ShowingCourses</h1>
     </div>
   );
 };

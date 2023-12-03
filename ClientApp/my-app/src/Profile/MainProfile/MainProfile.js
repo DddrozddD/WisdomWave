@@ -5,6 +5,11 @@ import Layout from "../../Layout/Layout.js";
 
 class MainProfile extends React.Component {
 
+
+
+  showClicked=()=>{
+
+  }
   showEdu=()=>{
     if(document.getElementById("showed_edu").style.display == "none"){
     document.getElementById("showed_edu").style.display = "block";
@@ -22,21 +27,22 @@ class MainProfile extends React.Component {
       <>
      
       <div className="links_mainprofile">
-        <NavLink to="/profile/userProfile" className={"link_mainprofile"}>
+        <NavLink to="/user-profile" className={"link_mainprofile"} id="profile"> 
           Профіль
         </NavLink>
-        <NavLink to="/profile/userCourses" className={"link_mainprofile"}>
+        <NavLink to="/user-courses" className={"link_mainprofile"} id="ownCourses">
           Авторські курси
         </NavLink>  
-        <NavLink onClick={this.showEdu} className={"link_mainprofile"}>
+        <NavLink onClick={this.showEdu} className={"link_mainprofile"} id="education">
         Навчання
         </NavLink>
 
-       <div id="showed_edu" style={{display: "none"}}>
-        <NavLink to="/profile/userStuding" className={"link_mainprofile link_education"}>
+       <div id="showed_edu" style={{display: "none"}} >
+        <NavLink to="/user-studing" id="studing" className={"link_mainprofile link_education"}>
         Навчання
         </NavLink>
-        <NavLink to="/profile/userStuding" className={"link_mainprofile link_education"}>
+        <br/>
+        <NavLink to="/user-studed" className={"link_mainprofile link_education"} id="studed">
         Навчання
         </NavLink>
         </div>

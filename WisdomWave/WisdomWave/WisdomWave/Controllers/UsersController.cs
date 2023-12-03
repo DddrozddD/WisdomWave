@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using WisdomWave.Models;
+using System.Security.Claims;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -40,15 +42,21 @@ public class UsersController : ControllerBase
         return BadRequest(result.Errors);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateUser(string id, [FromBody] WwUser user)
+    [HttpPut("{token}")]
+    public async Task<IActionResult> UpdateUser(string token, [FromBody] PushUserView user)
     {
-        if (id != user.Id)
-        {
-            return BadRequest();
-        }
+        var claims = JwtHandler.DecodeJwtToken(token);
 
-        var result = await _userManager.UpdateAsync(user);
+        WwUser thisUser = await _userManager.FindByIdAsync(claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+        string id = thisUser.Id;
+        
+        thisUser.Name = user.Name;
+        thisUser.Telephone = user.Telephone;
+        thisUser.Surname = user.Surname;
+        thisUser.About = user.About;
+        thisUser.Telephone = user.Telephone;
+
+        var result = await _userManager.UpdateAsync(thisUser);
 
         if (result.Succeeded)
         {

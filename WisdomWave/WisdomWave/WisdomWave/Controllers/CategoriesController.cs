@@ -31,24 +31,38 @@ public class CategoryController : ControllerBase
         return new JsonResult(categories);
     }
 
-    [HttpGet("child-categories/{parentId}")]
-    public async Task<IActionResult> GetChildCategories(int parentId)
+    [HttpGet("without-children")]
+    public async Task<IActionResult> GetCategoriesWithoutChildren()
     {
-        var categories = await _categoryService.GetChildCategoriesByIdAsync(parentId);
+        var categories = await _categoryService.GetCategoriesWithoutChildAsync();
         return new JsonResult(categories);
     }
 
-    [HttpGet("parent-categories/{categoryId}")]
-    public async Task<IActionResult> GetParentCategories(int categoryId)
+    [HttpGet("with-children&parents")]
+    public async Task<IActionResult> GetCategoriesWithPerentsChild()
     {
-        var categories = await _categoryService.GetParentCategoriesByIdAsync(categoryId);
+        var categories = await _categoryService.GetCategoriesWithParentChild();
+        return new JsonResult(categories);
+    }
+
+    [HttpGet("child-categories/{categoryName}")]
+    public async Task<IActionResult> GetChildCategories(string categoryName)
+    {
+        var categories = await _categoryService.GetCategoriesByParentNameAsync(categoryName);
+        return new JsonResult(categories);
+    }
+
+   [HttpGet("parent-categories/{categoryName}")]
+    public async Task<IActionResult> GetParentCategories(string categoryName)
+    {
+        var categories = await _categoryService.GetCategoriesByChildNameAsync(categoryName);
         return new JsonResult(categories);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCategory(int id)
     {
-        var category = await _categoryService.FindByConditionItemAsync(c=>c.Id==id);
+        var category = await _categoryService.FindByConditionItemAsync(c => c.Id == id);
 
 
         if (category == null)
@@ -100,5 +114,5 @@ public class CategoryController : ControllerBase
         await _categoryService.DeleteAsync(id);
         return NoContent();
     }
-    
+
 }

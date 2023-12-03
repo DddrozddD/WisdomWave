@@ -25,6 +25,7 @@ namespace BLL.Infrastructure
             serviceCollection.AddTransient<UnitRepository>();
             serviceCollection.AddTransient<CategoryRepository>();
             serviceCollection.AddTransient<PageRepository>();
+            serviceCollection.AddTransient<RatingRepository>();
         }
     }
 }
