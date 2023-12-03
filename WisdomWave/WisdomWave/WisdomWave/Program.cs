@@ -117,6 +117,7 @@ void ConfigurationService(IServiceCollection serviceCollection)
     serviceCollection.AddTransient<UnitService>();
     serviceCollection.AddTransient<CategoryService>();
     serviceCollection.AddTransient<PageService>();
+    serviceCollection.AddTransient<RatingService>();
 
     BllConfiguration.ConfigurationService(serviceCollection);
 }

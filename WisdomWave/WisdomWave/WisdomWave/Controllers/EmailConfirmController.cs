@@ -24,7 +24,7 @@ namespace ASP_Resume.Controllers
                     return RedirectToAction("Confirm", "Home");
                 }
             }
-            return RedirectToAction("Index", "Home");
+            return Redirect("http://localhost:3000/");
         }
     }
 }

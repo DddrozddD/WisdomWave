@@ -155,7 +155,7 @@ saveParagraph=async(idP)=>{
             <p className="textPageNameCourse textOption">Назва розділу<span className="redStar">*</span></p>
             </section>
             <section>
-            <input className="inputPageName textInput " name={`ParagraphName_${paragraph.id}`} id={`ParagraphName_${paragraph.id}`} defaultValue={paragraph.paragraphName} type="text"  ></input> 
+            <input className="inputPageName textInput " name={`ParagraphName_${paragraph.id}`} id={`ParagraphName_${paragraph.id}`} defaultValue={paragraph.paragraphName} type="text" onClick={this.SaveNamePage} ></input> 
             </section>
            </div>   
     <div className="inputArea">
@@ -234,13 +234,13 @@ saveParagraph=async(idP)=>{
         </div>
      
       <br/>
-      <NavLink id="btn" className="showBtn btn" onClick={()=>this.show("view")}>
+      {/*<NavLink id="btn" className="showBtn btn" onClick={()=>this.show("view")}>
         <img src={Arrow} alt="arrow" id="arrowBtn_view" className="arrowBtn" />
         Додаткові файли</NavLink>
       <div className="view dropDownForm" id="view">
       
       </div>
-      <br/>
+    <br/>*/}
       
       <p className="downP">Обов’язкові поля  форми помічені символом<span className="redStar">*</span></p>
       </div>

@@ -1,0 +1,13 @@
+.courseCard{
+    width: 200px;
+    height: 120px;
+    display: inline-block;
+    border: 2px solid #56D2F8;
+    border-radius: 20px;
+    padding-left: 1rem;
+    cursor: pointer;
+}
+
+.courseCard p {
+    font-size: 0.7rem;
+}

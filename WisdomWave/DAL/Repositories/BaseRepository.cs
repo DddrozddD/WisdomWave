@@ -32,12 +32,12 @@ namespace DAL.Repositories
             }
         }
        
-        public virtual async Task<IReadOnlyCollection<TEntity>> FindByConditionAsync(Expression<Func<TEntity, bool>> predicat) => 
+        public  async Task<IReadOnlyCollection<TEntity>> FindByConditionAsync(Expression<Func<TEntity, bool>> predicat) => 
             await this.Entities.Where(predicat).ToListAsync().ConfigureAwait(false);
         
-        public virtual async Task<TEntity> FindByConditionItemAsync(Expression<Func<TEntity, bool>> predicat) =>
-            this.Entities.FirstOrDefault(predicat);
-        public virtual async Task<IReadOnlyCollection<TEntity>> GetAllAsync()=> await this.Entities.ToListAsync().ConfigureAwait(false);
+        public  async Task<TEntity> FindByConditionItemAsync(Expression<Func<TEntity, bool>> predicat) =>
+           await this.Entities.FirstOrDefaultAsync(predicat);
+        public  async Task<IReadOnlyCollection<TEntity>> GetAllAsync()=> await this.Entities.ToListAsync().ConfigureAwait(false);
         
     }
 }
