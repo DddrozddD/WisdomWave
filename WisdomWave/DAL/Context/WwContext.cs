@@ -71,8 +71,8 @@ namespace DAL.Context
             modelBuilder.Entity<WwUser>().Property(u => u.Town).IsRequired(false);
             modelBuilder.Entity<Course>().Property(c => c.ImageLinkCourse).IsRequired(false);
             modelBuilder.Entity<Course>().Property(c => c.RatingCourse).IsRequired(false);
+            
 
-            modelBuilder.Entity<Category>().HasIndex(c => c.CategoryName).IsUnique();
 
         }
 

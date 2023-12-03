@@ -46,7 +46,8 @@ namespace BLL.Services
             return res;
         }
 
-       
+      
+
         public async Task DeleteAsync(int id) => await unitOfWork.CategoryRepository.Delete(id);
         public async Task<OperationDetails> EditAsync(int id, Category category) => await unitOfWork.CategoryRepository.Update(category, id);
 
