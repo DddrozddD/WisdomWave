@@ -25,8 +25,13 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
+<<<<<<< Updated upstream
 
         _courseService.FindAllLearningCoursesForUser((_userManager.FindByNameAsync(User.Identity.Name)).Id.ToString());
+=======
+      
+        /*
+>>>>>>> Stashed changes
 
         /*
         _categoryService.CreateAsync(new Category { CategoryName = "Розробка" });
@@ -544,9 +549,15 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Джембе" }, parentCategory.Id);*/
 
         await _categoryService.CreateAsync(new Category { CategoryName = "Джембе" }, parentCategory.Id);
+<<<<<<< Updated upstream
 
         */
         return View();
+=======
+        */
+        return Redirect("https://wisdomwave20231203130411.azurewebsites.net/");
+        
+>>>>>>> Stashed changes
     }
   
     public IActionResult Privacy()
