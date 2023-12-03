@@ -20,7 +20,8 @@ namespace Domain.Models
         public string? ImagePhotoUserLink { get; set; }
         public int? subscriptionId { get; set; }
         public Subscription Subscription { get; set; }
-        public IReadOnlyCollection<LearnerUserToCourse> LearningCourses { get; set; }
+        public IReadOnlyCollection<Course> LearningCourses { get; set; }
+        public IReadOnlyCollection<Course> CompletedCourses { get; set; }
         public IReadOnlyCollection<Course> CreatedCourses { get; set; }
         public IReadOnlyCollection<Review> Reviews { get; set; }
         public IReadOnlyCollection<LikeDislike> LikesDislikes { get; set;}

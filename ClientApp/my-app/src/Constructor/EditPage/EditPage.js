@@ -27,7 +27,6 @@ componentDidMount=()=>{
   this.setState({pageId:getCookie("EditPageId")});
   document.getElementById("general").style.display = "block";
     document.getElementById("textInfo").style.display = "block";
-    document.getElementById("view").style.display = "block" 
 
     this.getPage(getCookie("EditPageId"));
     
@@ -125,7 +124,36 @@ saveParagraph=async(idP)=>{
 }
 }
   
+saveName=async()=>{
+  try {
+    const response = await fetch(variables.API_URL + 'page/'+getCookie("EditPageId"), {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; odata=verbose'
+        },
+        body: JSON.stringify({
+          "PageName": this.state.PageName,
+          "PhotoLinks": "",
+          "VideoLinks": "",
+          "unitId": 0
+        }), 
+        
+    })
+    .then(response=>response.json())
+    .then(data=>{
+      if (data!="Bad Request"){
+        this.getPage(getCookie("EditPageId"));
+      }
+      else{
+        console.error("");
+      }
+    })
+} catch (error) {
+    console.error("Помилка:", error);
+}
 
+}
 
    render() {
     const PaginationWrapper = ({ paragraphs }) => {
@@ -167,7 +195,7 @@ saveParagraph=async(idP)=>{
     <div className="resultBtns">
       
           <NavLink className="saveBtn btn resultBtn" onClick={()=>this.saveParagraph(paragraph.id)} >Зберегти зміни</NavLink>
-          <NavLink className="cancelBtn btn resultBtn">Скасувати</NavLink>
+         {/* <NavLink className="cancelBtn btn resultBtn"  onClick={()=>this.cencelParagraph(paragraph.id)}>Скасувати</NavLink>*/}
           </div>
           <br/>
          
@@ -218,8 +246,8 @@ saveParagraph=async(idP)=>{
         <input className="inputPageName textInput " name="PageName" id="PageName" type="text" onChange={this.handleInputChange} ></input> 
         </section>
         <div className="resultBtns">
-      <NavLink className="saveBtn btn resultBtn" onClick={this.createCourse}>Зберегти зміни</NavLink>
-      <NavLink className="cancelBtn btn resultBtn">Скасувати</NavLink>
+      <NavLink className="saveBtn btn resultBtn" onClick={this.saveName}>Зберегти зміни</NavLink>
+      {/*<NavLink className="cancelBtn btn resultBtn">Скасувати</NavLink>*/}
       </div>
       <br/>
        </div>   

@@ -7,9 +7,7 @@ class MainProfile extends React.Component {
 
 
 
-  showClicked=()=>{
-
-  }
+  
   showEdu=()=>{
     if(document.getElementById("showed_edu").style.display == "none"){
     document.getElementById("showed_edu").style.display = "block";

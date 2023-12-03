@@ -25,25 +25,35 @@ namespace BLL.Services
         public async Task<Category> FindByConditionItemAsync(Expression<Func<Category, bool>> predicat) => await this.unitOfWork.CategoryRepository.FindByConditionItemAsync(predicat);
         public async Task<OperationDetails> CreateAsync(Category category)
         {
-
-          return await unitOfWork.CategoryRepository.CreateAsync(category);
+            var resSearch = await unitOfWork.CategoryRepository.FindByConditionItemAsync(c => c.CategoryName == category.CategoryName);
+            if (resSearch == null)
+            {
+                return await unitOfWork.CategoryRepository.CreateAsync(category);
+            }
+            return null;
         }
 
        
 
         public async Task<OperationDetails> CreateAsync(Category category, int categoryParentId)
         {
-            var res =  await unitOfWork.CategoryRepository.CreateAsync(category);
-            Category parentCategory = await unitOfWork.CategoryRepository.FindByConditionItemAsync(c => c.Id == categoryParentId);
-            Category newCategory = await unitOfWork.CategoryRepository.FindByConditionItemAsync(c => c.CategoryName == category.CategoryName);
-            List<Category> childCategories = new List<Category>();
-            if (parentCategory.ChildCategories != null) {
-                childCategories = parentCategory.ChildCategories.ToList();
+            var resSearch = await unitOfWork.CategoryRepository.FindByConditionItemAsync(c=>c.CategoryName == category.CategoryName);
+            if (resSearch == null)
+            {
+                var res = await unitOfWork.CategoryRepository.CreateAsync(category);
+                Category parentCategory = await unitOfWork.CategoryRepository.FindByConditionItemAsync(c => c.Id == categoryParentId);
+                Category newCategory = await unitOfWork.CategoryRepository.FindByConditionItemAsync(c => c.CategoryName == category.CategoryName);
+                List<Category> childCategories = new List<Category>();
+                if (parentCategory.ChildCategories != null)
+                {
+                    childCategories = parentCategory.ChildCategories.ToList();
+                }
+                childCategories.Add(newCategory);
+                parentCategory.ChildCategories = childCategories;
+                await unitOfWork.CategoryRepository.Update(parentCategory, parentCategory.Id);
+                return res;
             }
-            childCategories.Add(newCategory);
-            parentCategory.ChildCategories = childCategories;
-            await unitOfWork.CategoryRepository.Update(parentCategory, parentCategory.Id);
-            return res;
+            return null;
         }
 
       

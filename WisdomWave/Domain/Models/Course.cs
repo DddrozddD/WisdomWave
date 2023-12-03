@@ -16,7 +16,8 @@ namespace Domain.Models
         public double OverallRating { get; set; }
         public DateTime DateOfCreate { get; set; }
         public string Language { get; set; }
-        public IReadOnlyCollection<LearnerUserToCourse> LearnerUsers { get; set; }
+        public IReadOnlyCollection<WwUser> LearnerUsers { get; set; }
+        public IReadOnlyCollection<WwUser> CompletedUsers { get; set; }
         public string creatorUserId { get; set; }
         public string creatorUserName { get; set; }
         public WwUser CreatorUser { get; set; }

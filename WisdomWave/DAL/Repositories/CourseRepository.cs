@@ -44,6 +44,7 @@ namespace DAL.Repositories
                 model.Categories = course.Categories;
                 model.Language = course.Language;
                 model.creatorUserName = course.creatorUserName;
+                model.CompletedUsers = course.CompletedUsers;
 
                 this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 
