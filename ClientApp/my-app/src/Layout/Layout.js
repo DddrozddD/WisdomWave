@@ -39,6 +39,13 @@ export class Layout extends React.Component {
   
   }
 
+<<<<<<< Updated upstream
+=======
+
+
+
+  
+>>>>>>> Stashed changes
   singOut=async()=>{
     try {
       const response = await fetch(variables.API_URL + 'authorization/LogoutUser');
