@@ -41,6 +41,7 @@ Feel free to explore the codebase, contribute to the project, and provide feedba
 
 ## Contributors
 
-- Kirill Pugach (Backend Developer)              - Artem Drozd (Full-Stack Developer)
+- Kirill Pugach (Backend Developer)
+- Artem Drozd (Full-Stack Developer)
 
 Thank you for joining us on this educational journey with [WisdomWave](#)! If you have any questions or suggestions, feel free to reach out to our team. Happy learning!
