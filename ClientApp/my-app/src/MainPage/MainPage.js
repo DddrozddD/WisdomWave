@@ -5,15 +5,16 @@ import back1 from "./../images/back1.png"
 import block_right2 from "./../images/2block_right.png"
 import block_left2 from "./../images/2block_left.png"
 import { getCookie } from "../CookieHandler.js";
+import {variables} from './../Variables.js';
 
 class MainPage extends React.Component {
 
   goToWork=async()=>{
     if((getCookie("UserSecretKey")==null) || (getCookie("UserSecretKey")=="")){
-      window.location.href="http://localhost:3000/login";
+      window.location.href=variables.PAGE_URL+"login";
     }
     else{
-      window.location.href="http://localhost:3000/user-courses";
+      window.location.href=variables.PAGE_URL+"user-courses";
     }
   }
   render() {
@@ -27,7 +28,7 @@ class MainPage extends React.Component {
 для безперервного навчання
 з інтерактивними завданнями</h2>
 
-<button className="whiteBtn allCoursesBtn" type="button" onClick={()=>{window.location.href="http://localhost:3000/courses"}}>Усі курси</button>
+<button className="whiteBtn allCoursesBtn" type="button" onClick={()=>{window.location.href=variables.PAGE_URL+"courses"}}>Усі курси</button>
     </div>
     <div className="block">
       <img src={block_right2} alt="block_right2" className="back_right"/>

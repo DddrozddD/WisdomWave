@@ -6,6 +6,7 @@ using Domain.Models;
 using BLL.Services;
 using Microsoft.AspNetCore.Identity;
 using WisdomWave.Models;
+using System.Security.Claims;
 
 namespace WisdomWave.Controllers
 {
@@ -18,11 +19,12 @@ namespace WisdomWave.Controllers
         private readonly UnitService unitService;
         private readonly UserManager<WwUser> _userManager;
 
-        public PageController(PageService pageService, UnitService unitService, ParagraphService paragraphService)
+        public PageController(PageService pageService, UnitService unitService, ParagraphService paragraphService, UserManager<WwUser> userManager)
         {
             this.unitService = unitService;
             this.pageService = pageService;
             this.paragraphService = paragraphService;
+            this._userManager = userManager;
         }
 
         [HttpGet] // HTTP GET request handler for retrieving all Pages
@@ -105,7 +107,7 @@ namespace WisdomWave.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpGet("{userid}/{pageId}")] // HTTP GET request handler for retrieving a test by its identifier
+        [HttpGet("{userid}/{pageId}")] // HTTP GET request handler for retrieving a Page by its identifier
         public async Task<IActionResult> Check(int pageId, string userId)
         {
 
@@ -124,7 +126,7 @@ namespace WisdomWave.Controllers
             var result = await pageService.CheckUser(page, user);
             if (result.IsError == false)
             {
-                return Created($"api/tests/{page.Id}", page); // Return a status of 201 Created
+                return Created(); // Return a status of 201 Created
             }
             return new JsonResult(result.Message);
         }
@@ -152,6 +154,46 @@ namespace WisdomWave.Controllers
         {
             await pageService.DeleteAsync(id);
             return NoContent(); // Return a status of 204 No Content
+        }
+
+        [HttpGet("checkCompletePage/{id}/{token}")]
+        public async Task<IActionResult> checkCompletePage(int id, string token)
+        {
+
+            WwUser User = await _userManager.FindByIdAsync(JwtHandler.DecodeJwtToken(token).FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            Page Page = await pageService.FindByConditionItemAsync(p => p.Id == id);
+
+            if (User == null || Page == null)
+            {
+                return NotFound();
+            }
+
+            List<Page> CompletedPages = (await pageService.FindByConditionAsync(p => p.PassedPageUsers.Any(u => u.Id == User.Id))).ToList();
+
+            if (CompletedPages.Any(t => t.Id == id))
+            {
+                return new JsonResult(true);
+            }
+
+
+            return new JsonResult(false);
+        }
+
+        [HttpPut("userCompletePage/{id}/{token}")]
+        public async Task<IActionResult> userCompletePage(int id, string token)
+        {
+            WwUser User = await _userManager.FindByIdAsync(JwtHandler.DecodeJwtToken(token).FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            Page Page = await pageService.FindByConditionItemAsync(p => p.Id == id);
+
+            if (User == null || Page == null)
+            {
+                return NotFound();
+            }
+
+            await pageService.CheckUser(Page, User);
+
+
+            return Ok();
         }
     }
 }

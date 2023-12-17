@@ -104,6 +104,11 @@ namespace WisdomWave.Controllers
                 }
             }
 
+            if(question.CountOfPoints == 0 || question.CountOfPoints == null)
+            {
+                question.CountOfPoints = 1;
+            }
+
             await questionService.EditAsync(id, 
                 new Question
                 {

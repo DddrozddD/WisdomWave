@@ -22,7 +22,23 @@ body{
     margin-right: 10px;
 }
 
-
+.CategoriesForm{
+  background-color: rgb(251, 249, 249); 
+  position: absolute;
+  margin-top: 3rem;
+  margin-left: 8rem;
+  z-index: 1;
+  
+}
+.categoryBtn{
+  background-color: rgb(251, 249, 249); 
+    border: none; 
+    padding: 10px 20px; 
+    font-size: 16px;
+}
+.CategorieForm{
+  display: inline-block;
+}
   .left_header{
     float: left;
     margin-left: 6%;

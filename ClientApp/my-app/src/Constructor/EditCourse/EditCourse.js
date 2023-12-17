@@ -410,7 +410,7 @@ console.error("Помилка:", error);
               
           })
           if(response.ok){
-            window.location.href = "http://localhost:3000/marge-units"
+            window.location.href = variables.PAGE_URL+"marge-units"
           }
 
       } catch (error) {

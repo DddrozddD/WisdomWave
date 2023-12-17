@@ -47,7 +47,7 @@ loginClick = async () => {
         if (data!="User is not found"){
 
           setCookie("UserSecretKey", data, {secure: true, 'max-age': 3*86400});
-          window.location.assign('http://localhost:3000/');
+          window.location.assign(variables.PAGE_URL);
         }
         else{
           console.error("Увійти не вдалась");
@@ -77,11 +77,11 @@ loginClick = async () => {
         <p class="login__form__passwordText">Пароль</p>
         <input type="password" name="password" id="password" class="login__formInput passInput" value={this.state.password}
                           onChange={this.handleInputChange}></input>
-        <a href="resetPass.html" className="resetPassBtn">Забув(ла) пароль</a>
+       {/* <a href="resetPass.html" className="resetPassBtn">Забув(ла) пароль</a>*/}
         <button type = "button" onClick={this.loginClick} className="login__form__button">Увійти</button>
         <div class="login__formTableText">
         <p class="createAccountText">Немає облікового запису?</p>
-        <NavLink to="/registration" className="createAccountBtn">Зареєструвати</NavLink>
+        <NavLink to="/registration" className="createAccountBtn" >Зареєструвати</NavLink>
         </div>
         </form>
         </div>

@@ -1,4 +1,4 @@
-input[type="radio"] {
+.orangeRadio {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -12,11 +12,11 @@ input[type="radio"] {
     transform: translateY(0.15rem);
   }
   
-  input[type="radio"]:checked {
+  .orangeRadio:checked {
     border-color: #f87c56;
   }
   
-  input[type="radio"]::before {
+  .orangeRadio::before {
     content: "";
     display: block;
     position: absolute;
@@ -28,7 +28,7 @@ input[type="radio"] {
     background-color: transparent;
   }
   
-  input[type="radio"]:checked::before {
+  .orangeRadio:checked::before {
     background-color: #f87c56;
   }
 

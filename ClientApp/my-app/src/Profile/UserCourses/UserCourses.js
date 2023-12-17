@@ -4,8 +4,9 @@ import Layout from "../../Layout/Layout.js";
 import MainProfile from "../MainProfile/MainProfile.js";
 import {variables} from './../../Variables.js';
 import { setCookie, deleteCookie, getCookie } from './../../CookieHandler.js';
-import profile_right from './../../images/profile_right.png'
-import profile_left from './../../images/profile_left.png'
+import profile_right from './../../images/profile_right.png';
+import profile_left from './../../images/profile_left.png';
+import delete_image from './../../images/delete_image.png';
 
 class UserCourses extends React.Component {
 
@@ -40,9 +41,27 @@ class UserCourses extends React.Component {
   }
 
   showCourse=(id)=>{
-    setCookie("ShowingCourseId", id)
-    window.location.href="http://localhost:3000/course-info";
+    setCookie("ShowingCourseId", id);
+    window.location.href=variables.PAGE_URL+"display-course";
   }
+
+
+  deleteCourse = async (id) => {
+    try {
+      await fetch(variables.API_URL + 'courses/' + id, {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      // Once the deletion is successful, update the userCourses state by fetching the updated list
+      this.GetUserCourses();
+    } catch (error) {
+      console.error('Failed to delete course:', error);
+    }
+}
   render() {
     
     return (
@@ -58,16 +77,23 @@ class UserCourses extends React.Component {
         <div className="user_courses_list">
       <h1>Авторські курси</h1>
 
-      <button className="orangeBtn" onClick={()=>{window.location.href="http://localhost:3000/add-course"}}>+ Додати курс</button>
+      <button className="orangeBtn" onClick={()=>{window.location.href=variables.PAGE_URL+"add-course"}}>+ Додати курс</button>
       <div className="coursesView">
           {this.state.userCourses.map((course) => {
           
               
               return (
+                <>
+                
+                
                 <div className="courseCard" key={course.id} onClick={()=>this.showCourse(course.id)}>
                   <h3>{course.courseName}</h3>
                   <p>{course.creatorUserName}</p>
+                  
                 </div>
+               {/* <img src={delete_image} alt="Delete" onClick={()=>this.deleteCourse(course.id)} className="deleteBtn" />*/}
+                
+                </>
               );
              
           })}

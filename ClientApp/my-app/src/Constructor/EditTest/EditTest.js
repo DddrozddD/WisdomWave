@@ -17,8 +17,7 @@
 
       this.state = {
         questions:[],
-        selectedOptions: {},
-        TestName:"",
+        TestName:""
         
       }
     }
@@ -123,12 +122,12 @@
     
     editQuestion=async(id)=>{
       setCookie("EditQuestionId", id);
-      window.location.href = "/edit-question";
+      window.location.href = variables.PAGE_URL+"edit-question";
     }
 
     saveName=async()=>{
       try {
-        const response = await fetch(variables.API_URL + 'test/'+getCookie("EditPageId"), {
+        const response = await fetch(variables.API_URL + 'test/'+getCookie("EditTestId"), {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -156,6 +155,12 @@
     
     }
 
+    handleInputChange = (e) => {
+      const { name, value } = e.target;
+      this.setState({
+          [name]: value
+      });
+    }
     render() {
       
       
