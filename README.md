@@ -44,4 +44,4 @@ Feel free to explore the codebase, contribute to the project, and provide feedba
 - Kirill Pugach (Backend Developer)
 - Artem Drozd (Full-Stack Developer)
 
-Thank you for joining us on this educational journey with [WisdomWave](#)! If you have any questions or suggestions, feel free to reach out to our team. Happy learning!
+Thank you for joining us on this educational journey with [WisdomWave](https://wisdomwave.vercel.app/)! If you have any questions or suggestions, feel free to reach out to our team. Happy learning!
