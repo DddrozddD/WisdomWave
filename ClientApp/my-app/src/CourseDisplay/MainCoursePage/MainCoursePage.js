@@ -306,7 +306,7 @@ checkOnCompleteTest=async(id)=>{
           )}
    </div>
     </div>
-    <div className="course_view_site info_view">
+    <div className="course_view_site info_view info_course">
             <h1>Загальна інформація про курс</h1>
             <p>Предметна область знань: {this.state.courseKnowlage}</p>
             <p>Сфера навчання: {this.state.courseEducation}</p>
