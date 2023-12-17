@@ -262,7 +262,7 @@
         <h1>Редагування тесту</h1>
       <NavLink id="btnGeneral" className="showBtn btn" onClick={()=>this.show("general")}>
         <img src={Arrow} alt="arrow" id="arrowBtn_general" className="arrowBtn " />
-        Назва сторінки</NavLink>
+        Назва тесту</NavLink>
       <div className="general dropDownForm" id="general">
       
       <div className="inputArea">
