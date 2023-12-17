@@ -1,82 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      line-height: 1.6;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-      color: #333;
-    }
 
-    header {
-      background-color: #007BFF;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-    }
+# WisdomWave Educational Platform
 
-    section {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 20px;
-      background-color: #fff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+Welcome to the WisdomWave project repository! WisdomWave is an educational platform inspired by the renowned website [Udemy](https://www.udemy.com/). Our goal is to provide a seamless and enriching learning experience for users across the globe.
 
-    h2 {
-      color: #007BFF;
-    }
+## Project Overview
 
-    a {
-      color: #007BFF;
-    }
+WisdomWave leverages cutting-edge technologies to deliver a feature-rich educational platform. Here's a breakdown of the key components and technologies used in our project:
 
-    ul {
-      list-style: none;
-      padding: 0;
-    }
+### Backend (ASP.NET 8 C#)
 
-    li {
-      margin-bottom: 10px;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>WisdomWave Educational Platform</h1>
-  </header>
+The backend of WisdomWave is built using [ASP.NET 8](https://dotnet.microsoft.com/apps/aspnet) with C#. This powerful combination enables us to create a robust and scalable server-side application to handle user authentication, course management, and data storage.
 
-  <section>
-    <h2>Project Overview</h2>
-    <p>WisdomWave leverages cutting-edge technologies to deliver a feature-rich educational platform...</p>
+### Frontend (React/WEB5/Node18/Js)
 
-    <h3>Backend (ASP.NET 8 C#)</h3>
-    <p>The backend of WisdomWave is built using <a href="https://dotnet.microsoft.com/apps/aspnet">ASP.NET 8</a> with C#...</p>
+The frontend of WisdomWave is developed using a modern tech stack, including [React](https://reactjs.org/), [WEB5](https://web.dev/), [Node18](https://nodejs.org/en/), and JavaScript. This ensures a responsive and dynamic user interface, providing an engaging learning environment for our users.
 
-    <!-- Repeat similar sections for Frontend, Cloud Services, Frontend Hosting, and Version Control -->
+### Cloud Services (Azure)
 
-    <h2>Getting Started</h2>
-    <ul>
-      <li>Clone the repository to your local machine.</li>
-      <li>Set up the backend using <a href="https://dotnet.microsoft.com/apps/aspnet">ASP.NET 8</a> and C#.</li>
-      <li>Configure the frontend with <a href="https://reactjs.org/">React</a>, <a href="https://web.dev/">WEB5</a>, <a href="https://nodejs.org/en/">Node18</a>, and JavaScript.</li>
-      <!-- Add similar steps for hosting and connecting to the database -->
-    </ul>
+WisdomWave relies on [Microsoft Azure](https://azure.microsoft.com/) for hosting the backend and managing our SQL database. Azure's cloud services offer scalability, security, and reliability, ensuring a seamless experience for both learners and instructors.
 
-    <h2>Contributors</h2>
-    <ul>
-      <li>John Doe (Backend Developer)</li>
-      <li>Jane Smith (Frontend Developer)</li>
-      <li>Alex Johnson (Database Architect)</li>
-      <li>Sarah Davis (UI/UX Designer)</li>
-    </ul>
+### Frontend Hosting (Vercel)
 
-    <p>Thank you for joining us on this educational journey with <a href="#">WisdomWave</a>! If you have any questions or suggestions, feel free to reach out to our team. Happy learning!</p>
-  </section>
-</body>
-</html>
+The frontend of WisdomWave is hosted on [Vercel](https://vercel.com/), a platform that provides fast and efficient hosting for web applications. Vercel's global CDN ensures low latency and quick loading times, enhancing the overall user experience.
+
+### Version Control and Collaboration (Git)
+
+We utilize [Git](https://git-scm.com/) for version control and collaborative development. This allows our team to efficiently manage code changes, track project history, and coordinate efforts to continuously improve WisdomWave.
+
+## Getting Started
+
+To get started with WisdomWave, follow these steps:
+
+1. Clone the repository to your local machine.
+2. Set up the backend using [ASP.NET 8](https://dotnet.microsoft.com/apps/aspnet) and C#.
+3. Configure the frontend with [React](https://reactjs.org/), [WEB5](https://web.dev/), [Node18](https://nodejs.org/en/), and JavaScript.
+4. Host the backend on [Azure](https://azure.microsoft.com/) and the frontend on [Vercel](https://vercel.com/).
+5. Connect to the SQL database for data storage.
+
+Feel free to explore the codebase, contribute to the project, and provide feedback. We believe in the power of education, and WisdomWave is our contribution to making learning accessible and enjoyable for everyone.
+
+## Contributors
+
+- Kirill Pugach (Backend Developer)              - Artem Drozd (Full-Stack Developer)
+
+Thank you for joining us on this educational journey with [WisdomWave](#)! If you have any questions or suggestions, feel free to reach out to our team. Happy learning!
