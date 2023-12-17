@@ -61,6 +61,7 @@ export class Layout extends React.Component {
     console.error("Помилка:", error);
   }
 
+
   try{
 
 
@@ -96,6 +97,7 @@ console.error("Помилка:", error);
 
 
   
+
   singOut=async()=>{
     try {
       const response = await fetch(variables.API_URL + 'authorization/LogoutUser');
