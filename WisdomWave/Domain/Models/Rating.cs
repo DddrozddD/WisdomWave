@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public class LearnerUserToCourse
+    public class Rating
     {
-        public bool isCompleted { get; set; }
-        public string userId { get; set; }
-        public WwUser User { get; set; }
         public int courseId { get; set; }
         public Course Course { get; set; }
+        public string userId { get; set; }
+        public WwUser User { get; set; }
+        public double Value { get; set; }
     }
 }

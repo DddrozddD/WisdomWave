@@ -15,6 +15,10 @@ import EditPage from './Constructor/EditPage/EditPage';
 import EditTest from './Constructor/EditTest/EditTest';
 import EditQuestion from './Constructor/EditQuestion/EditQuestion';
 import MainCoursePage from './CourseDisplay/MainCoursePage/MainCoursePage';
+import ShowingCourses from './ShowingCourses/ShowingCourses';
+import CourseInfo from './CourseDisplay/CourseInfo/CourseInfo';
+import EditCourse from './Constructor/EditCourse/EditCourse';
+
 
 
 
@@ -40,11 +44,14 @@ function App() {
     <Route path='/user-studing' element={<UserLearning />} />
     <Route path='/add-course' element={<AddCourse />} />
     <Route path='/marge-units' element={<MargeUnits />} />
-
     <Route path='/edit-page' element={<EditPage />} />
     <Route path='/edit-test' element={<EditTest />}/>
     <Route path='/edit-question' element={<EditQuestion />}/>
     <Route path='/display-course' element={<MainCoursePage />}/>
+    <Route path='/courses' element={<ShowingCourses />}/>
+    <Route path='/course-info' element={<CourseInfo />}/>
+    <Route path='/edit-course' element={<EditCourse />}/>
+
     </Routes>
     </BrowserRouter>
   );

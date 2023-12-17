@@ -8,7 +8,6 @@ import Arrow from "../../images/arrow.png"
 import { NavLink } from "react-router-dom";
 import { setCookie, deleteCookie, getCookie } from './../../CookieHandler.js';
 
-
 class AddCourse extends React.Component {
   constructor(props) {
     super(props);
@@ -19,29 +18,294 @@ class AddCourse extends React.Component {
       Education: "",
       Theme: "",
       Annotation: "",
-      Language: ""
+      Language: "",
+      Knowledges:[],
+      Educations:[],
+      Themes:[]
     }
 }
   componentDidMount=async()=>{
-    document.getElementById("general").style.display = "none";
-    document.getElementById("arrowBtn_general").classList.add("rotated");
-    document.getElementById("annotation").style.display = "none";
-    document.getElementById("arrowBtn_annotation").classList.add("rotated");
-    document.getElementById("view").style.display = "none" 
-    document.getElementById("arrowBtn_view").classList.add("rotated");
-     
-    this.setState({Knowledge: document.getElementById("Knowledge").value, 
-    Education: document.getElementById("Education").value, 
-    Theme: document.getElementById("Theme").value,
-    Language: document.getElementById("Language").value  })
+    document.getElementById("general").style.display = "block";
+    document.getElementById("arrowBtn_general").classList.remove("rotated");
+    document.getElementById("annotation").style.display = "block";
+    document.getElementById("arrowBtn_annotation").classList.remove("rotated");
+    document.getElementById("view").style.display = "block" 
+    document.getElementById("arrowBtn_view").classList.remove("rotated");
+
+    this.getCategories();
   }
 
-  handleInputChange = (e) => {
+
+  
+
+  handleInputChange = async(e) => {
     const { name, value } = e.target;
     this.setState({
         [name]: value
     });
+    if(name=="Theme"){
+      if(((this.state.Education == "") && (this.state.Knowledge == ""))){
+
+        let educations = [];
+        try{
+  
+  
+          await fetch(variables.API_URL+'category/parent-categories/'+value)
+        .then(response=>response.json())
+        .then(data=>{
+          if(data.title!="Bad Request"){
+            const sorted = [...data].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+            this.setState({Educations:sorted});
+            educations = data;
+          }
+        });
+      }
+      catch(error){
+        console.error("Помилка:", error);
+      }
+      let knowledges = [];
+      educations.map(async education=>{
+        try{
+  
+  
+          await fetch(variables.API_URL+'category/parent-categories/'+education.categoryName)
+        .then(response=>response.json())
+        .then(data=>{
+          if(data.title!="Bad Request"){
+            data.map(async knowledge=>{
+              knowledges.push(knowledge)
+            })
+          }
+        });
+      }
+      catch(error){
+        console.error("Помилка:", error);
+      }
+      })
+      const sorted = [...knowledges].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+            this.setState({Knowledges:sorted});
+      }
+      else if((this.state.Education != "") && (this.state.Knowledge == "")){
+        this.state.Educations.map(async education=>{
+          try{
+    
+    
+            await fetch(variables.API_URL+'category/parent-categories/'+education.categoryName)
+          .then(response=>response.json())
+          .then(data=>{
+            if(data.title!="Bad Request"){
+              const sorted = [...data].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+              this.setState({Knowledges:sorted});
+            }
+          });
+        }
+        catch(error){
+          console.error("Помилка:", error);
+        }
+      })
+      }
+      else if((this.state.Education == "") && (this.state.Knowledge != "")){
+        this.state.Knowledges.map(async knowledge=>{
+          try{
+    
+    
+            await fetch(variables.API_URL+'category/child-categories/'+knowledge.categoryName)
+          .then(response=>response.json())
+          .then(data=>{
+            if(data.title!="Bad Request"){
+              const sorted = [...data].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+              this.setState({Educations:sorted});
+            }
+          });
+        }
+        catch(error){
+          console.error("Помилка:", error);
+        }
+      })
+      }
+     
+    }
+    else if(name=="Education"){
+      if(((this.state.Theme == "") && (this.state.Knowledge == ""))){
+       
+      try{
+
+
+        await fetch(variables.API_URL+'category/parent-categories/'+value)
+      .then(response=>response.json())
+      .then(data=>{
+        if(data.title!="Bad Request"){
+          const sorted = [...data].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+          this.setState({Knowledges:sorted});
+        }
+      });
+    }
+    catch(error){
+      console.error("Помилка:", error);
+    }
+    try{
+
+
+      await fetch(variables.API_URL+'category/child-categories/'+value)
+    .then(response=>response.json())
+    .then(data=>{
+      if(data.title!="Bad Request"){
+        const sorted = [...data].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+        this.setState({Themes:sorted});
+      }
+    });
+  }
+  catch(error){
+    console.error("Помилка:", error);
+  }
+  }
+  else if((this.state.Theme != "") && (this.state.Knowledge == "")){
+   
+      try{
+
+
+        await fetch(variables.API_URL+'category/parent-categories/'+value)
+      .then(response=>response.json())
+      .then(data=>{
+        if(data.title!="Bad Request"){
+          const sorted = [...data].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+          this.setState({Knowledges:sorted});
+        }
+      });
+    }
+    catch(error){
+      console.error("Помилка:", error);
+    }
+  }
+   
+    else if((this.state.Theme == "") && (this.state.Knowledge != "")){
+      try{
+
+
+        await fetch(variables.API_URL+'category/child-categories/'+value)
+      .then(response=>response.json())
+      .then(data=>{
+        if(data.title!="Bad Request"){
+          const sorted = [...data].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+          this.setState({Themes:sorted});
+        }
+      });
+    }
+    catch(error){
+      console.error("Помилка:", error);
+    }
+      }
+      else{
+        this.setState({Theme:""});
+        try{
+
+
+          await fetch(variables.API_URL+'category/child-categories/'+value)
+        .then(response=>response.json())
+        .then(data=>{
+          if(data.title!="Bad Request"){
+            const sorted = [...data].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+            this.setState({Themes:sorted});
+          }
+        });
+      }
+      catch(error){
+        console.error("Помилка:", error);
+      }
+      }
+    }
+    else if(name == "Knowledge"){
+      if(((this.state.Theme == "") && (this.state.Education == "")) || ((this.state.Theme != "") && (this.state.Education != ""))){
+        if((this.state.Theme != "") && (this.state.Education != "") && this.state.Knowledge == ""){
+          return;
+        }
+        if((this.state.Theme != "") && (this.state.Education != "")){
+          this.setState({Education:"", Theme:""})
+        }
+      
+        let educations = [];
+        try{
+  
+  
+          await fetch(variables.API_URL+'category/child-categories/'+value)
+        .then(response=>response.json())
+        .then(data=>{
+          if(data.title!="Bad Request"){
+            const sorted = [...data].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+            this.setState({Educations:sorted});
+            educations = data
+            // `
+          }
+        });
+      }
+      catch(error){
+        console.error("Помилка:", error);
+      }
+  
+      let themes = [];
+      educations.map(async education=>{
+        try{
+  
+  
+          await fetch(variables.API_URL+'category/child-categories/'+education.categoryName)
+        .then(response=>response.json())
+        .then(data=>{
+          if(data.title!="Bad Request"){
+            data.map(async knowledge=>{
+              themes.push(knowledge)
+            })
+          }
+        });
+      }
+      catch(error){
+        console.error("Помилка:", error);
+      }
+      const sorted = [...themes].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+      this.setState({Themes:sorted});
+      })
+    }
+    else if((this.state.Theme != "") && (this.state.Education == "")){
+        try{
+  
+  
+          await fetch(variables.API_URL+'category/child-categories/'+value)
+        .then(response=>response.json())
+        .then(data=>{
+          if(data.title!="Bad Request"){
+            const sorted = [...data].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+            this.setState({Education:sorted});
+          }
+        });
+      }
+      catch(error){
+        console.error("Помилка:", error);
+      }
+    }
+      
+      else if((this.state.Theme == "") && (this.state.Education != "")){
+        this.state.Educations.map(async education=>{
+          try{
+    
+    
+            await fetch(variables.API_URL+'category/child-categories/'+education.categoryName)
+          .then(response=>response.json())
+          .then(data=>{
+            if(data.title!="Bad Request"){
+              const sorted = [...data].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+              this.setState({Themes:sorted});
+            }
+          });
+        }
+        catch(error){
+          console.error("Помилка:", error);
+        }
+      })
+        }
+      } 
+  
 }
+
+
 
   show = (id) =>{
     if(document.getElementById(id).style.display == "none"){
@@ -51,14 +315,64 @@ class AddCourse extends React.Component {
     else{
       document.getElementById(id).style.display = "none";
       document.getElementById("arrowBtn_"+id).classList.add("rotated");
-    }
+    } 
     
   }
 
+
+  getCategories= async ()=>{
+    try{
+
+
+      await fetch(variables.API_URL+'category/without-parents')
+    .then(response=>response.json())
+    .then(data=>{
+      if(data.title!="Bad Request"){
+        const sorted = [...data].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+        this.setState({Knowledges:sorted});
+      }
+    });
+  }
+  catch(error){
+    console.error("Помилка:", error);
+  }
+
+  try{
+
+
+    await fetch(variables.API_URL+'category/with-children&parents')
+  .then(response=>response.json())
+  .then(data=>{
+    if(data.title!="Bad Request"){
+      const sorted = [...data].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+      this.setState({Educations:sorted});
+    }
+  });
+}
+catch(error){
+  console.error("Помилка:", error);
+}
+
+try{
+
+
+  await fetch(variables.API_URL+'category/without-children')
+.then(response=>response.json())
+.then(data=>{
+  if(data.title!="Bad Request"){
+    const sorted = [...data].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+    this.setState({Themes:sorted});
+  }
+});
+}
+catch(error){
+console.error("Помилка:", error);
+}
+  }
   createCourse = async () => {
     const {FullName, Knowledge, Education, Theme, Annotation, Language } = this.state;
       try {
-          const response = await fetch(variables.API_URL + 'courses/'+ getCookie("YourSecretKeyHere"), {
+          const response = await fetch(variables.API_URL + 'courses/'+ getCookie("UserSecretKey"), {
 
               method: 'POST',
               headers: {
@@ -75,22 +389,16 @@ class AddCourse extends React.Component {
               }), 
               
           })
-
-          .then(response=>response.json())
-          .then(data=>{
-            if (data!="Bad Request"){
-              setCookie("CreatingCourseId", data, {secure: true, 'max-age': 3600});
-              window.location.assign('http://localhost:3000/marge-units');
-            }
-            else{
-              console.error("Увійти не вдалась");
-            }
-          })
+          if(response.ok){
+            window.location.href = "http://localhost:3000/user-courses"
+          }
 
       } catch (error) {
           console.error("Помилка:", error);
       }
   }
+
+  
   render() {
     return (
       <>
@@ -99,7 +407,7 @@ class AddCourse extends React.Component {
       <div className="background">
       <img src={LeftBack} alt="constrLeft" className="left_back_constr"/>
       <img src={RightBack} alt="constrRight" className="right_back_constr"/>
-      <div className="constrView"> 
+      <div className="constrView">
       <h1>Додати новий курс</h1>
       <NavLink id="btnGeneral" className="showBtn btn" onClick={()=>this.show("general")}>
         <img src={Arrow} alt="arrow" id="arrowBtn_general" className="arrowBtn " />
@@ -121,9 +429,12 @@ class AddCourse extends React.Component {
         </section>
         <section>
         <select id="Knowledge" className="textInput" name="Knowledge" onChange={this.handleInputChange}>
-
-          <option>Веб розробка</option>
-
+          <option value=""></option>
+        {this.state.Knowledges.map(knowledge=>
+        <>
+            <option value={knowledge.categoryName} selected={knowledge.categoryName === this.state.Knowledge ? true : false}>{knowledge.categoryName}</option>
+            </>
+          )}
         </select>
         </section>
         </div>
@@ -134,9 +445,12 @@ class AddCourse extends React.Component {
         </section>
         <section>
         <select id="Education" className="textInput" name="Education" onChange={this.handleInputChange}>
-
-        <option>JavaScript</option>
-
+        <option value=""></option>
+        {this.state.Educations.map(education=>
+        <>
+            <option value={education.categoryName} selected={education.categoryName === this.state.Education ? true : false}>{education.categoryName}</option>
+          </>  
+          )}
         </select>
         </section>
         </div>
@@ -146,8 +460,12 @@ class AddCourse extends React.Component {
         </section>
         <section>
         <select id="Theme" className="textInput" name="Theme" onChange={this.handleInputChange}>
-
-        <option>ReactJS</option>
+        <option value=""></option>
+          {this.state.Themes.map(theme=>
+            <>
+            <option value={theme.categoryName} selected={theme.categoryName === this.state.Theme ? true : false}>{theme.categoryName}</option>
+            </>
+          )}
 
         </select>
 
@@ -177,11 +495,16 @@ class AddCourse extends React.Component {
       <div className="view dropDownForm" id="view">
       <div className="inputArea">
         <section>
-        <p className="textView textOption">Мова</p>
+        <p className="textView textOption">Мова викладання</p>
         </section>
         <section>
         <select id="Language" className="inputLanguage textInput" name="Language" onChange={this.handleInputChange}>
           <option>Українська</option>
+          <option>Англійська</option>
+          <option>Німецька</option>
+          <option>Французька</option>
+          <option>Італійська</option>
+          <option>Іспанська</option>
         </select>
         </section>
       </div>
@@ -189,7 +512,7 @@ class AddCourse extends React.Component {
       <br/>
       <div className="resultBtns">
       <NavLink className="saveBtn btn resultBtn" onClick={this.createCourse}>Зберегти зміни</NavLink>
-      <NavLink className="cancelBtn btn resultBtn">Скасувати</NavLink>
+      <NavLink className="cancelBtn btn resultBtn" to="/user-courses">Скасувати</NavLink>
       </div>
       <p className="downP">Обов’язкові поля  форми помічені символом<span className="redStar">*</span></p>
       </div>

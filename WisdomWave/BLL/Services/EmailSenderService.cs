@@ -20,7 +20,7 @@ namespace BLL.Services
         public EmailSenderService(IOptions<SendGridSenderOptions> options)
         {
             _sendGridOptions = options.Value;
-            //_sendGridClient = new SendGridClient(_sendGridOptions.SendGridKey)
+            _sendGridClient = new SendGridClient(_sendGridOptions.SendGridKey)
 ;
         }
 
@@ -39,7 +39,7 @@ namespace BLL.Services
             };
 
             sendGridMessage.AddTo(email);
-            //await _sendGridClient.SendEmailAsync(sendGridMessage);
+            await _sendGridClient.SendEmailAsync(sendGridMessage);
         }
     }
 }

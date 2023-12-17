@@ -42,7 +42,7 @@ public class AnswersController : ControllerBase
 
     public async Task<IActionResult> CreateAnswerInQuestion([FromBody] PushAnswer answer)
     {
-   
+
         var question = await _questionService.FindByConditionItemAsync(a => a.Id == answer.questionId);
 
         if (question == null)
@@ -51,9 +51,9 @@ public class AnswersController : ControllerBase
         }
         var result = await _answerService.CreateAsync(new Answer
         {
-            AnswerText= answer.AnswerText,
-            IsCorrect=answer.IsCorrect,
-            questionId=question.Id,
+            AnswerText = answer.AnswerText,
+            IsCorrect = answer.IsCorrect,
+            questionId = question.Id,
             Question = question
         });
 
@@ -94,10 +94,10 @@ public class AnswersController : ControllerBase
         var result = await _answerService.EditAsync(id, new Answer
         {
             Id = id,
-            AnswerText= answer.AnswerText,
-            IsCorrect= answer.IsCorrect,
+            AnswerText = answer.AnswerText,
+            IsCorrect = answer.IsCorrect,
             questionId = answer.questionId,
-            Question = await _questionService.FindByConditionItemAsync(q=>q.Id==answer.questionId)
+            Question = await _questionService.FindByConditionItemAsync(q => q.Id == answer.questionId)
         });
 
         if (result.IsError == false)

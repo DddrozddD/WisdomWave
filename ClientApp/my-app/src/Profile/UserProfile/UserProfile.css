@@ -6,7 +6,7 @@
 }
 
 .user_profile{
-    
+    transform: translateY(-15rem);
     margin-left: 30%;
 }
 
@@ -34,10 +34,10 @@
 }
 
 
-.add_photo_btn_section{
+/*.add_photo_btn_section{
     margin-left: 2%;
     transform: translateY(-60%);
-}
+}*/
 
 
 .add_photo_subsection{
@@ -85,6 +85,7 @@
 }
 
 .save_btn{
+    cursor: pointer;
     float: right;
     background-color: #f87c56;
     color: white;

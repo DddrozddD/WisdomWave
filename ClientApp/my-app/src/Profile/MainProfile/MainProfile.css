@@ -4,6 +4,8 @@
     display: flex;
 flex-direction: column;
 flex-wrap: wrap;
+position: relative;
+height: 35vh;
 }
 
 .link_mainprofile{
@@ -19,5 +21,7 @@ flex-wrap: wrap;
 }
 
 .link_education{
-    font-size: 20px;
+    font-size: 2rem;
+    margin-left: 2rem;
+    transform: translateY(2rem);
 }

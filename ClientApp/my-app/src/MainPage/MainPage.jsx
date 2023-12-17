@@ -1,5 +1,5 @@
-import "./MainPage.css";
 import React from "react";
+import "./MainPage.css";
 
 function template() {
   return (

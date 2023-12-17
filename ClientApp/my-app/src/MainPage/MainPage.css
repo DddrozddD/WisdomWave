@@ -1,3 +1,82 @@
-.back1{
-    float: right;
+.back_right {
+
+    right: 0;
+    height: 80vh;
+    position: absolute;
+    z-index: -1;
+}
+
+.back_left {
+
+    left: 0;
+    height: 80vh;  
+    position: absolute;
+    z-index: -1;
+}
+.block {
+    overflow: hidden;
+    height: 100vh;
+    margin-bottom: 2rem;
+}
+
+.first_block h1 {
+    margin-top: 10rem;
+    margin-left: 8rem;
+    font-size: 5rem; 
+    width: 70rem;
+}
+
+.first_block h2 {
+    margin-left: 8rem;
+    font-size: 2rem; 
+    width: 40rem;
+}
+
+.whiteBtn{
+    cursor: pointer;
+    color: white;
+    background-color: #F87C56;
+    border: 0;
+text-align: center;
+font-family: Montserrat Alternates;
+padding: 1rem 4rem 1rem 4rem;
+font-size: 1.2rem;
+border-radius: 4rem;
+
+}
+.allCoursesBtn{
+    margin-left: 15rem;
+}
+.orangeBtn{
+    cursor: pointer;
+    color: #F87C56;
+    background-color: white;
+    border: 1px solid #F87C56;
+text-align: center;
+font-family: Montserrat Alternates;
+padding: 1rem 4rem 1rem 4rem;
+font-size: 1.2rem;
+border-radius: 4rem;
+
+}
+
+.goBtn{
+   margin-top: 5rem;
+}
+
+.subblock2{
+   text-align: center; 
+}
+
+.subblock2 h1{
+    font-size: 3rem; 
+    margin-top: 4rem;
+}
+
+.subblock2 h2{
+    font-size: 2rem; 
+    margin-top: 4rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60rem;
 }

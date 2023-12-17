@@ -125,14 +125,19 @@ namespace WisdomWave.Controllers
         }
 
         [HttpPut("{id}")] // HTTP PUT request handler for updating an existing test
-        public async Task<IActionResult> Put(int id, [FromBody] Test test)
+        public async Task<IActionResult> Put(int id, [FromBody] PostTest test)
         {
+
             if (test == null)
             {
                 return BadRequest();
             }
 
-            await testService.EditAsync(id, test);
+            var thisTest = await testService.FindByConditionItemAsync(t => t.Id == id);
+            thisTest.TestName = test.TestName;
+            thisTest.TestDescription = test.TestDescription;
+
+            await testService.EditAsync(id, thisTest);
             return NoContent(); // Return a status of 204 No Content
         }
 

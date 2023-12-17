@@ -11,7 +11,6 @@ import { BrowserRouter, Route, Routes, NavLink } from 'react-router-dom';
 
 class MargeUnits extends React.Component {
 
-   
 
   constructor(props) {
     super(props);
@@ -30,7 +29,7 @@ componentDidMount=async()=>{
   getEditCourseUnits = async()=>{
     let Units = [];
     try {
-    const response = await fetch(variables.API_URL + 'courses/GetEditCourseUnits/'+getCookie("CreatingCourseId"));
+    const response = await fetch(variables.API_URL + 'courses/GetEditCourseUnits/'+getCookie("EditCourseId"));
     const data = await response.json();
     console.log(data);
     Units = data;
@@ -242,7 +241,7 @@ componentDidMount=async()=>{
                 <br/>              
                 </div>
               </div>
-            </div>
+              </div>
             )}
             <input type="image" src={ic_for_add} alt="ic_for_add" className="ic_for_add" onClick={this.addUnit}/>
       </div>

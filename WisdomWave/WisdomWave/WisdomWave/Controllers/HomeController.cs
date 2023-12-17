@@ -25,19 +25,18 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-<<<<<<< Updated upstream
 
-        _courseService.FindAllLearningCoursesForUser((_userManager.FindByNameAsync(User.Identity.Name)).Id.ToString());
-=======
-      
-        /*
->>>>>>> Stashed changes
 
-        /*
-        _categoryService.CreateAsync(new Category { CategoryName = "Розробка" });
+        await _categoryService.CreateAsync(new Category { CategoryName = "Розробка" });
+
         Category parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Розробка");
-
         await _categoryService.CreateAsync(new Category { CategoryName = "Веб розробка" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Обробка та аналіз даних" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Розробка мобільних додатків" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Розробка ігор" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Проектування та разробка баз данних" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Інженерія розробки ПЗ" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Мови програмування" }, parentCategory.Id);
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Веб розробка");
         await _categoryService.CreateAsync(new Category { CategoryName = "JavaScript" }, parentCategory.Id);
@@ -50,8 +49,7 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "TypeScript" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Розробка");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Обробка та аналіз даних" }, parentCategory.Id);
+
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Обробка та аналіз даних");
         await _categoryService.CreateAsync(new Category { CategoryName = "Python" }, parentCategory.Id);
@@ -64,8 +62,7 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Аналіз Даних" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Розробка");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Розробка мобільних додатків" }, parentCategory.Id);
+
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Розробка мобільних додатків");
         await _categoryService.CreateAsync(new Category { CategoryName = "Gooogle Flutter" }, parentCategory.Id);
@@ -77,8 +74,7 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Kotlin" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Розробка");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Розробка ігор" }, parentCategory.Id);
+
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Розробка ігор");
@@ -90,8 +86,8 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Розробка 3D ігор" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Розробка");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Проектування та разробка баз данних" }, parentCategory.Id);
+
+
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Проектування та разробка баз данних");
@@ -103,8 +99,7 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Oracle SQL" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Розробка");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Інженерія розробки ПЗ" }, parentCategory.Id);
+
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Інженерія розробки ПЗ");
@@ -116,8 +111,6 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Мікросервіси" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Розробка");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Мови програмування" }, parentCategory.Id);
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Мови програмування");
@@ -131,11 +124,16 @@ public class HomeController : Controller
 
         ////////////////////////////////////////////////////////////////////////////////////
 
-        _categoryService.CreateAsync(new Category { CategoryName = "Бізнес" });
+        await _categoryService.CreateAsync(new Category { CategoryName = "Бізнес" });
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Бізнес");
         await _categoryService.CreateAsync(new Category { CategoryName = "Підприємництво" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Менеджмент" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Продажі" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Управління проектами" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Промисловість" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Інше про бізнес" }, parentCategory.Id);
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Підприємництво");
@@ -149,8 +147,7 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Онлайн-бізнес" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Бізнес");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Менеджмент" }, parentCategory.Id);
+
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Менеджмент");
@@ -164,8 +161,7 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Управління ризиками" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Бізнес");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Продажі" }, parentCategory.Id);
+
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Продажі");
@@ -176,11 +172,8 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Розвиток бізнесу" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "Холодні листи" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "Холодне продзвонювання" }, parentCategory.Id);
-        await _categoryService.CreateAsync(new Category { CategoryName = "Etsy" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Бізнес");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Управління проектами" }, parentCategory.Id);
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Управління проектами");
@@ -193,8 +186,7 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "PMI Agile Certified Practitioner (PMI-ACP)" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Бізнес");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Промисловість" }, parentCategory.Id);
+
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Промисловість");
@@ -207,8 +199,6 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "EPLAN Electric P8" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Бізнес");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Інше про бізнес" }, parentCategory.Id);
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Інше про бізнес");
@@ -222,11 +212,13 @@ public class HomeController : Controller
 
         ////////////////////////////////////////////////////////////////////////////////////
 
-        _categoryService.CreateAsync(new Category { CategoryName = "Офісне програмне забезпечення" });
+        await _categoryService.CreateAsync(new Category { CategoryName = "Офісне програмне забезпечення" });
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Офісне програмне забезпечення");
         await _categoryService.CreateAsync(new Category { CategoryName = "Microsoft" }, parentCategory.Id);
-
+        await _categoryService.CreateAsync(new Category { CategoryName = "Apple" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Google" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Інше про офісні програми" }, parentCategory.Id);
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Microsoft");
         await _categoryService.CreateAsync(new Category { CategoryName = "Excel" }, parentCategory.Id);
@@ -239,8 +231,6 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "SharePoint" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Офісне програмне забезпечення");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Apple" }, parentCategory.Id);
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Apple");
@@ -253,8 +243,6 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Mac Pages" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Офісне програмне забезпечення");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Google" }, parentCategory.Id);
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Google");
@@ -267,9 +255,6 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Продуктивність Gmail" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Офісне програмне забезпечення");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Інше про офісні програми" }, parentCategory.Id);
-
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Інше про офісні програми");
         await _categoryService.CreateAsync(new Category { CategoryName = "SAP" }, parentCategory.Id);
@@ -280,12 +265,15 @@ public class HomeController : Controller
 
         ////////////////////////////////////////////////////////////////////////////////////
 
-        _categoryService.CreateAsync(new Category { CategoryName = "Дизайн" });
-
+        await _categoryService.CreateAsync(new Category { CategoryName = "Дизайн" });
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Дизайн");
         await _categoryService.CreateAsync(new Category { CategoryName = "Веб дизайн" }, parentCategory.Id);
-
+        await _categoryService.CreateAsync(new Category { CategoryName = "Графічний дизайн та ілюстрація" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Дизайн ігор" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "3D та анімація" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Модний дизайн" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Архітектурне проектування" }, parentCategory.Id);
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Веб дизайн");
         await _categoryService.CreateAsync(new Category { CategoryName = "Дизайн мобільних додатків" }, parentCategory.Id);
@@ -298,8 +286,7 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Webflow" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Дизайн");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Графічний дизайн та ілюстрація" }, parentCategory.Id);
+
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Графічний дизайн та ілюстрація");
@@ -312,9 +299,6 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Теорія дизайну" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Дизайн");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Дизайн ігор" }, parentCategory.Id);
-
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Дизайн ігор");
         await _categoryService.CreateAsync(new Category { CategoryName = "Піксель-арт" }, parentCategory.Id);
@@ -326,8 +310,7 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Візуальні ефекти" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Дизайн");
-        await _categoryService.CreateAsync(new Category { CategoryName = "3D та анімація" }, parentCategory.Id);
+
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "3D та анімація");
@@ -340,9 +323,6 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Maya" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Дизайн");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Модний дизайн" }, parentCategory.Id);
-
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Модний дизайн");
         await _categoryService.CreateAsync(new Category { CategoryName = "Мода" }, parentCategory.Id);
@@ -353,9 +333,6 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Adobe Illustrator" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "Текстильна промисловість" }, parentCategory.Id);
 
-
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Дизайн");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Архітектурне проектування" }, parentCategory.Id);
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Архітектурне проектування");
@@ -369,11 +346,14 @@ public class HomeController : Controller
 
         ////////////////////////////////////////////////////////////////////////////////////
 
-        _categoryService.CreateAsync(new Category { CategoryName = "Маркетинг" });
+        await _categoryService.CreateAsync(new Category { CategoryName = "Маркетинг" });
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Маркетинг");
         await _categoryService.CreateAsync(new Category { CategoryName = "Цифровий маркетинг" }, parentCategory.Id);
-
+        await _categoryService.CreateAsync(new Category { CategoryName = "Фірмовий стиль" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Платна реклама" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Зв'язки з громадськістю" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Товарний маркетинг" }, parentCategory.Id);
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Цифровий маркетинг");
         await _categoryService.CreateAsync(new Category { CategoryName = "Маркетинг у соціальних мережах" }, parentCategory.Id);
@@ -385,8 +365,6 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Воронка продажів" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Маркетинг");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Фірмовий стиль" }, parentCategory.Id);
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Фірмовий стиль");
         await _categoryService.CreateAsync(new Category { CategoryName = "Бізнес брендинг" }, parentCategory.Id);
@@ -398,8 +376,7 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Книжковий маркетинг" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Маркетинг");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Платна реклам" }, parentCategory.Id);
+
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Платна реклама");
         await _categoryService.CreateAsync(new Category { CategoryName = "Google Реклама" }, parentCategory.Id);
@@ -410,8 +387,6 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Переорієнтація" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "Рекламна стратегія" }, parentCategory.Id);
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Маркетинг");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Зв'язки з громадськістю" }, parentCategory.Id);
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Зв'язки з громадськістю");
@@ -424,8 +399,6 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Управління споживчим досвідом" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Маркетинг");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Товарний маркетинг" }, parentCategory.Id);
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Товарний маркетинг");
         await _categoryService.CreateAsync(new Category { CategoryName = "Маркетинговий план" }, parentCategory.Id);
@@ -438,11 +411,13 @@ public class HomeController : Controller
 
         ////////////////////////////////////////////////////////////////////////////////////
 
-        _categoryService.CreateAsync(new Category { CategoryName = "Світлина та відео" });
+        await _categoryService.CreateAsync(new Category { CategoryName = "Світлина та відео" });
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Світлина та відео");
         await _categoryService.CreateAsync(new Category { CategoryName = "Цифрова фотографія" }, parentCategory.Id);
-
+        await _categoryService.CreateAsync(new Category { CategoryName = "Портрена фотографія" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Комерційна фотографія" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Дизайн відео" }, parentCategory.Id);
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Цифрова фотографія");
         await _categoryService.CreateAsync(new Category { CategoryName = "Світлина" }, parentCategory.Id);
@@ -454,8 +429,6 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Adobe Photoshop" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Світлина та відео");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Портрена фотографія" }, parentCategory.Id);
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Портрена фотографія");
         await _categoryService.CreateAsync(new Category { CategoryName = "Позування" }, parentCategory.Id);
@@ -467,8 +440,7 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Adobe Photoshop" }, parentCategory.Id);
 
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Світлина та відео");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Комерційна фотографія" }, parentCategory.Id);
+
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Комерційна фотографія");
         await _categoryService.CreateAsync(new Category { CategoryName = "Фотографія нерухомості" }, parentCategory.Id);
@@ -479,8 +451,7 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Світлина їжі" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "Освітлення у фотографії" }, parentCategory.Id);
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Світлина та відео");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Дизайн відео" }, parentCategory.Id);
+
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Дизайн відео");
         await _categoryService.CreateAsync(new Category { CategoryName = "Відеомонтаж" }, parentCategory.Id);
@@ -493,11 +464,15 @@ public class HomeController : Controller
 
         ////////////////////////////////////////////////////////////////////////////////////
 
-        _categoryService.CreateAsync(new Category { CategoryName = "Музика" });
+        await _categoryService.CreateAsync(new Category { CategoryName = "Музика" });
 
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Музика");
         await _categoryService.CreateAsync(new Category { CategoryName = "Музичне виробництво" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Основи музики" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Вокал" }, parentCategory.Id);
+        await _categoryService.CreateAsync(new Category { CategoryName = "Інше про музику" }, parentCategory.Id);
+
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Музичне виробництво");
         await _categoryService.CreateAsync(new Category { CategoryName = "FL Studio" }, parentCategory.Id);
@@ -508,11 +483,6 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Звукорежисура" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "Аудіовиробництво" }, parentCategory.Id);
 
-
-
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Музика");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Основи музики" }, parentCategory.Id);
-
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Основи музики");
         await _categoryService.CreateAsync(new Category { CategoryName = "Теорія музики" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "Музикальна композиція" }, parentCategory.Id);
@@ -521,10 +491,6 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Нотна грамотність" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "ABRSM" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "Гармонія (музика)" }, parentCategory.Id);
-
-
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Музика");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Вокал" }, parentCategory.Id);
 
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Вокал");
         await _categoryService.CreateAsync(new Category { CategoryName = "Спів" }, parentCategory.Id);
@@ -535,9 +501,6 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Pen" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "Озвучення та закадровий переклад" }, parentCategory.Id);
 
-        parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Музика");
-        await _categoryService.CreateAsync(new Category { CategoryName = "Інше про музику" }, parentCategory.Id);
-
         parentCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Інше про музику");
         await _categoryService.CreateAsync(new Category { CategoryName = "DJ" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "Музичний бізнес" }, parentCategory.Id);
@@ -545,39 +508,13 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Pen" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "Музичний маркетинг" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "Звукова терапія" }, parentCategory.Id);
-
-        await _categoryService.CreateAsync(new Category { CategoryName = "Джембе" }, parentCategory.Id);*/
-
         await _categoryService.CreateAsync(new Category { CategoryName = "Джембе" }, parentCategory.Id);
-<<<<<<< Updated upstream
 
-        */
-        return View();
-=======
-        */
-        return Redirect("https://wisdomwave20231203130411.azurewebsites.net/");
-        
->>>>>>> Stashed changes
+
+        return Redirect("http://localhost:3000/");
+
     }
   
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    public async Task<IActionResult> ShowViewReg()
-    {
-        
-        Category newCategory2 = new Category();
-        newCategory2.CategoryName = "Some2";
-        Category newCategory = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == "Some");
-        await _categoryService.CreateAsync(newCategory2, newCategory.Id);
-
-        return View("Registration");
-    }
-    public IActionResult ShowLoginReg()
-    {
-        return View("Login");
-    }
+ 
 
 }

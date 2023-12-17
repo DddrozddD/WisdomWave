@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,8 @@ namespace Domain.Models
         public string CategoryName { get; set; }
 
 
-        public IReadOnlyCollection<Category> ParentCategories { get; set;}
-        public IReadOnlyCollection<Category> ChildCategories { get;set;}
-        public IReadOnlyCollection<Course> Courses { get; set;}
+        public IReadOnlyCollection<Category>? ParentCategories { get; set;}
+        public IReadOnlyCollection<Category>? ChildCategories { get;set;}
+        public IReadOnlyCollection<Course>? Courses { get; set;}
     }
 }

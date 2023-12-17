@@ -40,9 +40,11 @@ namespace DAL.Repositories
                 model.Description = course.Description;
                 model.Reviews = course.Reviews;
                 model.CreatorUser = course.CreatorUser;
-                model.Units= course.Units;
+                model.Units = course.Units;
                 model.Categories = course.Categories;
                 model.Language = course.Language;
+                model.creatorUserName = course.creatorUserName;
+                model.CompletedUsers = course.CompletedUsers;
 
                 this._context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 

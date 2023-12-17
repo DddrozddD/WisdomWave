@@ -25,71 +25,71 @@ namespace BLL.Services
         public async Task<Category> FindByConditionItemAsync(Expression<Func<Category, bool>> predicat) => await this.unitOfWork.CategoryRepository.FindByConditionItemAsync(predicat);
         public async Task<OperationDetails> CreateAsync(Category category)
         {
-
-          return await unitOfWork.CategoryRepository.CreateAsync(category);
+            var resSearch = await unitOfWork.CategoryRepository.FindByConditionItemAsync(c => c.CategoryName == category.CategoryName);
+            if (resSearch == null)
+            {
+                return await unitOfWork.CategoryRepository.CreateAsync(category);
+            }
+            return null;
         }
 
        
 
         public async Task<OperationDetails> CreateAsync(Category category, int categoryParentId)
         {
-            Category parentCategory = await unitOfWork.CategoryRepository.FindByConditionItemAsync(c => c.Id == categoryParentId);
-            List<Category> parentCategories = new List<Category>();
-            parentCategories.Add(parentCategory);
-
-            category.ParentCategories = parentCategories;
-            return await unitOfWork.CategoryRepository.CreateAsync(category);
+            var resSearch = await unitOfWork.CategoryRepository.FindByConditionItemAsync(c=>c.CategoryName == category.CategoryName);
+            if (resSearch == null)
+            {
+                var res = await unitOfWork.CategoryRepository.CreateAsync(category);
+                Category parentCategory = await unitOfWork.CategoryRepository.FindByConditionItemAsync(c => c.Id == categoryParentId);
+                Category newCategory = await unitOfWork.CategoryRepository.FindByConditionItemAsync(c => c.CategoryName == category.CategoryName);
+                List<Category> childCategories = new List<Category>();
+                if (parentCategory.ChildCategories != null)
+                {
+                    childCategories = parentCategory.ChildCategories.ToList();
+                }
+                childCategories.Add(newCategory);
+                parentCategory.ChildCategories = childCategories;
+                await unitOfWork.CategoryRepository.Update(parentCategory, parentCategory.Id);
+                return res;
+            }
+            return null;
         }
 
-        public async Task<OperationDetails> CreateAsync(Category category, int courseId, int categoryParentId)
-        {
+      
 
-            Course course = await unitOfWork.CourseRepository.FindByConditionItemAsync(c => c.Id == courseId);
-
-            List<Course> courses = new List<Course>();
-            courses.Add(course);
-            category.Courses = courses;
-
-            Category parentCategory = await unitOfWork.CategoryRepository.FindByConditionItemAsync(c=>c.Id==categoryParentId);
-            List<Category> parentCategories = new List<Category>();
-            parentCategories.Add(parentCategory);
-
-            return await unitOfWork.CategoryRepository.CreateAsync(category);
-        }
         public async Task DeleteAsync(int id) => await unitOfWork.CategoryRepository.Delete(id);
         public async Task<OperationDetails> EditAsync(int id, Category category) => await unitOfWork.CategoryRepository.Update(category, id);
 
+
+        public async Task<IReadOnlyCollection<Category>> GetCategoriesWithParentChild()
+        {
+
+            return await unitOfWork.CategoryRepository.FindByConditionAsync(c => (c.ParentCategories.Count() != 0)&&(c.ChildCategories.Count() != 0));
+        }
+
         public async Task<IReadOnlyCollection<Category>> GetCategoriesWithoutParentAsync()
         {
-            return await unitOfWork.CategoryRepository.FindByConditionAsync(c => c.ParentCategories == null);
+
+            return await unitOfWork.CategoryRepository.FindByConditionAsync(c => c.ParentCategories.Count() == 0);
         }
         public async Task<IReadOnlyCollection<Category>> GetCategoriesWithoutChildAsync()
         {
-            return await unitOfWork.CategoryRepository.FindByConditionAsync(c => c.ChildCategories == null);
+            return await unitOfWork.CategoryRepository.FindByConditionAsync(c => c.ChildCategories.Count() == 0);
         }
 
-        public async Task<IReadOnlyCollection<Category>> GetCategoriesByParentIdAsync(int parentId)
+        public async Task<IReadOnlyCollection<Category>> GetCategoriesByParentNameAsync(string categoryName)
         {
 
-            return await unitOfWork.CategoryRepository.FindByConditionAsync(c => c.ParentCategories.Any(pc => pc.Id == parentId));
+            return await unitOfWork.CategoryRepository.FindByConditionAsync(c => c.ParentCategories.Any(pc => pc.CategoryName == categoryName));
 
         }
 
-        public async Task<IReadOnlyCollection<Category>> GetParentCategoriesByIdAsync(int childId)
+        public async Task<IReadOnlyCollection<Category>> GetCategoriesByChildNameAsync(string categoryName)
         {
 
+            return await unitOfWork.CategoryRepository.FindByConditionAsync(c => c.ChildCategories.Any(pc => pc.CategoryName == categoryName));
 
-            var category = await unitOfWork.CategoryRepository.FindByConditionItemAsync(c => c.Id == childId);
-
-            return category.ParentCategories;
-        }
-
-        public async Task<IReadOnlyCollection<Category>> GetChildCategoriesByIdAsync(int categoryId)
-        {
-
-            var category = await unitOfWork.CategoryRepository.FindByConditionItemAsync(c => c.Id == categoryId);
-
-            return category.ChildCategories;
         }
     }
 }

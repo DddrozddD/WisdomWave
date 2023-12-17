@@ -21,10 +21,10 @@ namespace ASP_Resume.Controllers
                 var res = await _userManager.ConfirmEmailAsync(user, guid);
                 if (res.Succeeded)
                 {
-                    return RedirectToAction("Confirm", "Home");
+                    return Redirect("http://localhost:3000/");
                 }
             }
-            return RedirectToAction("Index", "Home");
+            return Redirect("http://localhost:3000/");
         }
     }
 }

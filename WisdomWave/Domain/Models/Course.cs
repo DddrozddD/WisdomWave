@@ -13,12 +13,16 @@ namespace Domain.Models
         public string? ImageLinkCourse { get; set; }
         public string CourseName { get; set; }
         public string Description { get; set; }
+        public double OverallRating { get; set; }
         public DateTime DateOfCreate { get; set; }
         public string Language { get; set; }
-        public IReadOnlyCollection<LearnerUserToCourse> LearnerUsers { get; set; }
+        public IReadOnlyCollection<WwUser> LearnerUsers { get; set; }
+        public IReadOnlyCollection<WwUser> CompletedUsers { get; set; }
         public string creatorUserId { get; set; }
+        public string creatorUserName { get; set; }
         public WwUser CreatorUser { get; set; }
         public IReadOnlyCollection<Review> Reviews { get; set; }
+        public IReadOnlyCollection<Rating> Ratings { get; set; }
         public IReadOnlyCollection<Unit> Units { get; set; }
         public IReadOnlyCollection<Category> Categories { get; set; }
     }

@@ -13,7 +13,6 @@ namespace DAL.Repositories.UnitsOfWork
         LikeDislikeRepository LikeDislikeRepository { get; }
         ReviewRepository ReviewRepository { get; }
         SubscriptionRepository SubscriptionRepository { get; }
-        LearnerUserToCourseRepository LearnerUserToCourseRepository { get; }
         AnswerRepository AnswerRepository { get; }
         ParagraphRepository ParagraphRepository { get; }
         QuestionRepository QuestionRepository { get; }
@@ -22,5 +21,6 @@ namespace DAL.Repositories.UnitsOfWork
         UnitRepository UnitRepository { get; }
         CategoryRepository CategoryRepository { get; }
         PageRepository PageRepository{ get; }
+        RatingRepository RatingRepository { get; }
     }
 }

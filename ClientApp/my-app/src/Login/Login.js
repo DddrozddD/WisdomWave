@@ -24,6 +24,7 @@ handleInputChange = (e) => {
   });
 }
 
+
 loginClick = async () => {
 
   const { email, password} = this.state;
@@ -39,13 +40,13 @@ loginClick = async () => {
               "Password": password
               
           })
-
           
       })
       .then(response=>response.json())
       .then(data=>{
         if (data!="User is not found"){
-          setCookie("YourSecretKeyHere", data, {secure: true, 'max-age': 3*86400});
+
+          setCookie("UserSecretKey", data, {secure: true, 'max-age': 3*86400});
           window.location.assign('http://localhost:3000/');
         }
         else{
