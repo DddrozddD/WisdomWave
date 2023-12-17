@@ -390,7 +390,7 @@ console.error("Помилка:", error);
               
           })
           if(response.ok){
-            window.location.href = "http://localhost:3000/user-courses"
+            window.location.href = variables.PAGE_URL+ "user-courses"
           }
 
       } catch (error) {

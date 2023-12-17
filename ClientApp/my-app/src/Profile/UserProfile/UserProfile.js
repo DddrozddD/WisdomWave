@@ -116,7 +116,7 @@ class UserProfile extends React.Component {
               </div>
               <div className="setting_section">
               <p>Призвище користувача</p>
-              <input id="userName" name="userName" type="text" placeholder="Ім’я" onChange={this.handleInputChange} defaultValue={this.state.userSurname}/>
+              <input id="userSurname" name="userSurname" type="text" placeholder="Призвище" onChange={this.handleInputChange} defaultValue={this.state.userSurname}/>
               </div>
               {/*
               <div className="setting_section">
@@ -142,6 +142,7 @@ class UserProfile extends React.Component {
               </div>
             </div>
         </div>
+        {/*
         <h2 className="profile_settings_label">Безпека</h2>
         <div className="profile_settings">
             <div className="settings_sections">
@@ -152,7 +153,7 @@ class UserProfile extends React.Component {
               
               
             </div>
-        </div>
+</div>*/}
         <button className="save_btn" onClick={this.saveUser}>Зберегти зміни</button>
       </div>
       </div>

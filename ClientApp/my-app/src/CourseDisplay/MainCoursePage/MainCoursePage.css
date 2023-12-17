@@ -3,14 +3,38 @@
     height: 10rem;
     transform: translateY(2rem);
     margin-left: 2rem;
+   
 }
 
 .MainCoursePage{
     margin-top: 5rem;
     margin-left: 8rem;
+    display: inline-block;
+
 }
 
 .link_course{
     font-size: 1rem;
     font-weight: bold;
+}
+
+.course_view_site{
+    display: inline-block;
+}
+
+.exForm p{
+    display: inline-block;
+    margin-left: 1rem;
+}
+
+.exForm{
+    width: fit-content;
+    background-color: #D4F3FD;
+    padding: 1rem;
+    border-radius: 1rem;
+    display: none;
+}
+
+.info_view{
+    margin-left: 15rem;
 }

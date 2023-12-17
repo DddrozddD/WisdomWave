@@ -50,6 +50,7 @@ public class CoursesController : ControllerBase
         course.LearnerUsers = await _userManager.Users.Where(u => u.LearningCourses.Any(c => c.Id == id)).ToListAsync();
         course.CompletedUsers = await _userManager.Users.Where(u => u.CompletedCourses.Any(c => c.Id == id)).ToListAsync();
 
+
         if (course == null)
         {
             return NotFound();
@@ -72,6 +73,26 @@ public class CoursesController : ControllerBase
         }
 
         if (User.Id == Course.creatorUserId)
+        {
+            return new JsonResult(true);
+        }
+        return new JsonResult(false);
+    }
+
+    [HttpGet("checkCourseOfLerner/{id}/{token}")]
+    public async Task<IActionResult> checkCourseOfLerner(int id, string token)
+    {
+        WwUser User = await _userManager.FindByIdAsync(JwtHandler.DecodeJwtToken(token).FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+        Course Course = await _courseService.FindByConditionItemAsync(c => c.Id == id);
+
+        if (User == null || Course == null)
+        {
+            return NotFound();
+        }
+
+        List<Course> Courses = (await _courseService.FindByConditionAsync(c=>c.LearnerUsers.Any(u=>u.Id == User.Id))).ToList();
+             
+        if (Courses.Any(c=>c.Id == Course.Id))
         {
             return new JsonResult(true);
         }
@@ -128,7 +149,52 @@ public class CoursesController : ControllerBase
         return new JsonResult(returnUnits);
     }
 
+    [HttpPut("startStudyCourse/{id}/{token}")]
+    public async Task<IActionResult> startStudyCourse(int id, string token)
+    {
+        WwUser User = await _userManager.FindByIdAsync(JwtHandler.DecodeJwtToken(token).FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+        Course Course = await _courseService.FindByConditionItemAsync(c => c.Id == id);
 
+        if (User == null || Course == null)
+        {
+            return NotFound();
+        }
+
+       
+            List<Course> learningCourses = new List<Course>() ;
+            learningCourses.Add(Course);
+            User.LearningCourses = learningCourses;
+            await _userManager.UpdateAsync(User);
+       
+        return Ok();
+    }
+
+    [HttpGet("GetShowCourseUnits/{courseId}")]
+    public async Task<IActionResult> GetShowCourseUnits(int courseId)
+    {
+        var course = await _courseService.FindByConditionItemAsync(c => c.Id == courseId);
+        IReadOnlyCollection<Unit> courseUnits = await _unitService.FindByConditionAsync(u => u.courseId == course.Id);
+
+
+        var returnUnits = new List<ReturnUnit>();
+       
+        foreach (var unit in courseUnits)
+        {
+            ReturnUnit returnUnit = new ReturnUnit()
+            {
+
+                courseId = unit.courseId,
+                DateOfCreate = course.DateOfCreate.ToString(),
+                UnitName = unit.UnitName,
+                Id = unit.Id,
+                Number = unit.Number
+
+            };
+            returnUnits.Add(returnUnit);
+        }
+
+        return new JsonResult(returnUnits);
+    }
 
     [HttpGet("GetUserCourses/{token}")]
     public async Task<IActionResult> GetUserCourses(string token)
@@ -138,6 +204,24 @@ public class CoursesController : ControllerBase
         string userIdClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
         var courses = await _courseService.FindByConditionAsync(c => c.creatorUserId == userIdClaim);
+
+        if (courses == null)
+        {
+            return NotFound();
+        }
+
+        return new JsonResult(courses);
+    }
+
+    [HttpGet("GetUserLearningCourses/{token}")]
+    public async Task<IActionResult> GetUserLearningCourses(string token)
+    {
+        var claims = JwtHandler.DecodeJwtToken(token);
+
+        string userIdClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+        WwUser User = await _userManager.FindByIdAsync(userIdClaim);
+        var courses = await _courseService.FindByConditionAsync(c=>c.LearnerUsers.Any(u=>u.Id==User.Id));
 
         if (courses == null)
         {
@@ -190,7 +274,66 @@ public class CoursesController : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
+    [HttpGet("getByCategories/{knowlageName}/{educationName}/{themeName}")]
+    public async Task<IActionResult> getByCategories(string knowlageName, string educationName, string themeName)
+    {
+
+        List<Course> FindCourses = new List<Course>();
+        if((knowlageName != "undefined") && (knowlageName != null) && (knowlageName != ""))
+        {
+            if((educationName != "undefined") && (educationName != null) && (educationName != ""))
+            {
+                if ((themeName != "undefined") && (themeName != null) && (themeName != ""))
+                {
+                    FindCourses = (await _courseService.FindByConditionAsync(c => c.Categories.Any(c => c.CategoryName == knowlageName) && c.Categories.Any(c => c.CategoryName == educationName) && c.Categories.Any(c => c.CategoryName == themeName))).ToList();
+                }
+                else
+                {
+                    FindCourses = (await _courseService.FindByConditionAsync(c => c.Categories.Any(c => c.CategoryName == knowlageName) && c.Categories.Any(c => c.CategoryName == educationName))).ToList();
+                }
+            }
+            else
+            {
+                if ((themeName != "undefined") && (themeName != null) && (themeName != ""))
+                {
+                    FindCourses = (await _courseService.FindByConditionAsync(c => c.Categories.Any(c => c.CategoryName == knowlageName) && c.Categories.Any(c => c.CategoryName == themeName))).ToList();
+                }
+                else
+                {
+                    FindCourses = (await _courseService.FindByConditionAsync(c => c.Categories.Any(c => c.CategoryName == knowlageName))).ToList();
+                }
+            }
+            
+        }
+        else
+        {
+            if ((educationName != "undefined") && (educationName != null) && (educationName != ""))
+            {
+                if ((themeName != "undefined") && (themeName != null) && (themeName != ""))
+                {
+                    FindCourses = (await _courseService.FindByConditionAsync(c =>c.Categories.Any(c => c.CategoryName == educationName) && c.Categories.Any(c => c.CategoryName == themeName))).ToList();
+                }
+                else
+                {
+                    FindCourses = (await _courseService.FindByConditionAsync(c =>c.Categories.Any(c => c.CategoryName == educationName))).ToList();
+                }
+            }
+            else
+            {
+                if ((themeName != "undefined") && (themeName != null) && (themeName != ""))
+                {
+                    FindCourses = (await _courseService.FindByConditionAsync(c => c.Categories.Any(c => c.CategoryName == themeName))).ToList();
+                }
+                else
+                {
+                    return new JsonResult(await _courseService.GetAsyncs());
+                }
+            }
+        }
+        return new JsonResult(FindCourses);
+    }
+
+        [HttpPut("{id}")]
     public async Task<IActionResult> UpdateCourse(int id, [FromBody] CreateCourseForm course)
     {
         Category knowlage = await _categoryService.FindByConditionItemAsync(c => c.CategoryName == course.Knowledge);

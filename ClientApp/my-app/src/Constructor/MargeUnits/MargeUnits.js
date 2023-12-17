@@ -220,13 +220,13 @@ componentDidMount=async()=>{
               <div>
               {unit.pages != null && unit.pages.map(page=>
                 <>
-                <NavLink  className="" to={{pathname :"/edit-page" }} onClick={()=>this.toEditPage(page.id)}>{page.pageName}</NavLink>
+                <NavLink  className="materials" to={{pathname :"/edit-page" }} onClick={()=>this.toEditPage(page.id)}>{page.pageName}</NavLink>
                 <br/>
                 </>
                   )}
                   {unit.tests != null && unit.tests.map(test=>
                 <>
-                <NavLink  className="" to={{pathname :"/edit-test" }} onClick={()=>this.toEditTest(test.id)}>{test.testName}</NavLink>
+                <NavLink  className="materials" to={{pathname :"/edit-test" }} onClick={()=>this.toEditTest(test.id)}>{test.testName}</NavLink>
                 <br/>
                 </>
                   )}

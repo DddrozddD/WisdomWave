@@ -98,9 +98,7 @@ class EditQuestion extends React.Component {
   }
 
 
-  seveOneAnswer=async()=>{
-      
-  }
+
 
   updateType=async(option)=>{
     if(option === "option1"){
@@ -176,7 +174,7 @@ class EditQuestion extends React.Component {
           }
         }
         if(countOkRes===4){
-          window.location.href = "/edit-test";
+          window.location.href = variables.PAGE_URL+"edit-test";
         }
       }
           else if(this.state.QuestionType === "ManyAnswers"){
@@ -214,7 +212,7 @@ class EditQuestion extends React.Component {
           }
         }
         if(countOkRes===4){
-          window.location.href = "/edit-test";
+          window.location.href = variables.PAGE_URL+"edit-test";
         }
       }
       else if(this.state.QuestionType === "TrueFalseAnswer"){
@@ -243,7 +241,7 @@ class EditQuestion extends React.Component {
             
         })
         if(response1.ok){
-          window.location.href = "/edit-test";
+          window.location.href = variables.PAGE_URL+"edit-test";
         }
       }
     

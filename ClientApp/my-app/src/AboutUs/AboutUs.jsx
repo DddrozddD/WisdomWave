@@ -1,10 +1,10 @@
-import "./Administration.css";
+import "./AboutUs.css";
 import React from "react";
 
 function template() {
   return (
-    <div className="administration">
-      <h1>Administration</h1>
+    <div className="about-us">
+      <h1>AboutUs</h1>
     </div>
   );
 };

@@ -13,13 +13,17 @@ export class Layout extends React.Component {
 
     this.state={
     UserName:"",
-    UserSurname:""
+    UserSurname:"",
+    Knowledges:[],
+    Educations:[],
+    Themes:[],
+
     }
   }
   
   componentDidMount=async()=>{
+    this.getCategories();
     try{
-
 
       await fetch(variables.API_URL+'authorization/GetUser/'+getCookie("UserSecretKey"))
     .then(response=>response.json())
@@ -35,17 +39,65 @@ export class Layout extends React.Component {
   catch(error){
     console.error("Помилка:", error);
   }
-    
+  
   
   }
 
-<<<<<<< Updated upstream
-=======
 
+  getCategories= async ()=>{
+    try{
+
+
+      await fetch(variables.API_URL+'category/without-parents')
+    .then(response=>response.json())
+    .then(data=>{
+      if(data.title!="Bad Request"){
+        const sorted = [...data].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+        this.setState({Knowledges:sorted});
+      }
+    });
+  }
+  catch(error){
+    console.error("Помилка:", error);
+  }
+
+
+  try{
+
+
+    await fetch(variables.API_URL+'category/with-children&parents')
+  .then(response=>response.json())
+  .then(data=>{
+    if(data.title!="Bad Request"){
+      const sorted = [...data].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+      this.setState({Educations:sorted});
+    }
+  });
+}
+catch(error){
+  console.error("Помилка:", error);
+}
+
+try{
+
+
+  await fetch(variables.API_URL+'category/without-children')
+.then(response=>response.json())
+.then(data=>{
+  if(data.title!="Bad Request"){
+    const sorted = [...data].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+    this.setState({Themes:sorted});
+  }
+});
+}
+catch(error){
+console.error("Помилка:", error);
+}
+  }
 
 
   
->>>>>>> Stashed changes
+
   singOut=async()=>{
     try {
       const response = await fetch(variables.API_URL + 'authorization/LogoutUser');
@@ -57,7 +109,7 @@ export class Layout extends React.Component {
       console.error("Error fetching page:", error);
     }
     deleteCookie("UserSecretKey");
-    window.location.href="http://localhost:3000/"
+    window.location.href=variables.PAGE_URL;
   }
 
   render = () => {
@@ -134,16 +186,20 @@ export class Layout extends React.Component {
                 <NavLink className={"navlink first_down_link"} to="/">
     Головна
 </NavLink>
-<NavLink className={"navlink left_header_links"}>
+
+<NavLink className={"navlink left_header_links"} to="/courses">
     Навчальні програми
 </NavLink>
-<NavLink className={"navlink left_header_links"}>
+
+
+<NavLink className={"navlink left_header_links"} to="/about-us">
    Про нас
 </NavLink>
 <NavLink className={"navlink left_header_links"} to="/user-courses">
     Для работи
 </NavLink>
-                </div>     
+                </div>   
+               
                 </div>
                 <svg className='logo' xmlns="http://www.w3.org/2000/svg" width="127" height="73" viewBox="0 0 127 73" fill="none">
 <path d="M74.9043 36.5067C74.9043 36.4277 74.9286 36.3579 74.9772 36.2971C75.0258 36.2364 75.0896 36.1574 75.1686 36.0602C75.3387 35.8658 75.5361 35.6623 75.7609 35.4497C75.9856 35.231 76.2134 35.0214 76.4443 34.8209C76.5901 34.7055 76.6994 34.6478 76.7723 34.6478C76.8452 34.6478 76.9576 34.7055 77.1095 34.8209C77.6016 35.2462 78.0207 35.6593 78.367 36.0602C78.446 36.1513 78.5098 36.2303 78.5584 36.2971C78.613 36.3579 78.6404 36.4277 78.6404 36.5067C78.6404 36.5857 78.613 36.6556 78.5584 36.7163C78.5098 36.7771 78.4429 36.8591 78.3579 36.9623C78.1939 37.1507 78.0025 37.3542 77.7838 37.5729C77.5651 37.7855 77.3403 37.989 77.1095 38.1834C77.0244 38.2563 76.9576 38.3049 76.909 38.3292C76.8604 38.3474 76.8149 38.3565 76.7723 38.3565C76.7298 38.3565 76.6842 38.3474 76.6357 38.3292C76.5931 38.3049 76.5233 38.2563 76.4261 38.1834C76.1831 37.989 75.9553 37.7855 75.7426 37.5729C75.53 37.3542 75.3387 37.1446 75.1686 36.9441C75.0896 36.8469 75.0258 36.771 74.9772 36.7163C74.9286 36.6556 74.9043 36.5857 74.9043 36.5067ZM78.203 48.4166C78.203 48.5989 78.1635 48.7264 78.0845 48.7993C78.0116 48.8661 77.884 48.8996 77.7018 48.8996H75.8246C75.6424 48.8996 75.5118 48.8661 75.4328 48.7993C75.3599 48.7264 75.3235 48.5989 75.3235 48.4166V40.0514C75.3235 39.8692 75.3599 39.7447 75.4328 39.6778C75.5118 39.6049 75.6424 39.5685 75.8246 39.5685H77.7018C77.884 39.5685 78.0116 39.6049 78.0845 39.6778C78.1635 39.7447 78.203 39.8692 78.203 40.0514V48.4166Z" fill="#F87C56"/>

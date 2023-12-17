@@ -1,0 +1,17 @@
+.blueBtn{
+    border-radius: 2rem;
+    border: 0.1rem solid #FFF;
+background-color: #56D2F8;
+width: 10rem;
+height: 2.5rem;
+text-align: center;
+color: white;
+margin-top: 2rem;
+margin-left: 2rem;
+cursor: pointer;
+}
+
+.showTestView{
+    margin-left: 2rem;
+}
+  

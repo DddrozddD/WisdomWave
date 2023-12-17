@@ -25,7 +25,6 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-      
 
 
         await _categoryService.CreateAsync(new Category { CategoryName = "Розробка" });
@@ -510,7 +509,10 @@ public class HomeController : Controller
         await _categoryService.CreateAsync(new Category { CategoryName = "Музичний маркетинг" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "Звукова терапія" }, parentCategory.Id);
         await _categoryService.CreateAsync(new Category { CategoryName = "Джембе" }, parentCategory.Id);
+
+
         return Redirect("http://localhost:3000/");
+
     }
   
  

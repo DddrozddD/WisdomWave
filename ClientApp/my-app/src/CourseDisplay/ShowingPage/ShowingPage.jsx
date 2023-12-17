@@ -1,10 +1,10 @@
-import "./OneAnswerView.css";
+import "./ShowingPage.css";
 import React from "react";
 
 function template() {
   return (
-    <div className="one-answer-view">
-      <h1>OneAnswerView</h1>
+    <div className="showing-page">
+      <h1>ShowingPage</h1>
     </div>
   );
 };

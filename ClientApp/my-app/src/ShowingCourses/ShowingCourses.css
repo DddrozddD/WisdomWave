@@ -1,6 +1,6 @@
 .courseCard{
-    width: 200px;
-    height: 120px;
+    width: 21rem;
+    height: 9rem;
     display: inline-block;
     border: 2px solid #56D2F8;
     border-radius: 20px;
@@ -8,7 +8,9 @@
     cursor: pointer;
     margin: 2rem;
 }
-
+.courseCard h4{
+    height: 3rem;
+}
 .courseCard p {
     font-size: 0.7rem;
 }

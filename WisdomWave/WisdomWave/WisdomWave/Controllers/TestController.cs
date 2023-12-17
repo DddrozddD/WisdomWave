@@ -7,6 +7,7 @@ using BLL.Services;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using WisdomWave.Models;
+using System.Security.Claims;
 
 namespace WisdomWave.Controllers
 {
@@ -17,14 +18,19 @@ namespace WisdomWave.Controllers
         private readonly TestService testService;
         private readonly UnitService unitService;
         private readonly QuestionService questionService;
+        private readonly AnswerService answerService;
+        private readonly CourseService _courseService;
         private readonly UserManager<WwUser> _userManager;
 
-        public TestController(TestService testService, UserManager<WwUser> userManager, UnitService unitService, QuestionService questionService)
+        public TestController(TestService testService, UserManager<WwUser> userManager, UnitService unitService, QuestionService questionService, AnswerService answerService,
+            CourseService courseService)
         {
             _userManager = userManager;
             this.testService = testService;
             this.unitService = unitService;
             this.questionService = questionService;
+            this.answerService = answerService;
+            this._courseService = courseService;
         }
 
         [HttpGet] // HTTP GET request handler for retrieving all tests
@@ -64,6 +70,8 @@ namespace WisdomWave.Controllers
                     questions = await questionService.FindByConditionAsync(q => q.testId == id);
                 }
             }
+
+            
             return new JsonResult(questions);
         }
 
@@ -146,6 +154,45 @@ namespace WisdomWave.Controllers
         {
             await testService.DeleteAsync(id);
             return NoContent(); // Return a status of 204 No Content
+        }
+
+        [HttpGet("checkCompleteTest/{id}/{token}")]
+        public async Task<IActionResult> checkCompleteTest(int id, string token)
+        {
+            WwUser User = await _userManager.FindByIdAsync(JwtHandler.DecodeJwtToken(token).FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            Test Test = await testService.FindByConditionItemAsync(t => t.Id == id);
+
+            if (User == null || Test == null)
+            {
+                return NotFound();
+            }
+
+            List<Test> CompletedTests  = (await testService.FindByConditionAsync(t => t.PassedTestUsers.Any(u => u.Id == User.Id))).ToList();
+
+            if(CompletedTests.Any(t=>t.Id == id))
+            {
+                return new JsonResult(true);
+            }
+
+
+            return new JsonResult(false);
+        }
+
+        [HttpPut("userCompleteTest/{id}/{token}")]
+        public async Task<IActionResult> userCompleteTest(int id, string token)
+        {
+            WwUser User = await _userManager.FindByIdAsync(JwtHandler.DecodeJwtToken(token).FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            Test Test = await testService.FindByConditionItemAsync(t => t.Id == id);
+
+            if (User == null || Test == null)
+            {
+                return NotFound();
+            }
+
+            await testService.CheckUser(Test, User);
+
+
+            return Ok();
         }
     }
 }

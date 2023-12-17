@@ -81,11 +81,11 @@
 }
 
 .createAccountBtn {
-    padding-top: 0.4%;
+    
     text-decoration: none;
     color: white;
     font-size: 13px;
-    transform: translateX(10%);
+    margin-top: 0.8rem;
 }
 .createAccountText {
     font-size: 13px;

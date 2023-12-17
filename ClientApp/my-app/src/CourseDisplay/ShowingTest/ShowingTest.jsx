@@ -1,10 +1,10 @@
-import "./CourseInfo.css";
+import "./ShowingTest.css";
 import React from "react";
 
 function template() {
   return (
-    <div className="course-info">
-      <h1>CourseInfo</h1>
+    <div className="showing-test">
+      <h1>ShowingTest</h1>
     </div>
   );
 };

@@ -201,7 +201,9 @@ this.userCompleteTest();
                 return (
                   <div key={question.id}>
                     <h4 className="question_name">{question.questionName}</h4>
+
                     <h5>{question.questionText}</h5>
+
                     <p>Балів: {question.countOfPoints}</p>
                     {/* Проверка типа вопроса и отображение соответствующих ответов */}
                     {question.questionType === "TrueFalseAnswer" && (

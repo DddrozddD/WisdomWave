@@ -40,3 +40,8 @@ flex-wrap: wrap;
     position: absolute;
     z-index: -1;
 }
+
+.deleteBtn{
+    cursor: pointer;
+
+}
